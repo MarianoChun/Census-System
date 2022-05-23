@@ -12,7 +12,7 @@ public class AsignadorDeManzanasGoloso {
 	public AsignadorDeManzanasGoloso(ArrayList<Censista> censistas, RadioCensal radioCensal) {
 		this.censistas = censistas;
 		this.radioCensal = radioCensal;
-
+		this.manzanasMarcadas = new HashMap<Integer, Manzana>();
 	}
 	
 	
@@ -54,6 +54,7 @@ public class AsignadorDeManzanasGoloso {
 	private ArrayList<Manzana> manzanasVecinasNoMarcadas(int nroManzana) {
 		
 		ArrayList<Manzana> manzanasVecinasNoMarcadas = new ArrayList<Manzana>();
+		manzanasVecinasNoMarcadas.add(new Manzana(nroManzana));
 		Set<Integer> manzanasVecinas = radioCensal.manzanasVecinas(nroManzana);
 		
 		for(Integer nroManzanaVecina : manzanasVecinas) {

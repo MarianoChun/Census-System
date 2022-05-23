@@ -4,11 +4,13 @@ import java.util.ArrayList;
 
 public class Censista {
 	private ArrayList<Manzana> manzanasAsignadas;
+	private String nombre;
 	private String foto; //modificar tipo luego
 	
 	// TODO: Necesitamos cubrir la posibilidad de que no se asigne una manzana que ya asignada al censista.
 	
-	public Censista() {
+	public Censista(String nombre) {
+		this.nombre = nombre;
 		this.manzanasAsignadas = new ArrayList<Manzana>();
 	}
 	
@@ -32,5 +34,9 @@ public class Censista {
 	
 	public int cantManzanasAsignadas() {
 		return manzanasAsignadas.size();
+	}
+	
+	public ArrayList<Manzana> getManzanasAsignadas(){
+		return manzanasAsignadas;
 	}
 }

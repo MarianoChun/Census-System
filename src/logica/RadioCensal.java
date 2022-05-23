@@ -12,6 +12,7 @@ public class RadioCensal {
 	public RadioCensal(int manzanas) {
 		this.A = new boolean[manzanas][manzanas];
 		this.manzanasContiguas = new ArrayList<ManzanaContigua>();
+		this.manzanas = new ArrayList<Manzana>();
 		// Al leerse desde el excel, la manzana deberia crearse junto con sus coordenadas, tambien deberian asignarse las manzanas contiguas
 		for(int i = 0; i < manzanas; i++) {
 			this.manzanas.add(new Manzana(i));
@@ -21,7 +22,9 @@ public class RadioCensal {
 	public void agregarManzanaContigua(Manzana primerManzana, Manzana segundaManzana) {
 		int i = primerManzana.getNumeroManzana();
 		int j = segundaManzana.getNumeroManzana();
-	
+		verificarManzana(i);
+		verificarManzana(j);
+		verificarDistintos(i, j);
 		if (!existeManzanaContigua(i, j)) {
 			A[i][j] = A[j][i] = true;
 			manzanasContiguas.add(new ManzanaContigua(primerManzana, segundaManzana));
@@ -47,12 +50,18 @@ public class RadioCensal {
 			throw new IllegalArgumentException("Ingrese un nro de manzana valida entre 0 y cantManzanas - 1");
 		}
 	}
+	
+	private void verificarDistintos(int i, int j) {
+		if(i == j) {
+			throw new IllegalArgumentException("No puede ingresar manzanas con el mismo nro de manzana");
+		}
+	}
 
 	private int cantManzanas() {
 		return manzanas.size();
 	}
 
-	private boolean existeManzanaContigua(int i, int j) {
+	public boolean existeManzanaContigua(int i, int j) {
 		return A[i][j];
 	}
 	
