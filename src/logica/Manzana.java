@@ -11,6 +11,12 @@ public class Manzana {
 		this.nroManzana = nroManzana;
 	}
 	
+	public Manzana(int nroManzana) {
+		this.x = 0;
+		this.y = 0;
+		this.nroManzana = nroManzana;
+	}
+	
 	public int getNumeroManzana() {
 		return this.nroManzana;
 	}
