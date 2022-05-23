@@ -6,8 +6,10 @@ public class Censista {
 	private ArrayList<Manzana> manzanasAsignadas;
 	private String foto; //modificar tipo luego
 	
+	// TODO: Necesitamos cubrir la posibilidad de que no se asigne una manzana que ya asignada al censista.
+	
 	public Censista() {
-		
+		this.manzanasAsignadas = new ArrayList<Manzana>();
 	}
 	
 	public void asignarManzana(Manzana manzana) {

@@ -12,6 +12,7 @@ public class RadioCensal {
 	public RadioCensal(int manzanas) {
 		this.A = new boolean[manzanas][manzanas];
 		this.manzanasContiguas = new ArrayList<ManzanaContigua>();
+		// Al leerse desde el excel, la manzana deberia crearse junto con sus coordenadas, tambien deberian asignarse las manzanas contiguas
 		for(int i = 0; i < manzanas; i++) {
 			this.manzanas.add(new Manzana(i));
 		}
