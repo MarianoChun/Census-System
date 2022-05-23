@@ -9,4 +9,26 @@ public class Censista {
 	public Censista() {
 		
 	}
+	
+	public void asignarManzana(Manzana manzana) {
+		if(cantManzanasAsignadas() == 3) {
+			throw new IllegalArgumentException("Solo se le puede asignar al censista un máximo de 3 manzanas");
+		}
+		manzanasAsignadas.add(manzana);
+	}
+	
+	public void asignarManzana(ArrayList<Manzana> manzanas) {
+		if(manzanas.size() > 3) {
+			throw new IllegalArgumentException("La longitud del array ingresado debe ser menor o igual que 3");
+		}
+		if(cantManzanasAsignadas() + manzanas.size() > 3) {
+			throw new IllegalArgumentException("Solo se le puede asignar al censista un máximo de 3 manzanas");
+		}
+		
+		manzanasAsignadas.addAll(manzanas);
+	}
+	
+	public int cantManzanasAsignadas() {
+		return manzanasAsignadas.size();
+	}
 }

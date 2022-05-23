@@ -2,10 +2,10 @@ package logica;
 
 import java.util.ArrayList;
 
-public class AlgoritmoGoloso {
+public class AsignadorDeManzanasGoloso {
 	private ArrayList<Censista> censistas;
 	
-	public AlgoritmoGoloso(ArrayList<Censista> censistas) {
+	public AsignadorDeManzanasGoloso(ArrayList<Censista> censistas) {
 		this.censistas = censistas;
 	}
 }
