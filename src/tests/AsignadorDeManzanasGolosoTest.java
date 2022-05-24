@@ -36,26 +36,29 @@ public class AsignadorDeManzanasGolosoTest {
 	public void asignadorManzanasGolosoTest() {
 		// Descomentar cuando se solucione el problema del algoritmo goloso
 		
-//		AsignadorDeManzanasGoloso asignador = new AsignadorDeManzanasGoloso(censistas, radioCensal);
-//		
-//		asignador.asignarManzanasACensistas();
-//		
-//		ArrayList<Manzana> manzanasAsignadasJuan = censistas.get(0).getManzanasAsignadas();
-//		ArrayList<Manzana> manzanasAsignadasTito = censistas.get(1).getManzanasAsignadas();
-//		
-//		ArrayList<Manzana> manzanasEsperadasJuan = new ArrayList<Manzana>();
-//		manzanasEsperadasJuan.add(new Manzana(0));
-//		manzanasEsperadasJuan.add(new Manzana(1));
-//		manzanasEsperadasJuan.add(new Manzana(2));
-//		
-//		ArrayList<Manzana> manzanasEsperadasTito = new ArrayList<Manzana>();
-//		manzanasEsperadasTito.add(new Manzana(3));
-//		manzanasEsperadasTito.add(new Manzana(4));
-//		
-//		System.out.println(manzanasAsignadasJuan.toString());
-//		System.out.println(manzanasAsignadasTito.toString());
-//		assertTrue(manzanasAsignadasJuan.equals(manzanasEsperadasJuan) && manzanasAsignadasTito.equals(manzanasEsperadasTito));
-//		
+		AsignadorDeManzanasGoloso asignador = new AsignadorDeManzanasGoloso(censistas, radioCensal);
+		
+		asignador.asignarManzanasACensistas();
+		
+		ArrayList<Manzana> manzanasAsignadasJuan = censistas.get(0).getManzanasAsignadas();
+		ArrayList<Manzana> manzanasAsignadasTito = censistas.get(1).getManzanasAsignadas();
+		
+		ArrayList<Manzana> manzanasEsperadasJuan = new ArrayList<Manzana>();
+		manzanasEsperadasJuan.add(new Manzana(0));
+		manzanasEsperadasJuan.add(new Manzana(1));
+		manzanasEsperadasJuan.add(new Manzana(2));
+		
+		ArrayList<Manzana> manzanasEsperadasTito = new ArrayList<Manzana>();
+		manzanasEsperadasTito.add(new Manzana(3));
+		manzanasEsperadasTito.add(new Manzana(4));
+		
+		manzanasAsignadasJuan.sort((p,q) -> p.getNroManzana() - q.getNroManzana());
+		manzanasAsignadasTito.sort((p,q) -> p.getNroManzana() - q.getNroManzana());
+		manzanasEsperadasJuan.sort((p,q) -> p.getNroManzana() - q.getNroManzana());
+		manzanasEsperadasTito.sort((p,q) -> p.getNroManzana() - q.getNroManzana());
+
+		assertTrue(manzanasAsignadasJuan.equals(manzanasEsperadasJuan) && manzanasAsignadasTito.equals(manzanasEsperadasTito));
+		
 	}
 
 }

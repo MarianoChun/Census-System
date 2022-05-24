@@ -20,8 +20,8 @@ public class RadioCensal {
 	}
 	
 	public void agregarManzanaContigua(Manzana primerManzana, Manzana segundaManzana) {
-		int i = primerManzana.getNumeroManzana();
-		int j = segundaManzana.getNumeroManzana();
+		int i = primerManzana.getNroManzana();
+		int j = segundaManzana.getNroManzana();
 		verificarManzana(i);
 		verificarManzana(j);
 		verificarDistintos(i, j);
@@ -45,6 +45,9 @@ public class RadioCensal {
 		return ret;
 	}
 	
+	public int gradoManzana(int i) {
+		return manzanasVecinas(i).size();
+	}
 	private void verificarManzana(int i) {
 		if(i < 0 || i > cantManzanas()) {
 			throw new IllegalArgumentException("Ingrese un nro de manzana valida entre 0 y cantManzanas - 1");
