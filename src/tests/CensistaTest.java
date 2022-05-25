@@ -42,7 +42,6 @@ public class CensistaTest {
 		censista.asignarManzana(new Manzana(2));
 
 		censista.asignarManzana(new Manzana(4));
-
 	}
 
 	@Test(expected = IllegalArgumentException.class)
@@ -70,6 +69,5 @@ public class CensistaTest {
 		manzanas.add(new Manzana(4));
 
 		censista.asignarManzana(manzanas);
-
 	}
 }

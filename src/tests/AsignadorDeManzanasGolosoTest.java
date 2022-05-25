@@ -17,7 +17,7 @@ public class AsignadorDeManzanasGolosoTest {
 	RadioCensal radioCensal;
 
 	@Before
-	public void setup() {
+	public void setUp() {
 		censistas = new ArrayList<Censista>();
 		censistas.add(new Censista("Juan"));
 		censistas.add(new Censista("Tito"));
@@ -25,7 +25,6 @@ public class AsignadorDeManzanasGolosoTest {
 		censistas.add(new Censista("Nahuel"));
 		censistas.add(new Censista("Julieta"));
 		censistas.add(new Censista("Paula"));
-
 	}
 
 	// Happy path
@@ -175,7 +174,5 @@ public class AsignadorDeManzanasGolosoTest {
 
 		assertTrue(manzanasAsignadasJuan.equals(manzanasEsperadasJuan)
 				&& manzanasAsignadasTito.equals(manzanasEsperadasTito));
-
 	}
-
 }
