@@ -29,6 +29,8 @@ import java.awt.Component;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import java.awt.Font;
+import javax.swing.SwingConstants;
 
 public class MainForm {
 
@@ -66,12 +68,12 @@ public class MainForm {
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 450, 300);
+		frame.setBounds(100, 100, 1072, 727);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
 		JScrollPane scrollPaneCensistas = new JScrollPane();
-		scrollPaneCensistas.setBounds(33, 27, 237, 162);
+		scrollPaneCensistas.setBounds(41, 27, 975, 227);
 		frame.getContentPane().add(scrollPaneCensistas);
 		
 		tablaCensistas =  new JTable();
@@ -82,13 +84,23 @@ public class MainForm {
 		String[] nombresColumnas = {"Nombre censista", "Foto censista"};
 		modeloTablaCensistas = new DefaultTableModel(null, nombresColumnas);
 
-		tablaCensistas.setModel(modeloTablaCensistas);
+		tablaCensistas.setModel(new DefaultTableModel(
+			new Object[][] {
+			},
+			new String[] {
+				"Nombre censista", "Foto censista"
+			}
+		));
+		tablaCensistas.getTableHeader().setReorderingAllowed(false);
+		tablaCensistas.getTableHeader().setResizingAllowed(false);
+		tablaCensistas.getColumnModel().getColumn(0).setPreferredWidth(40);
 		
 		
 		scrollPaneCensistas.setViewportView(tablaCensistas);
 		
 		JButton btnCargarCensistas = new JButton("Cargar censistas");
-		btnCargarCensistas.setBounds(33, 200, 127, 23);
+		btnCargarCensistas.setFont(new Font("Verdana", Font.PLAIN, 13));
+		btnCargarCensistas.setBounds(276, 574, 200, 34);
 		btnCargarCensistas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -129,9 +141,20 @@ public class MainForm {
 		});
 		frame.getContentPane().add(btnCargarCensistas);
 		
-		JButton btnCargarManzanas = new JButton("CargarManzanas");
-		btnCargarManzanas.setBounds(292, 200, 113, 23);
+		JButton btnCargarManzanas = new JButton("Cargar manzanas");
+		btnCargarManzanas.setFont(new Font("Verdana", Font.PLAIN, 13));
+		btnCargarManzanas.setBounds(512, 574, 200, 34);
 		frame.getContentPane().add(btnCargarManzanas);
+		
+		JButton btnAsignarManzanas = new JButton("Asignar manzanas a censistas");
+		btnAsignarManzanas.setFont(new Font("Verdana", Font.PLAIN, 13));
+		btnAsignarManzanas.setBounds(276, 619, 436, 34);
+		frame.getContentPane().add(btnAsignarManzanas);
+		
+		JLabel lblNewLabel = new JLabel("FUTURO MAPA");
+		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel.setBounds(432, 378, 164, 28);
+		frame.getContentPane().add(lblNewLabel);
 	
 	}
 	
