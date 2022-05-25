@@ -1,11 +1,12 @@
 package logica;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class Censista {
 	private ArrayList<Manzana> manzanasAsignadas;
 	private String nombre;
-	private String foto; //modificar tipo luego
+	private byte[] foto; //modificar tipo luego
 	
 	// TODO: Necesitamos cubrir la posibilidad de que no se asigne una manzana que ya asignada al censista.
 	
@@ -32,6 +33,17 @@ public class Censista {
 		manzanasAsignadas.addAll(manzanas);
 	}
 	
+	public void setFoto(byte[] foto) {
+		this.foto = foto;
+	}
+	
+	public byte[] getFoto() {
+		return foto;
+	}
+	
+	public String getNombre() {
+		return nombre;
+	}
 	public int cantManzanasAsignadas() {
 		return manzanasAsignadas.size();
 	}

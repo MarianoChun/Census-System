@@ -7,5 +7,14 @@
 	</classpathentry>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry kind="lib" path="jars/commons-collections4-4.1.jar"/>
+	<classpathentry kind="lib" path="jars/jgoodies-common-1.8.0.jar"/>
+	<classpathentry kind="lib" path="jars/jgoodies-common-1.8.0-sources.jar"/>
+	<classpathentry kind="lib" path="jars/jgoodies-forms-1.8.0.jar"/>
+	<classpathentry kind="lib" path="jars/jgoodies-forms-1.8.0-sources.jar"/>
+	<classpathentry kind="lib" path="jars/poi-3.17.jar"/>
+	<classpathentry kind="lib" path="jars/poi-ooxml-3.17.jar"/>
+	<classpathentry kind="lib" path="jars/poi-ooxml-schemas-3.17.jar"/>
+	<classpathentry kind="lib" path="jars/xmlbeans-2.6.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
