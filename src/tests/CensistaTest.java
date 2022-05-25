@@ -28,7 +28,7 @@ public class CensistaTest {
 		manzanas.add(new Manzana(0));
 		manzanas.add(new Manzana(1));
 
-		censista.asignarManzana(manzanas);
+		censista.asignarManzanas(manzanas);
 
 		assertEquals(2, censista.cantManzanasAsignadas());
 	}
@@ -54,7 +54,7 @@ public class CensistaTest {
 		manzanas.add(new Manzana(2));
 		manzanas.add(new Manzana(3));
 
-		censista.asignarManzana(manzanas);
+		censista.asignarManzanas(manzanas);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
@@ -68,6 +68,6 @@ public class CensistaTest {
 		manzanas.add(new Manzana(3));
 		manzanas.add(new Manzana(4));
 
-		censista.asignarManzana(manzanas);
+		censista.asignarManzanas(manzanas);
 	}
 }

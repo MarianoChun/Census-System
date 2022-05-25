@@ -36,7 +36,7 @@ public class AsignadorDeManzanasGoloso {
 //			System.out.println("Manzanas a asignar");
 //			System.out.println(grupoManzana);
 //			System.out.println();
-			censistas.get(indice).asignarManzana(grupoManzana);
+			censistas.get(indice).asignarManzanas(grupoManzana);
 			indice++;
 		}
 
