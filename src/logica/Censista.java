@@ -8,7 +8,7 @@ public class Censista {
 	private String foto; // modificar tipo luego
 
 	// TODO: Necesitamos cubrir la posibilidad de que no se asigne una manzana que
-	// ya asignada al censista.
+	// ya esta asignada al censista.
 
 	public Censista(String nombre) {
 		this.nombre = nombre;
@@ -19,7 +19,9 @@ public class Censista {
 		if (cantManzanasAsignadas() == 3) {
 			throw new IllegalArgumentException("Solo se le puede asignar al censista un máximo de 3 manzanas");
 		}
-		manzanasAsignadas.add(manzana);
+		if (!estaManzanaAsignada(manzana)) {
+			manzanasAsignadas.add(manzana);
+		}
 	}
 
 	public void asignarManzana(ArrayList<Manzana> manzanas) {
@@ -31,6 +33,15 @@ public class Censista {
 		}
 
 		manzanasAsignadas.addAll(manzanas);
+	}
+	
+	private boolean estaManzanaAsignada(Manzana manzana) {
+		for (Manzana m : manzanasAsignadas) {
+			if (m.equals(manzana)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public int cantManzanasAsignadas() {
