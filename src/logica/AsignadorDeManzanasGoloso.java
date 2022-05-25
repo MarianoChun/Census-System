@@ -10,22 +10,27 @@ public class AsignadorDeManzanasGoloso {
 	private ArrayList<Censista> censistas;
 	private ArrayList<Manzana> manzanas;
 	private HashMap<Integer, Manzana> manzanasMarcadas;
-	
+
 	public AsignadorDeManzanasGoloso(ArrayList<Censista> censistas, RadioCensal radioCensal) {
 		this.censistas = censistas;
 		this.radioCensal = radioCensal;
-		this.manzanas = (ArrayList<Manzana>) radioCensal.getManzanas().clone();
+		this.manzanas = clonarManzanas(radioCensal);
 		// Ordenado de menor a mayor de acuerdo al grado de la manzana (cant vecinos)
-		Collections.sort(manzanas, (p, q) -> radioCensal.gradoManzana(q.getNroManzana()) - radioCensal.gradoManzana(p.getNroManzana()));
+		Collections.sort(manzanas,
+				(p, q) -> radioCensal.gradoManzana(q.getNroManzana()) - radioCensal.gradoManzana(p.getNroManzana()));
 		this.manzanasMarcadas = new HashMap<Integer, Manzana>();
 	}
-	
-	
+
+	@SuppressWarnings("unchecked")
+	private ArrayList<Manzana> clonarManzanas(RadioCensal radioCensal) {
+		return (ArrayList<Manzana>) radioCensal.getManzanas().clone();
+	}
+
 	public void asignarManzanasACensistas() {
 		ArrayList<ArrayList<Manzana>> grupoManzanasAsignables = construirGrupoDeManzanasAsignables();
 		int indice = 0;
-		for(ArrayList<Manzana> grupoManzana : grupoManzanasAsignables) {
-			if(censistas.size() == indice) {
+		for (ArrayList<Manzana> grupoManzana : grupoManzanasAsignables) {
+			if (censistas.size() == indice) {
 				break;
 			}
 //			System.out.println("Manzanas a asignar");
@@ -34,15 +39,15 @@ public class AsignadorDeManzanasGoloso {
 			censistas.get(indice).asignarManzana(grupoManzana);
 			indice++;
 		}
-		
+
 	}
-	
+
 	private ArrayList<ArrayList<Manzana>> construirGrupoDeManzanasAsignables() {
 		ArrayList<ArrayList<Manzana>> grupoDeManzanasAsignables = new ArrayList<ArrayList<Manzana>>();
-		for(Manzana manzana : manzanas) {
-			if(!estaManzanaMarcada(manzana.getNroManzana())) {
+		for (Manzana manzana : manzanas) {
+			if (!estaManzanaMarcada(manzana.getNroManzana())) {
 				ArrayList<Manzana> manzanasVecinasNoAsignadas = manzanasVecinasNoMarcadas(manzana);
-				marcarManzanas(manzanasVecinasNoAsignadas);	
+				marcarManzanas(manzanasVecinasNoAsignadas);
 				grupoDeManzanasAsignables.add(manzanasVecinasNoAsignadas);
 			}
 		}
@@ -51,24 +56,23 @@ public class AsignadorDeManzanasGoloso {
 //		System.out.println();
 		return grupoDeManzanasAsignables;
 	}
-	
+
 	private void marcarManzanas(ArrayList<Manzana> manzanasVecinasNoAsignadas) {
-		for(Manzana manzana : manzanasVecinasNoAsignadas) {
+		for (Manzana manzana : manzanasVecinasNoAsignadas) {
 			manzanasMarcadas.put(manzana.getNroManzana(), manzana);
 		}
-		
 	}
 
-	// Debe devolver como máximo un array list de 3 manzanas. 0 < ArrayList.size <= 3;
+	// Debe devolver como máximo un array list de 3 manzanas. 0 < ArrayList.size <=
+	// 3;
 	// La manzana actual debe incluirse en el arrayList
 	private ArrayList<Manzana> manzanasVecinasNoMarcadas(Manzana manzana) {
-		
 		ArrayList<Manzana> manzanasVecinasNoMarcadas = new ArrayList<Manzana>();
 		manzanasVecinasNoMarcadas.add(manzana);
 		Set<Integer> manzanasVecinas = radioCensal.manzanasVecinas(manzana.getNroManzana());
 
-		for(Integer nroManzanaVecina : manzanasVecinas) {
-			if(!estaManzanaMarcada(nroManzanaVecina) && manzanasVecinasNoMarcadas.size() != 3) {
+		for (Integer nroManzanaVecina : manzanasVecinas) {
+			if (!estaManzanaMarcada(nroManzanaVecina) && manzanasVecinasNoMarcadas.size() != 3) {
 				Manzana vecinaNoMarcada = radioCensal.getManzana(nroManzanaVecina);
 				manzanasVecinasNoMarcadas.add(vecinaNoMarcada);
 			}
