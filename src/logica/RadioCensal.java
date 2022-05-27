@@ -1,6 +1,7 @@
 package logica;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
@@ -14,8 +15,16 @@ public class RadioCensal {
 		this.A = new boolean[manzanas][manzanas];
 		this.manzanasContiguas = new ArrayList<ManzanaContigua>();
 		this.manzanas = new HashMap<Integer, Manzana>();
+		generarManzanas();
 	}
 
+	public void generarManzanas() {
+		int nroManzana = 0;
+		while(nroManzana < cantManzanas()) {
+			manzanas.put(nroManzana, new Manzana(nroManzana));
+			nroManzana++;
+		}
+	}
 	public void agregarManzana(Manzana manzana) {
 		verificarManzana(manzana.getNroManzana());
 		manzanas.put(manzana.getNroManzana(), manzana);
@@ -50,7 +59,7 @@ public class RadioCensal {
 	}
 
 	private void verificarManzana(int i) {
-		if (i < 0 || i > cantManzanas()) {
+		if (i < 0 || i >= A.length) {
 			throw new IllegalArgumentException("Ingrese un nro de manzana valida entre 0 y cantManzanas - 1");
 		}
 	}
@@ -62,7 +71,7 @@ public class RadioCensal {
 	}
 
 	public int cantManzanas() {
-		return manzanas.size();
+		return A.length;
 	}
 
 	public boolean existeManzanaContigua(int i, int j) {
@@ -80,4 +89,40 @@ public class RadioCensal {
 	public Manzana getManzana(int indice) {
 		return manzanas.get(indice);
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + Arrays.deepHashCode(A);
+		result = prime * result + ((manzanas == null) ? 0 : manzanas.hashCode());
+		result = prime * result + ((manzanasContiguas == null) ? 0 : manzanasContiguas.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		RadioCensal other = (RadioCensal) obj;
+		if (!Arrays.deepEquals(A, other.A))
+			return false;
+		if (manzanas == null) {
+			if (other.manzanas != null)
+				return false;
+		} else if (!manzanas.equals(other.manzanas))
+			return false;
+		if (manzanasContiguas == null) {
+			if (other.manzanasContiguas != null)
+				return false;
+		} else if (!manzanasContiguas.equals(other.manzanasContiguas))
+			return false;
+		return true;
+	}
+	
+	
 }

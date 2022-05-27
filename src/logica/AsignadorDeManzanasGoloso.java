@@ -1,6 +1,7 @@
 package logica;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Set;
@@ -18,12 +19,19 @@ public class AsignadorDeManzanasGoloso {
 		// Ordenado de menor a mayor de acuerdo al grado de la manzana (cant vecinos)
 		Collections.sort(manzanas,
 				(p, q) -> radioCensal.gradoManzana(q.getNroManzana()) - radioCensal.gradoManzana(p.getNroManzana()));
+		System.out.println(manzanas);
 		this.manzanasMarcadas = new HashMap<Integer, Manzana>();
 	}
 
+	
+	private ArrayList<Manzana> obtenerArrayManzanas() {
+		Collection<Manzana> setManzanas = radioCensal.getManzanas().values();
+		return new ArrayList<Manzana>(setManzanas);
+	}
 	@SuppressWarnings("unchecked")
 	private ArrayList<Manzana> clonarManzanas(RadioCensal radioCensal) {
-		return (ArrayList<Manzana>) radioCensal.getManzanas().clone();
+	
+		return (ArrayList<Manzana>) obtenerArrayManzanas().clone();
 	}
 
 	public void asignarManzanasACensistas() {

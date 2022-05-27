@@ -57,6 +57,7 @@ public class MainForm {
 	private JTable tablaCensistas;
 	private JTable tablaManzanas;
 	private JFileChooser selectorArchivos;
+	private JMapViewer mapa;
 	
 	/**
 	 * Launch the application.
@@ -94,7 +95,7 @@ public class MainForm {
 		panelMapa.setBounds(210, 299, 529, 264);
 		frame.getContentPane().add(panelMapa);
 		
-		JMapViewer mapa = new JMapViewer();
+		mapa = new JMapViewer();
 		mapa.setDisplayPosition(new Coordinate(-34.542826297705645, -58.71398400055889), 12);
 		mapa.setBounds(panelMapa.getBounds());
 		panelMapa.add(mapa);
@@ -147,8 +148,7 @@ public class MainForm {
 
 				if (valor == JFileChooser.APPROVE_OPTION) {
 					try {
-						File archivo = selectorArchivos.getSelectedFile();
-						String path = archivo.getAbsolutePath().replaceAll("\\\\", "/");
+						String path = formateoPath();
 						
 						cargadorCensistas = new CargadorCensistas(path);
 						cargadorCensistas.cargarCensistasDesdeExcel();
@@ -186,31 +186,22 @@ public class MainForm {
 
 				if (valor == JFileChooser.APPROVE_OPTION) {
 					try {
-						File archivo = selectorArchivos.getSelectedFile();
-						String path = archivo.getAbsolutePath().replaceAll("\\\\", "/");
+						String path = formateoPath();
 						
 						cargadorManzanas = new CargadorManzanas(path);
-						cargadorManzanas.cargarManzanasDesdeExcel();
-						cargadorManzanas.cargarVecinosManzanasDesdeExcel();
+						cargadorManzanas.cargarManzanasYVecinosDesdeExcel();
 						radioCensal = cargadorManzanas.getRadioCensal();
 						
 						HashMap<Integer, Manzana> manzanas = radioCensal.getManzanas();
-						ArrayList<Coordinate> vecinosManzana = new ArrayList<Coordinate>();
 						 
 						for(Manzana manzana : manzanas.values()) {
 							Coordenada coordenada = manzana.getCoordenada();
+							
 							modeloTablaManzanas.addRow(new Object[] {manzana.getNroManzana(), 
 									"X = " + coordenada.getX() + " , Y = " + coordenada.getY()});
 					
-							for(Integer manzanaVecina : radioCensal.manzanasVecinas(manzana.getNroManzana())) {
-								vecinosManzana = obtenerCoordenadasVecinoManzana(manzana, radioCensal.getManzana(manzanaVecina));
-								mapa.addMapPolygon(new MapPolygonImpl(vecinosManzana));
-							}
-	
-							MapMarkerDot marcadorManzana = new MapMarkerDot(Color.RED, coordenada.getX(), coordenada.getY());
-							marcadorManzana.setName(""+manzana.getNroManzana());
-							mapa.addMapMarker(marcadorManzana);
-			
+							agregarMapPolygonPorCadaVecino(manzana);
+							agregarMapMarkerManzana(manzana);
 						}
 					
 						tablaManzanas.setModel(modeloTablaManzanas);
@@ -250,6 +241,27 @@ public class MainForm {
 		return coordenadasVecino;
 	}
 	
+	private String formateoPath() {
+		File archivo = selectorArchivos.getSelectedFile();
+		String path = archivo.getAbsolutePath().replaceAll("\\\\", "/");
+		return path;
+	}
+
+	private void agregarMapPolygonPorCadaVecino(Manzana manzana) {
+		ArrayList<Coordinate> vecinosManzana;
+		for(Integer manzanaVecina : radioCensal.manzanasVecinas(manzana.getNroManzana())) {
+			vecinosManzana = obtenerCoordenadasVecinoManzana(manzana, radioCensal.getManzana(manzanaVecina));
+			mapa.addMapPolygon(new MapPolygonImpl(vecinosManzana));
+		}
+	}
+
+	private void agregarMapMarkerManzana(Manzana manzana) {
+		Coordenada coordManzana = manzana.getCoordenada();
+		MapMarkerDot marcadorManzana = new MapMarkerDot(Color.RED, coordManzana.getX(), coordManzana.getY());
+		marcadorManzana.setName(""+manzana.getNroManzana());
+		mapa.addMapMarker(marcadorManzana);
+	}
+
 	public class ImagenTabla extends DefaultTableCellRenderer {
 		@Override
 		public Component getTableCellRendererComponent(JTable JTable, Object value, boolean bln, boolean bln1, int i, int j) {

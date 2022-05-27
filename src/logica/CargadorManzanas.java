@@ -21,7 +21,11 @@ public class CargadorManzanas {
 		cargarManzanasDesdeExcel();
 	}
 	
-	public void cargarManzanasDesdeExcel() {
+	public void cargarManzanasYVecinosDesdeExcel() {
+		cargarManzanasDesdeExcel();
+		cargarVecinosManzanasDesdeExcel();
+	}
+	private void cargarManzanasDesdeExcel() {
 		try {
 			Iterator<Row> itr = obtenerIteradorExcel();
 
@@ -45,7 +49,7 @@ public class CargadorManzanas {
 		}
 	}
 	
-	public void cargarVecinosManzanasDesdeExcel() {
+	private void cargarVecinosManzanasDesdeExcel() {
 		try {
 			Iterator<Row> itr = obtenerIteradorExcel();
 
