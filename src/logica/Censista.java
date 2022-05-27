@@ -6,36 +6,44 @@ import java.util.ArrayList;
 public class Censista {
 	private ArrayList<Manzana> manzanasAsignadas;
 	private String nombre;
-	private byte[] foto; //modificar tipo luego
-
-	// TODO: Necesitamos cubrir la posibilidad de que no se asigne una manzana que
-	// ya esta asignada al censista.
-
-
+	private byte[] foto; 
+ 
 	public Censista(String nombre) {
 		this.nombre = nombre;
 		this.manzanasAsignadas = new ArrayList<Manzana>();
 	}
 
 	public void asignarManzana(Manzana manzana) {
-		if (cantManzanasAsignadas() == 3) {
-			throw new IllegalArgumentException("Solo se le puede asignar al censista un máximo de 3 manzanas");
-		}
+		verificarCantManzanasAsignadas();
 		if (!estaManzanaAsignada(manzana)) {
 			manzanasAsignadas.add(manzana);
 		}
 	}
 
-	public void asignarManzanas(ArrayList<Manzana> manzanas) {
-		if (manzanas.size() > 3) {
-			throw new IllegalArgumentException("La longitud del array ingresado debe ser menor o igual que 3");
-		}
-		if (cantManzanasAsignadas() + manzanas.size() > 3) {
+	private void verificarCantManzanasAsignadas() {
+		if (cantManzanasAsignadas() == 3) {
 			throw new IllegalArgumentException("Solo se le puede asignar al censista un máximo de 3 manzanas");
 		}
+	}
+
+	public void asignarManzanas(ArrayList<Manzana> manzanas) {
+		verificarSizeManzanasAAsignar(manzanas);
+		verificarExcesoDeManzanasAAsignar(manzanas);
 		
 		for (Manzana m : manzanas) {
 			asignarManzana(m);
+		}
+	}
+
+	private void verificarSizeManzanasAAsignar(ArrayList<Manzana> manzanas) {
+		if (manzanas.size() > 3) {
+			throw new IllegalArgumentException("La longitud del array ingresado debe ser menor o igual que 3");
+		}
+	}
+
+	private void verificarExcesoDeManzanasAAsignar(ArrayList<Manzana> manzanas) {
+		if (cantManzanasAsignadas() + manzanas.size() > 3) {
+			throw new IllegalArgumentException("Asignar dicha cantidad de manzanas excede la capacidad de manzanas del censista");
 		}
 	}
 
