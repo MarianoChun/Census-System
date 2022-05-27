@@ -2,20 +2,17 @@ package logica;
 
 public class Manzana {
 	private int nroManzana;
-	private double x; // son las coordenadas en caso de usar geolocalizacion
-	private double y;
+	Coordenada coordenadas; // son las coordenadas en caso de usar geolocalizacion
 
-	public Manzana(double x, double y, int nroManzana) {
+	public Manzana(Coordenada c, int nroManzana) {
 		verificarNroManzana(nroManzana);
-		this.x = x;
-		this.y = y;
+		this.coordenadas = c;
 		this.nroManzana = nroManzana;
 	}
 
 	public Manzana(int nroManzana) {
 		verificarNroManzana(nroManzana);
-		this.x = 0;
-		this.y = 0;
+		this.coordenadas = new Coordenada(0.0, 0.0);
 		this.nroManzana = nroManzana;
 	}
 
@@ -31,19 +28,15 @@ public class Manzana {
 
 	@Override
 	public String toString() {
-		return "Manzana [nroManzana=" + nroManzana + ", x=" + x + ", y=" + y + "]";
+		return "Manzana [nroManzana=" + nroManzana + ", coordenadas=" + coordenadas + "]";
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((coordenadas == null) ? 0 : coordenadas.hashCode());
 		result = prime * result + nroManzana;
-		long temp;
-		temp = Double.doubleToLongBits(x);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
-		temp = Double.doubleToLongBits(y);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
 		return result;
 	}
 
@@ -56,13 +49,16 @@ public class Manzana {
 		if (getClass() != obj.getClass())
 			return false;
 		Manzana other = (Manzana) obj;
+		if (coordenadas == null) {
+			if (other.coordenadas != null)
+				return false;
+		} else if (!coordenadas.equals(other.coordenadas))
+			return false;
 		if (nroManzana != other.nroManzana)
-			return false;
-		if (Double.doubleToLongBits(x) != Double.doubleToLongBits(other.x))
-			return false;
-		if (Double.doubleToLongBits(y) != Double.doubleToLongBits(other.y))
 			return false;
 		return true;
 	}
+
+	
 
 }
