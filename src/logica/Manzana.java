@@ -2,9 +2,9 @@ package logica;
 
 public class Manzana {
 	private int nroManzana;
-	Coordenada coordenadas; // son las coordenadas en caso de usar geolocalizacion
+	private Coordenada coordenadas; // son las coordenadas en caso de usar geolocalizacion
 
-	public Manzana(Coordenada c, int nroManzana) {
+	public Manzana(int nroManzana, Coordenada c) {
 		verificarNroManzana(nroManzana);
 		this.coordenadas = c;
 		this.nroManzana = nroManzana;
@@ -20,6 +20,9 @@ public class Manzana {
 		return this.nroManzana;
 	}
 
+	public Coordenada getCoordenada() {
+		return this.coordenadas;
+	}
 	private void verificarNroManzana(int i) {
 		if (i < 0) {
 			throw new IllegalArgumentException("El nro de manzana no puede ser negativo");

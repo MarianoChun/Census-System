@@ -1,25 +1,25 @@
 package logica;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
 public class RadioCensal {
 	private boolean[][] A;
-	private ArrayList<Manzana> manzanas;
+	private HashMap<Integer, Manzana> manzanas;
 	private ArrayList<ManzanaContigua> manzanasContiguas; // aristas
 
 	public RadioCensal(int manzanas) {
 		this.A = new boolean[manzanas][manzanas];
 		this.manzanasContiguas = new ArrayList<ManzanaContigua>();
-		this.manzanas = new ArrayList<Manzana>();
-		// Al leerse desde el excel, la manzana deberia crearse junto con sus
-		// coordenadas, tambien deberian asignarse las manzanas contiguas
-		for (int i = 0; i < manzanas; i++) {
-			this.manzanas.add(new Manzana(i));
-		}
+		this.manzanas = new HashMap<Integer, Manzana>();
 	}
 
+	public void agregarManzana(Manzana manzana) {
+		verificarManzana(manzana.getNroManzana());
+		manzanas.put(manzana.getNroManzana(), manzana);
+	}
 	public void agregarManzanaContigua(Manzana primerManzana, Manzana segundaManzana) {
 		int i = primerManzana.getNroManzana();
 		int j = segundaManzana.getNroManzana();
@@ -61,7 +61,7 @@ public class RadioCensal {
 		}
 	}
 
-	private int cantManzanas() {
+	public int cantManzanas() {
 		return manzanas.size();
 	}
 
@@ -73,7 +73,7 @@ public class RadioCensal {
 		return manzanasContiguas;
 	}
 
-	public ArrayList<Manzana> getManzanas() {
+	public HashMap<Integer, Manzana> getManzanas() {
 		return manzanas;
 	}
 
