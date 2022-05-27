@@ -35,6 +35,7 @@ import logica.CargadorManzanas;
 import logica.Censista;
 import logica.Coordenada;
 import logica.Manzana;
+import logica.RadioCensal;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -52,6 +53,7 @@ public class MainForm {
 	private CargadorManzanas cargadorManzanas;
 	private DefaultTableModel modeloTablaCensistas;
 	private DefaultTableModel modeloTablaManzanas;
+	private RadioCensal radioCensal;
 	private JTable tablaCensistas;
 	private JTable tablaManzanas;
 	private JFileChooser selectorArchivos;
@@ -189,22 +191,28 @@ public class MainForm {
 						
 						cargadorManzanas = new CargadorManzanas(path);
 						cargadorManzanas.cargarManzanasDesdeExcel();
+						cargadorManzanas.cargarVecinosManzanasDesdeExcel();
+						radioCensal = cargadorManzanas.getRadioCensal();
 						
-						HashMap<Integer, Manzana> manzanas = cargadorManzanas.getRadioCensal().getManzanas();
-						ArrayList<Coordinate> coordenadasManzanas = new ArrayList<Coordinate>();
-						
+						HashMap<Integer, Manzana> manzanas = radioCensal.getManzanas();
+						ArrayList<Coordinate> vecinosManzana = new ArrayList<Coordinate>();
+						 
 						for(Manzana manzana : manzanas.values()) {
 							Coordenada coordenada = manzana.getCoordenada();
 							modeloTablaManzanas.addRow(new Object[] {manzana.getNroManzana(), 
 									"X = " + coordenada.getX() + " , Y = " + coordenada.getY()});
-							
-							coordenadasManzanas.add(new Coordinate(coordenada.getX(), coordenada.getY()));
-							mapa.addMapMarker(new MapMarkerDot(Color.RED, coordenada.getX(), coordenada.getY()));
+					
+							for(Integer manzanaVecina : radioCensal.manzanasVecinas(manzana.getNroManzana())) {
+								vecinosManzana = obtenerCoordenadasVecinoManzana(manzana, radioCensal.getManzana(manzanaVecina));
+								mapa.addMapPolygon(new MapPolygonImpl(vecinosManzana));
+							}
+	
+							MapMarkerDot marcadorManzana = new MapMarkerDot(Color.RED, coordenada.getX(), coordenada.getY());
+							marcadorManzana.setName(""+manzana.getNroManzana());
+							mapa.addMapMarker(marcadorManzana);
+			
 						}
-						
-						MapPolygon mapaCoordeandas = new MapPolygonImpl(coordenadasManzanas);
-						mapa.addMapPolygon(mapaCoordeandas);
-						
+					
 						tablaManzanas.setModel(modeloTablaManzanas);
 						
 					} catch (Exception ex) {
@@ -214,6 +222,8 @@ public class MainForm {
 					System.out.println("No se ha seleccionado ningún fichero");
 				}
 			}
+
+		
 			
 		});
 		btnCargarManzanas.setFont(new Font("Verdana", Font.PLAIN, 13));
@@ -225,6 +235,19 @@ public class MainForm {
 		btnAsignarManzanas.setBounds(276, 619, 436, 34);
 		frame.getContentPane().add(btnAsignarManzanas);
 		
+	}
+	
+	private ArrayList<Coordinate> obtenerCoordenadasVecinoManzana(Manzana manzana, Manzana vecino) {
+		// MapPolygon no dibuja aquellas listas de coordenadas de menos de 2 elementos, por eso, repetimos la coordenada del vecino para que se dibuje una linea recta entre ambas manzanas
+		ArrayList<Coordinate> coordenadasVecino =  new ArrayList<Coordinate>();
+		Coordenada coordManzana = manzana.getCoordenada();
+		Coordenada coordVecino = vecino.getCoordenada();
+		
+		coordenadasVecino.add(new Coordinate(coordManzana.getX(),coordManzana.getY()));
+		coordenadasVecino.add(new Coordinate(coordVecino.getX(),coordVecino.getY()));
+		coordenadasVecino.add(new Coordinate(coordVecino.getX(),coordVecino.getY()));
+		
+		return coordenadasVecino;
 	}
 	
 	public class ImagenTabla extends DefaultTableCellRenderer {
