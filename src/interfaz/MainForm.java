@@ -2,6 +2,7 @@ package interfaz;
 
 import java.awt.EventQueue;
 import java.awt.Image;
+import java.awt.Point;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -21,6 +22,13 @@ import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
+
+import org.openstreetmap.gui.jmapviewer.Coordinate;
+import org.openstreetmap.gui.jmapviewer.JMapViewer;
+import org.openstreetmap.gui.jmapviewer.MapMarkerDot;
+import org.openstreetmap.gui.jmapviewer.MapPolygonImpl;
+import org.openstreetmap.gui.jmapviewer.interfaces.MapMarker;
+import org.openstreetmap.gui.jmapviewer.interfaces.MapPolygon;
 
 import logica.CargadorCensistas;
 import logica.CargadorManzanas;
@@ -79,6 +87,15 @@ public class MainForm {
 		frame.setBounds(100, 100, 1072, 727);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
+		
+		JPanel panelMapa = new JPanel();
+		panelMapa.setBounds(210, 299, 529, 264);
+		frame.getContentPane().add(panelMapa);
+		
+		JMapViewer mapa = new JMapViewer();
+		mapa.setDisplayPosition(new Coordinate(-34.542826297705645, -58.71398400055889), 12);
+		mapa.setBounds(panelMapa.getBounds());
+		panelMapa.add(mapa);
 		
 		JScrollPane scrollPaneCensistas = new JScrollPane();
 		scrollPaneCensistas.setBounds(41, 27, 386, 227);
@@ -174,12 +191,20 @@ public class MainForm {
 						cargadorManzanas.cargarManzanasDesdeExcel();
 						
 						HashMap<Integer, Manzana> manzanas = cargadorManzanas.getRadioCensal().getManzanas();
+						ArrayList<Coordinate> coordenadasManzanas = new ArrayList<Coordinate>();
+						
 						for(Manzana manzana : manzanas.values()) {
-							Coordenada coordenadas = manzana.getCoordenada();
+							Coordenada coordenada = manzana.getCoordenada();
 							modeloTablaManzanas.addRow(new Object[] {manzana.getNroManzana(), 
-									"X = " + coordenadas.getX() + " , Y = " + coordenadas.getY()});
+									"X = " + coordenada.getX() + " , Y = " + coordenada.getY()});
+							
+							coordenadasManzanas.add(new Coordinate(coordenada.getX(), coordenada.getY()));
+							mapa.addMapMarker(new MapMarkerDot(Color.RED, coordenada.getX(), coordenada.getY()));
 						}
-
+						
+						MapPolygon mapaCoordeandas = new MapPolygonImpl(coordenadasManzanas);
+						mapa.addMapPolygon(mapaCoordeandas);
+						
 						tablaManzanas.setModel(modeloTablaManzanas);
 						
 					} catch (Exception ex) {
@@ -199,11 +224,6 @@ public class MainForm {
 		btnAsignarManzanas.setFont(new Font("Verdana", Font.PLAIN, 13));
 		btnAsignarManzanas.setBounds(276, 619, 436, 34);
 		frame.getContentPane().add(btnAsignarManzanas);
-		
-		JLabel lblNewLabel = new JLabel("FUTURO MAPA");
-		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel.setBounds(432, 378, 164, 28);
-		frame.getContentPane().add(lblNewLabel);
 		
 	}
 	
