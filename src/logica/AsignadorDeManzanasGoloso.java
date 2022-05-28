@@ -41,9 +41,7 @@ public class AsignadorDeManzanasGoloso {
 			if (censistas.size() == indice) {
 				break;
 			}
-//			System.out.println("Manzanas a asignar");
-//			System.out.println(grupoManzana);
-//			System.out.println();
+
 			censistas.get(indice).asignarManzanas(grupoManzana);
 			indice++;
 		}
@@ -59,9 +57,7 @@ public class AsignadorDeManzanasGoloso {
 				grupoDeManzanasAsignables.add(manzanasVecinasNoAsignadas);
 			}
 		}
-//		System.out.println("\nGrupo de manzanas asignables");
-//		System.out.println(grupoDeManzanasAsignables);
-//		System.out.println();
+
 		return grupoDeManzanasAsignables;
 	}
 
@@ -85,8 +81,7 @@ public class AsignadorDeManzanasGoloso {
 				manzanasVecinasNoMarcadas.add(vecinaNoMarcada);
 			}
 		}
-//		System.out.println("\nManzanas vecinas no marcadas");
-//		System.out.println(manzanasVecinasNoMarcadas);
+
 		return manzanasVecinasNoMarcadas;
 	}
 

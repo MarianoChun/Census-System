@@ -59,6 +59,7 @@ public class CargadorManzanas {
 
 			while (itr.hasNext()) {
 				Row row = itr.next();
+				
 				vecinosManzana = obtenerVecinosManzana(formateador.formatCellValue(row.getCell(2)));
 				nroManzanaActual = (int) row.getCell(0).getNumericCellValue();	
 				for(Integer vecinoActual : vecinosManzana) {
@@ -79,7 +80,8 @@ public class CargadorManzanas {
 			e.printStackTrace();
 		}
 		
-		return workbook.getSheetAt(0).getPhysicalNumberOfRows();
+		// Se le resta 1 porque no se cuentan los encabezados del excel
+		return workbook.getSheetAt(0).getPhysicalNumberOfRows() - 1; 
 	}
 
 	private XSSFWorkbook obtenerWorkbookExcel() throws FileNotFoundException, IOException {

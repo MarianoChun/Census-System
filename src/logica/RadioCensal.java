@@ -20,7 +20,7 @@ public class RadioCensal {
 
 	public void generarManzanas() {
 		int nroManzana = 0;
-		while(nroManzana < cantManzanas()-1) {
+		while(nroManzana < cantManzanas()) {
 			manzanas.put(nroManzana, new Manzana(nroManzana));
 			nroManzana++;
 		}

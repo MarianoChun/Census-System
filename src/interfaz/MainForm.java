@@ -154,6 +154,12 @@ public class MainForm {
 						cargadorCensistas.cargarCensistasDesdeExcel();
 						
 						Map<Integer, Censista> censistas = cargadorCensistas.getCensistas();
+						
+						int cantRegistros = modeloTablaCensistas.getRowCount();
+						if(cantRegistros > 1 ) {
+							removerRegistrosTabla(modeloTablaCensistas);
+						}
+						
 						for(Censista censista : censistas.values()) {
 							ImageIcon fotoCensista = new ImageIcon(new ImageIcon(censista.getFoto()).getImage().getScaledInstance(25, 25, Image.SCALE_DEFAULT));
 							JLabel fotoAColocar = new JLabel();
@@ -186,6 +192,7 @@ public class MainForm {
 
 				if (valor == JFileChooser.APPROVE_OPTION) {
 					try {
+						
 						String path = formateoPath();
 						
 						cargadorManzanas = new CargadorManzanas(path);
@@ -194,9 +201,13 @@ public class MainForm {
 						
 						HashMap<Integer, Manzana> manzanas = radioCensal.getManzanas();
 						 
+						int cantRegistros = modeloTablaManzanas.getRowCount();
+						if(cantRegistros > 1 ) {
+							removerRegistrosTabla(modeloTablaManzanas);
+						}
 						for(Manzana manzana : manzanas.values()) {
 							Coordenada coordenada = manzana.getCoordenada();
-							
+							System.out.println(manzana.getNroManzana());
 							modeloTablaManzanas.addRow(new Object[] {manzana.getNroManzana(), 
 									"X = " + coordenada.getX() + " , Y = " + coordenada.getY()});
 					
@@ -262,6 +273,11 @@ public class MainForm {
 		mapa.addMapMarker(marcadorManzana);
 	}
 
+	private void removerRegistrosTabla(DefaultTableModel modeloTabla) {
+		modeloTabla.getDataVector().removeAllElements();
+		modeloTabla.fireTableDataChanged();
+	}
+	
 	public class ImagenTabla extends DefaultTableCellRenderer {
 		@Override
 		public Component getTableCellRendererComponent(JTable JTable, Object value, boolean bln, boolean bln1, int i, int j) {
@@ -274,4 +290,6 @@ public class MainForm {
 		}
 
 	}
+	
+	
 }
