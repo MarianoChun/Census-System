@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -61,6 +62,10 @@ public class CargadorCensistas {
 
 	public Map<Integer, Censista> getCensistas(){
 		return censistas;
+	}
+	
+	public ArrayList<Censista> getCensistasArray(){
+		return new ArrayList<Censista>(censistas.values());
 	}
 	private boolean esNombreVacio(String nombre) {
 		return nombre.equals("");

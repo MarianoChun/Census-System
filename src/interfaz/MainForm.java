@@ -14,6 +14,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.security.KeyStore.Entry;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.awt.event.ActionEvent;
@@ -36,6 +37,7 @@ import logica.Censista;
 import logica.Coordenada;
 import logica.Manzana;
 import logica.RadioCensal;
+import logica.Sistema;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -54,6 +56,7 @@ public class MainForm {
 	private DefaultTableModel modeloTablaCensistas;
 	private DefaultTableModel modeloTablaManzanas;
 	private RadioCensal radioCensal;
+	private Sistema sistema;
 	private JTable tablaCensistas;
 	private JTable tablaManzanas;
 	private JFileChooser selectorArchivos;
@@ -87,7 +90,7 @@ public class MainForm {
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 1072, 727);
+		frame.setBounds(100, 100, 1094, 727);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
@@ -101,7 +104,7 @@ public class MainForm {
 		panelMapa.add(mapa);
 		
 		JScrollPane scrollPaneCensistas = new JScrollPane();
-		scrollPaneCensistas.setBounds(41, 27, 386, 227);
+		scrollPaneCensistas.setBounds(41, 27, 468, 227);
 		frame.getContentPane().add(scrollPaneCensistas);
 		
 		tablaCensistas =  new JTable();
@@ -109,7 +112,7 @@ public class MainForm {
 		tablaCensistas.setBounds(33, 27, 127, 162);
 		tablaCensistas.setDefaultRenderer(Object.class, new ImagenTabla());
 		modeloTablaCensistas = new DefaultTableModel(new Object[][] {},
-				new String[] { "Nombre censista", "Foto censista" });
+				new String[] { "Nombre censista", "Foto censista" , "Manzana/s asignada/s"});
 
 		tablaCensistas.setModel(modeloTablaCensistas);
 		tablaCensistas.getTableHeader().setReorderingAllowed(false);
@@ -119,7 +122,7 @@ public class MainForm {
 
 		
 		JScrollPane scrollPaneManzanas = new JScrollPane();
-		scrollPaneManzanas.setBounds(437, 27, 591, 227);
+		scrollPaneManzanas.setBounds(519, 27, 549, 227);
 		frame.getContentPane().add(scrollPaneManzanas);
 		
 		tablaManzanas = new JTable();
@@ -135,6 +138,27 @@ public class MainForm {
 		scrollPaneManzanas.setViewportView(tablaManzanas);
 
 		JButton btnAsignarManzanas = new JButton("Asignar manzanas a censistas");
+		btnAsignarManzanas.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// TODO: Faltaria buscar una forma para que el programa no falle al apretar repetidamente este boton
+				// ya que el sistema de alguna forma vuelve a usar la misma instancia de censistas para ejecutar el algoritmo goloso (Incurre en un error de asignacion al querer asignar mas manzanas de las permitidas)
+				// Intente clonar tanto los censistas como las manzanas pero no parece funcionar, aunque sigo creyendo que el problema viene por algun aliasing
+				sistema = new Sistema(radioCensal, cargadorCensistas.getCensistasArray());
+				ArrayList<Censista> censistas = sistema.obtenerCensistasAsignados();
+				
+				ArrayList<Manzana> manzanasAsignadas;
+				removerRegistrosTabla(modeloTablaCensistas);
+				for(Censista censista : censistas) {
+					manzanasAsignadas = censista.getManzanasAsignadas();
+					ImageIcon fotoCensista = new ImageIcon(new ImageIcon(censista.getFoto()).getImage().getScaledInstance(25, 25, Image.SCALE_DEFAULT));
+					JLabel fotoAColocar = new JLabel();
+					fotoAColocar.setIcon(fotoCensista);
+					
+					modeloTablaCensistas.addRow(new Object[] {censista.getNombre(), fotoAColocar, obtenerValoresStringManzanas(manzanasAsignadas)});
+				}
+				
+			}
+		});
 		btnAsignarManzanas.setEnabled(false);
 		btnAsignarManzanas.setFont(new Font("Verdana", Font.PLAIN, 13));
 		btnAsignarManzanas.setBounds(276, 619, 436, 34);
@@ -246,6 +270,17 @@ public class MainForm {
 		
 	}
 	
+	protected String obtenerValoresStringManzanas(ArrayList<Manzana> manzanasAsignadas) {
+		StringBuffer ret =  new StringBuffer();
+		ret.append("[ ");
+		for(Manzana manzana : manzanasAsignadas) {
+			ret.append(manzana.getNroManzana()).append(" ");
+		}
+		ret.append(" ]");
+		
+		return ret.toString();
+	}
+
 	private ArrayList<Coordinate> obtenerCoordenadasVecinoManzana(Manzana manzana, Manzana vecino) {
 		// MapPolygon no dibuja aquellas listas de coordenadas de menos de 2 elementos, por eso, repetimos la coordenada del vecino para que se dibuje una linea recta entre ambas manzanas
 		ArrayList<Coordinate> coordenadasVecino =  new ArrayList<Coordinate>();
