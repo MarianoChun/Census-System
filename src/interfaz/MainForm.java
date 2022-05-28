@@ -134,6 +134,12 @@ public class MainForm {
 		
 		scrollPaneManzanas.setViewportView(tablaManzanas);
 
+		JButton btnAsignarManzanas = new JButton("Asignar manzanas a censistas");
+		btnAsignarManzanas.setEnabled(false);
+		btnAsignarManzanas.setFont(new Font("Verdana", Font.PLAIN, 13));
+		btnAsignarManzanas.setBounds(276, 619, 436, 34);
+		frame.getContentPane().add(btnAsignarManzanas);
+		
 		JButton btnCargarCensistas = new JButton("Cargar censistas");
 		btnCargarCensistas.setFont(new Font("Verdana", Font.PLAIN, 13));
 		btnCargarCensistas.setBounds(276, 574, 200, 34);
@@ -176,6 +182,10 @@ public class MainForm {
 					}
 				} else {
 					System.out.println("No se ha seleccionado ningún fichero");
+				}
+				
+				if(estanRegistrosCensistasCargados() && estanRegistrosManzanasCargados()) {
+					btnAsignarManzanas.setEnabled(true);
 				}
 			}
 		});
@@ -223,19 +233,16 @@ public class MainForm {
 				} else {
 					System.out.println("No se ha seleccionado ningún fichero");
 				}
-			}
-
-		
-			
+				
+				if(estanRegistrosCensistasCargados() && estanRegistrosManzanasCargados()) {
+					btnAsignarManzanas.setEnabled(true);
+				}
+			}	
 		});
 		btnCargarManzanas.setFont(new Font("Verdana", Font.PLAIN, 13));
 		btnCargarManzanas.setBounds(512, 574, 200, 34);
 		frame.getContentPane().add(btnCargarManzanas);
-		
-		JButton btnAsignarManzanas = new JButton("Asignar manzanas a censistas");
-		btnAsignarManzanas.setFont(new Font("Verdana", Font.PLAIN, 13));
-		btnAsignarManzanas.setBounds(276, 619, 436, 34);
-		frame.getContentPane().add(btnAsignarManzanas);
+			
 		
 	}
 	
@@ -278,6 +285,13 @@ public class MainForm {
 		modeloTabla.fireTableDataChanged();
 	}
 	
+	private boolean estanRegistrosManzanasCargados() {
+		return modeloTablaManzanas.getRowCount() != 0;
+	}
+	
+	private boolean estanRegistrosCensistasCargados() {
+		return modeloTablaCensistas.getRowCount() != 0;
+	}
 	public class ImagenTabla extends DefaultTableCellRenderer {
 		@Override
 		public Component getTableCellRendererComponent(JTable JTable, Object value, boolean bln, boolean bln1, int i, int j) {
