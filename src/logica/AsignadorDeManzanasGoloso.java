@@ -19,7 +19,7 @@ public class AsignadorDeManzanasGoloso {
 		// Ordenado de menor a mayor de acuerdo al grado de la manzana (cant vecinos)
 		Collections.sort(manzanas,
 				(p, q) -> radioCensal.gradoManzana(q.getNroManzana()) - radioCensal.gradoManzana(p.getNroManzana()));
-		System.out.println(manzanas);
+//		System.out.println(manzanas);
 		this.manzanasMarcadas = new HashMap<Integer, Manzana>();
 	}
 
@@ -42,6 +42,7 @@ public class AsignadorDeManzanasGoloso {
 				break;
 			}
 
+//			System.out.println(grupoManzana);
 			censistas.get(indice).asignarManzanas(grupoManzana);
 			indice++;
 		}
@@ -76,7 +77,8 @@ public class AsignadorDeManzanasGoloso {
 		Set<Integer> manzanasVecinas = radioCensal.manzanasVecinas(manzana.getNroManzana());
 
 		for (Integer nroManzanaVecina : manzanasVecinas) {
-			if (!estaManzanaMarcada(nroManzanaVecina) && manzanasVecinasNoMarcadas.size() != 3) {
+//			System.out.println(manzanasVecinasNoMarcadas.size() );
+			if (!estaManzanaMarcada(nroManzanaVecina) && manzanasVecinasNoMarcadas.size() <= 2) {
 				Manzana vecinaNoMarcada = radioCensal.getManzana(nroManzanaVecina);
 				manzanasVecinasNoMarcadas.add(vecinaNoMarcada);
 			}

@@ -65,8 +65,8 @@ public class AsignadorDeManzanasGolosoTest {
 //		System.out.println(manzanasAsignadasTito.toString());
 //		System.out.println(manzanasAsignadasJuan.toString());
 //		System.out.println(manzanasAsignadasMonica.toString());
-		System.out.println(manzanasAsignadasJuan);
-		System.out.println(manzanasEsperadasJuan);
+//		System.out.println(manzanasAsignadasJuan);
+//		System.out.println(manzanasEsperadasJuan);
 		assertTrue(manzanasAsignadasJuan.equals(manzanasEsperadasJuan));
 		assertTrue(manzanasAsignadasTito.equals(manzanasEsperadasTito));
 		assertTrue(manzanasAsignadasMonica.equals(manzanasEsperadasMonica));
@@ -98,6 +98,11 @@ public class AsignadorDeManzanasGolosoTest {
 		ArrayList<Manzana> manzanasAsignadasTito = censistas.get(1).getManzanasAsignadas();
 		ArrayList<Manzana> manzanasAsignadasMonica = censistas.get(2).getManzanasAsignadas();
 		ArrayList<Manzana> manzanasAsignadasNahuel = censistas.get(3).getManzanasAsignadas();
+		
+//		System.out.println(manzanasAsignadasJuan);
+//		System.out.println(manzanasAsignadasTito);
+//		System.out.println(manzanasAsignadasMonica);
+//		System.out.println(manzanasAsignadasNahuel);
 
 		ArrayList<Manzana> manzanasEsperadasJuan = new ArrayList<Manzana>();
 		manzanasEsperadasJuan.add(new Manzana(2));
