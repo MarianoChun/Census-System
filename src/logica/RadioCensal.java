@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 public class RadioCensal {
@@ -124,5 +125,17 @@ public class RadioCensal {
 		return true;
 	}
 	
-	
+	public RadioCensal clone() {
+		RadioCensal ret = new RadioCensal(this.cantManzanas());
+		Map<Integer, Manzana> manzanas = this.getManzanas();
+		
+		for(Manzana manzana : manzanas.values()) {
+			ret.agregarManzana(manzana);
+			for(Integer vecino : this.manzanasVecinas(manzana.getNroManzana()))
+				ret.agregarManzanaContigua(manzana, this.getManzana(vecino));
+		}
+		
+		
+		return ret;
+	}
 }

@@ -13,7 +13,7 @@ public class AsignadorDeManzanasGoloso {
 	private HashMap<Integer, Manzana> manzanasMarcadas;
 
 	public AsignadorDeManzanasGoloso(ArrayList<Censista> censistas, RadioCensal radioCensal) {
-		this.censistas = (ArrayList<Censista>) censistas.clone();
+		this.censistas = censistas;
 		this.radioCensal = radioCensal;
 		this.manzanas = clonarManzanas(radioCensal);
 		// Ordenado de menor a mayor de acuerdo al grado de la manzana (cant vecinos)
@@ -92,6 +92,6 @@ public class AsignadorDeManzanasGoloso {
 	}
 	
 	public ArrayList<Censista> getCensistas() {
-		return censistas;
+		return new ArrayList<Censista>(censistas);
 	}
 }

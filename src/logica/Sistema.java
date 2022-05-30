@@ -1,3 +1,4 @@
+
 package logica;
 
 import java.util.ArrayList;
@@ -7,7 +8,7 @@ public class Sistema {
 	private AsignadorDeManzanasGoloso asignador;
 	
 	public Sistema(RadioCensal radioCensal, ArrayList<Censista> censistas) {
-		this.asignador = new AsignadorDeManzanasGoloso(censistas, radioCensal);
+		this.asignador = new AsignadorDeManzanasGoloso((ArrayList<Censista>)censistas.clone(), (RadioCensal)radioCensal.clone());
 	}
 
 	private void asignarCensistas() {
@@ -19,4 +20,6 @@ public class Sistema {
 		
 		return asignador.getCensistas();
 	}
+	
+	
 }
