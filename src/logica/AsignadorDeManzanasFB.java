@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.stream.IntStream;
 
 import org.apache.poi.ss.formula.eval.NotImplementedException;
+import org.apache.poi.util.SystemOutLogger;
 
 public class AsignadorDeManzanasFB {
 	private RadioCensal radioCensal;
@@ -14,6 +15,7 @@ public class AsignadorDeManzanasFB {
 	private ArrayList<Manzana> manzanas;
 	
 	private ArrayList<ArrayList<Manzana>> grupos;
+	private ArrayList<ArrayList<Manzana>> gruposActual;
 	private ArrayList<Manzana> grupoActual;
 	
 	public AsignadorDeManzanasFB(ArrayList<Censista> censistas, RadioCensal radioCensal) {
@@ -25,64 +27,53 @@ public class AsignadorDeManzanasFB {
 				(p, q) -> radioCensal.gradoManzana(q.getNroManzana()) - radioCensal.gradoManzana(p.getNroManzana()));
 		
 		
-		this.grupos = new ArrayList<ArrayList<Manzana>>();
-		this.grupoActual = new ArrayList<Manzana>();
+		
 //		construirGrupoDeManzanasAsignables(0);
 	}
-	
-	public void asignarManzanasACensistas() {
-		/* Construir los grupos de manzanas asignables, empezar desde manzana de mayor grado
+//Asigna los grupos de manzanas a los censistas
+	public ArrayList<ArrayList<Manzana>> asignarManzanasACensistas() {
+		/* Construir los grupos de manzanas asignables
 		 * Asignar a censistas
 		 */
+		this.grupos = crearArrayListConCantFijaElementosVacios(radioCensal.cantManzanas());
+		System.out.println(grupos.size());
+		this.gruposActual = new ArrayList<ArrayList<Manzana>>();
+		this.grupoActual = new ArrayList<Manzana>();
+		construirGrupoDeManzanasAsignables(0);
+		return this.grupos;
 	}
+
 	
-	
-//	private ArrayList<Integer> obtenerNrosManzanas(){
-//		ArrayList<Integer> nrosManzanas = new ArrayList<Integer>();
-//		for(Manzana manzana : manzanas) {
-//			nrosManzanas.add(manzana.getNroManzana());
-//		}
-//		
-//		return nrosManzanas;
-//	}
-	
-	public ArrayList<ArrayList<Manzana>> getGrupos() {
-		return grupos;
-	}
 	// El criterio para definir que una solucion es mejor que otra es si tiene menos grupos asignables.
 	// La mejor solucion es la que tenga la menor cantidad de grupos asignables posibles.
+//Genera todos los grupos de manzanas asignables posibles y devuelve el de menor tamaño
+	@SuppressWarnings("unchecked")
 	public void construirGrupoDeManzanasAsignables(int nroManzana){
 //		grupoActual.stream().forEach(m -> System.out.print(m.getNroManzana()));
 //		System.out.println();
 		
-		if(nroManzana == radioCensal.cantManzanas()) {
+		if(grupoActual.size() <= 3 && esCamino(grupoActual)) {
+			System.out.println("Pasa " + grupoActual);
+			gruposActual.add(grupoActual);
+//			System.out.println("grupos " + grupos);
+		}
+		if(gruposActual.size() < grupos.size()) {
+			grupos =  gruposActual;
+			System.out.println("grupos actual: "+ gruposActual);
+			System.out.println("grupos: "+grupos);
+		}
+		if(nroManzana == radioCensal.cantManzanas()-1) {
 			return;
 		}
-		if(grupoActual.size() <= 3 && esCamino(grupoActual)) {
-//			System.out.println("Pasa " + grupoActual);
-			grupos.add(grupoActual);
-		}
-		
 		grupoActual.add(radioCensal.getManzana(nroManzana));
 		construirGrupoDeManzanasAsignables(nroManzana + 1);
 		
 		grupoActual.remove(radioCensal.getManzana(nroManzana));
 		construirGrupoDeManzanasAsignables(nroManzana + 1);
-		
-		/* Si empezamos desde las manzanas de mayor grado, seguro se van a poder armar grupos de 3
-		 * Recorrer de mayor a menor grado
-		 * Caso base, grupo.size <= 3 
-		 * 		grupos.add(grupoActual)
-		 * grupoActual.minElem == 0
-		 * 		return;
-		 * ArrayList<ArrayList<Manzana>> grupos
-		 * ArrayList<Manzana> grupoActual
-		 * agregarManzana(nroManzana)
-		 * construirGrupoDeManzanasAsignables(nroManzana-1)
-		 * 
-		 * quitarManzana(nroManzana)
-		 * construirGrupoDeManzanasAsignables(nroManzana-1)
-		 */
+	}
+	
+	public ArrayList<ArrayList<Manzana>> getGrupos() {
+		return grupos;
 	}
 	
 	private boolean esCamino(ArrayList<Manzana> grupo) {
@@ -108,4 +99,20 @@ public class AsignadorDeManzanasFB {
 		Collection<Manzana> setManzanas = radioCensal.getManzanas().values();
 		return new ArrayList<Manzana>(setManzanas);
 	}
+	
+	private ArrayList<ArrayList<Manzana>> crearArrayListConCantFijaElementosVacios(int cantElementosVacios) {
+		ArrayList<ArrayList<Manzana>> ret = new ArrayList<ArrayList<Manzana>>();
+		for(int i = 0;i<cantElementosVacios;i++)
+			ret.add(null);
+		return ret;
+	}
+	
+//	private ArrayList<Integer> obtenerNrosManzanas(){
+//		ArrayList<Integer> nrosManzanas = new ArrayList<Integer>();
+//		for(Manzana manzana : manzanas) {
+//			nrosManzanas.add(manzana.getNroManzana());
+//		}
+//		
+//		return nrosManzanas;
+//	}
 }
