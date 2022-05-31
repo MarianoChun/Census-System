@@ -84,7 +84,7 @@ public class RadioCensal {
 	}
 
 	public HashMap<Integer, Manzana> getManzanas() {
-		return manzanas;
+		return (HashMap<Integer, Manzana>) manzanas.clone();
 	}
 
 	public Manzana getManzana(int indice) {

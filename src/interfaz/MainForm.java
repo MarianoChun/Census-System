@@ -143,11 +143,12 @@ public class MainForm {
 				// TODO: Faltaria buscar una forma para que el programa no falle al apretar repetidamente este boton
 				// ya que el sistema de alguna forma vuelve a usar la misma instancia de censistas para ejecutar el algoritmo goloso (Incurre en un error de asignacion al querer asignar mas manzanas de las permitidas)
 				// Intente clonar tanto los censistas como las manzanas pero no parece funcionar, aunque sigo creyendo que el problema viene por algun aliasing
-				sistema = new Sistema(radioCensal, cargadorCensistas.getCensistasArray());
-				ArrayList<Censista> censistas = sistema.obtenerCensistasAsignados();
-				
-				ArrayList<Manzana> manzanasAsignadas;
+//				sistema = new Sistema(radioCensal, cargadorCensistas.getCensistasArray());
+//				ArrayList<Censista> censistas = sistema.obtenerCensistasAsignados();
+				ArrayList<Censista> censistas = new Sistema(radioCensal, cargadorCensistas.getCensistasArray()).obtenerCensistasAsignados();
+				ArrayList<Manzana> manzanasAsignadas = new ArrayList<>();
 				removerRegistrosTabla(modeloTablaCensistas);
+				
 				for(Censista censista : censistas) {
 					manzanasAsignadas = censista.getManzanasAsignadas();
 					ImageIcon fotoCensista = new ImageIcon(new ImageIcon(censista.getFoto()).getImage().getScaledInstance(25, 25, Image.SCALE_DEFAULT));
@@ -156,7 +157,6 @@ public class MainForm {
 					
 					modeloTablaCensistas.addRow(new Object[] {censista.getNombre(), fotoAColocar, obtenerValoresStringManzanas(manzanasAsignadas)});
 				}
-				
 			}
 		});
 		btnAsignarManzanas.setEnabled(false);

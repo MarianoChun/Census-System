@@ -15,23 +15,19 @@ public class AsignadorDeManzanasGoloso {
 	public AsignadorDeManzanasGoloso(ArrayList<Censista> censistas, RadioCensal radioCensal) {
 		this.censistas = censistas;
 		this.radioCensal = radioCensal;
-		this.manzanas = clonarManzanas(radioCensal);
+		this.manzanas = obtenerArrayManzanas(radioCensal);
 		// Ordenado de menor a mayor de acuerdo al grado de la manzana (cant vecinos)
 		Collections.sort(manzanas,
 				(p, q) -> radioCensal.gradoManzana(q.getNroManzana()) - radioCensal.gradoManzana(p.getNroManzana()));
 //		System.out.println(manzanas);
 		this.manzanasMarcadas = new HashMap<Integer, Manzana>();
+		this.asignarManzanasACensistas();
 	}
 
 	
-	private ArrayList<Manzana> obtenerArrayManzanas() {
+	private ArrayList<Manzana> obtenerArrayManzanas(RadioCensal radioCensal) {
 		Collection<Manzana> setManzanas = radioCensal.getManzanas().values();
 		return new ArrayList<Manzana>(setManzanas);
-	}
-	@SuppressWarnings("unchecked")
-	private ArrayList<Manzana> clonarManzanas(RadioCensal radioCensal) {
-	
-		return (ArrayList<Manzana>) obtenerArrayManzanas().clone();
 	}
 
 	public void asignarManzanasACensistas() {

@@ -62,11 +62,6 @@ public class AsignadorDeManzanasGolosoTest {
 		manzanasAsignadasJuan.sort((p, q) -> p.getNroManzana() - q.getNroManzana());
 		manzanasAsignadasTito.sort((p, q) -> p.getNroManzana() - q.getNroManzana());
 
-//		System.out.println(manzanasAsignadasTito.toString());
-//		System.out.println(manzanasAsignadasJuan.toString());
-//		System.out.println(manzanasAsignadasMonica.toString());
-//		System.out.println(manzanasAsignadasJuan);
-//		System.out.println(manzanasEsperadasJuan);
 		assertTrue(manzanasAsignadasJuan.equals(manzanasEsperadasJuan));
 		assertTrue(manzanasAsignadasTito.equals(manzanasEsperadasTito));
 		assertTrue(manzanasAsignadasMonica.equals(manzanasEsperadasMonica));
