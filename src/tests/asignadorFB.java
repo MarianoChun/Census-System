@@ -31,8 +31,9 @@ public class asignadorFB {
 		radioCensal.agregarManzanaContigua(new Manzana(7), new Manzana(8));
 		
 		AsignadorDeManzanasFB asignador = new AsignadorDeManzanasFB(null, radioCensal);
-		asignador.construirGrupoDeManzanasAsignables(0);
-		for(ArrayList<Manzana> manzanas : asignador.getGrupos()) {
+//		asignador.construirGrupoDeManzanasAsignables(0);
+		System.out.println(asignador.asignarManzanasACensistas());
+		for(ArrayList<Manzana> manzanas : asignador.asignarManzanasACensistas()) {
 			System.out.print("[");
 			for(Manzana manzana : manzanas) {
 				System.out.print(manzana.getNroManzana()+", ");
