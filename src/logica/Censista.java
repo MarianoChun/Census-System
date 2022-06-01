@@ -68,12 +68,7 @@ public class Censista implements Cloneable{
 	}
 
 	private boolean estaManzanaAsignada(Manzana manzana) {
-		for (Manzana m : manzanasAsignadas) {
-			if (m.getNroManzana() == manzana.getNroManzana()) {
-				return true;
-			}
-		}
-		return false;
+		return manzanasAsignadas.stream().anyMatch(m -> m.getNroManzana() == manzana.getNroManzana());
 	}
 
 	public int cantManzanasAsignadas() {

@@ -148,9 +148,8 @@ public class MainForm {
 				
 				for(Censista censista : censistasAsignados) {
 					manzanasAsignadas = censista.getManzanasAsignadas();
-					ImageIcon fotoCensista = new ImageIcon(new ImageIcon(censista.getFoto()).getImage().getScaledInstance(25, 25, Image.SCALE_DEFAULT));
-					JLabel fotoAColocar = new JLabel();
-					fotoAColocar.setIcon(fotoCensista);
+					ImageIcon fotoCensista = new ImageIcon(setTamanoFotoCensista(censista, 27, 27));
+					JLabel fotoAColocar = setFotoEnLabel(fotoCensista);
 					
 					modeloTablaCensistas.addRow(new Object[] {censista.getNombre(), fotoAColocar, obtenerValoresStringManzanas(manzanasAsignadas)});
 				}
@@ -182,13 +181,9 @@ public class MainForm {
 						
 						Map<Integer, Censista> censistas = cargadorCensistas.getCensistas();
 						
-						int cantRegistros = modeloTablaCensistas.getRowCount();
-						if(cantRegistros > 1 ) {
-							removerRegistrosTabla(modeloTablaCensistas);
-						}
-						
+						removerRegistrosTabla(modeloTablaCensistas);
 						for(Censista censista : censistas.values()) {
-							ImageIcon fotoCensista = new ImageIcon(new ImageIcon(censista.getFoto()).getImage().getScaledInstance(25, 25, Image.SCALE_DEFAULT));
+							ImageIcon fotoCensista = new ImageIcon(setTamanoFotoCensista(censista, 27 ,27));
 							JLabel fotoAColocar = new JLabel();
 							fotoAColocar.setIcon(fotoCensista);
 							modeloTablaCensistas.addRow(new Object[] {censista.getNombre(), fotoAColocar});
@@ -205,9 +200,7 @@ public class MainForm {
 					System.out.println("No se ha seleccionado ningún fichero");
 				}
 				
-				if(estanRegistrosCensistasCargados() && estanRegistrosManzanasCargados()) {
-					btnAsignarManzanas.setEnabled(true);
-				}
+				habilitarBtnAsignarManzanas(btnAsignarManzanas);
 			}
 		});
 		frame.getContentPane().add(btnCargarCensistas);
@@ -231,14 +224,11 @@ public class MainForm {
 						radioCensal = cargadorManzanas.getRadioCensal();
 						
 						HashMap<Integer, Manzana> manzanas = radioCensal.getManzanas();
-						 
-						int cantRegistros = modeloTablaManzanas.getRowCount();
-						if(cantRegistros > 1 ) {
-							removerRegistrosTabla(modeloTablaManzanas);
-						}
+						removerRegistrosTabla(modeloTablaManzanas);
+						
 						for(Manzana manzana : manzanas.values()) {
 							Coordenada coordenada = manzana.getCoordenada();
-							System.out.println(manzana.getNroManzana());
+
 							modeloTablaManzanas.addRow(new Object[] {manzana.getNroManzana(), 
 									"X = " + coordenada.getX() + " , Y = " + coordenada.getY()});
 					
@@ -255,9 +245,7 @@ public class MainForm {
 					System.out.println("No se ha seleccionado ningún fichero");
 				}
 				
-				if(estanRegistrosCensistasCargados() && estanRegistrosManzanasCargados()) {
-					btnAsignarManzanas.setEnabled(true);
-				}
+				habilitarBtnAsignarManzanas(btnAsignarManzanas);
 			}	
 		});
 		btnCargarManzanas.setFont(new Font("Verdana", Font.PLAIN, 13));
@@ -319,8 +307,11 @@ public class MainForm {
 	}
 
 	private void removerRegistrosTabla(DefaultTableModel modeloTabla) {
-		modeloTabla.getDataVector().removeAllElements();
-		modeloTabla.fireTableDataChanged();
+		int cantRegistros = modeloTabla.getRowCount();
+		if(cantRegistros > 1 ) {
+			modeloTabla.getDataVector().removeAllElements();
+			modeloTabla.fireTableDataChanged();
+		}
 	}
 	
 	private boolean estanRegistrosManzanasCargados() {
@@ -329,6 +320,19 @@ public class MainForm {
 	
 	private boolean estanRegistrosCensistasCargados() {
 		return modeloTablaCensistas.getRowCount() != 0;
+	}
+	private void habilitarBtnAsignarManzanas(JButton btnAsignarManzanas) {
+		if(estanRegistrosCensistasCargados() && estanRegistrosManzanasCargados()) {
+			btnAsignarManzanas.setEnabled(true);
+		}
+	}
+	private Image setTamanoFotoCensista(Censista censista, int ancho, int alto) {
+		return new ImageIcon(censista.getFoto()).getImage().getScaledInstance(ancho, alto, Image.SCALE_DEFAULT);
+	}
+	private JLabel setFotoEnLabel(ImageIcon fotoCensista) {
+		JLabel fotoAColocar = new JLabel();
+		fotoAColocar.setIcon(fotoCensista);
+		return fotoAColocar;
 	}
 	public class ImagenTabla extends DefaultTableCellRenderer {
 		@Override
