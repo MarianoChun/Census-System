@@ -25,6 +25,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 
 import org.openstreetmap.gui.jmapviewer.Coordinate;
+import org.openstreetmap.gui.jmapviewer.DefaultMapController;
 import org.openstreetmap.gui.jmapviewer.JMapViewer;
 import org.openstreetmap.gui.jmapviewer.MapMarkerDot;
 import org.openstreetmap.gui.jmapviewer.MapPolygonImpl;
@@ -47,6 +48,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import java.awt.Font;
 import javax.swing.SwingConstants;
+import javax.swing.JProgressBar;
+import java.awt.event.MouseMotionAdapter;
+import java.awt.event.MouseEvent;
 
 public class MainForm {
 
@@ -89,53 +93,13 @@ public class MainForm {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frame = new JFrame();
-		frame.setBounds(100, 100, 1094, 727);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(null);
+		crearFramePrincipal();
 		
-		JPanel panelMapa = new JPanel();
-		panelMapa.setBounds(210, 299, 529, 264);
-		frame.getContentPane().add(panelMapa);
+		crearMapa();
 		
-		mapa = new JMapViewer();
-		mapa.setDisplayPosition(new Coordinate(-34.542826297705645, -58.71398400055889), 12);
-		mapa.setBounds(panelMapa.getBounds());
-		panelMapa.add(mapa);
+		crearTablaCencistas();
 		
-		JScrollPane scrollPaneCensistas = new JScrollPane();
-		scrollPaneCensistas.setBounds(41, 27, 468, 227);
-		frame.getContentPane().add(scrollPaneCensistas);
-		
-		tablaCensistas =  new JTable();
-		tablaCensistas.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		tablaCensistas.setBounds(33, 27, 127, 162);
-		tablaCensistas.setDefaultRenderer(Object.class, new ImagenTabla());
-		modeloTablaCensistas = new DefaultTableModel(new Object[][] {},
-				new String[] { "Nombre censista", "Foto censista" , "Manzana/s asignada/s"});
-
-		tablaCensistas.setModel(modeloTablaCensistas);
-		tablaCensistas.getTableHeader().setReorderingAllowed(false);
-		tablaCensistas.getTableHeader().setResizingAllowed(false);
-		tablaCensistas.getColumnModel().getColumn(0).setPreferredWidth(40);
-		scrollPaneCensistas.setViewportView(tablaCensistas);
-
-		
-		JScrollPane scrollPaneManzanas = new JScrollPane();
-		scrollPaneManzanas.setBounds(519, 27, 549, 227);
-		frame.getContentPane().add(scrollPaneManzanas);
-		
-		tablaManzanas = new JTable();
-		modeloTablaManzanas = new DefaultTableModel(new Object[][] {}, new String[] { "Nro Manzana", "Coordenadas" });
-		tablaManzanas.setModel(modeloTablaManzanas);
-	
-		tablaManzanas.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		tablaManzanas.setBounds(477, 27, 350, 227);
-		tablaManzanas.getTableHeader().setReorderingAllowed(false);
-		tablaManzanas.getTableHeader().setResizingAllowed(false);
-		tablaManzanas.getColumnModel().getColumn(0).setPreferredWidth(40);
-		
-		scrollPaneManzanas.setViewportView(tablaManzanas);
+		crearTablaManzanas();
 
 		JButton btnAsignarManzanas = new JButton("Asignar manzanas a censistas");
 		btnAsignarManzanas.addActionListener(new ActionListener() {
@@ -157,12 +121,12 @@ public class MainForm {
 		});
 		btnAsignarManzanas.setEnabled(false);
 		btnAsignarManzanas.setFont(new Font("Verdana", Font.PLAIN, 13));
-		btnAsignarManzanas.setBounds(276, 619, 436, 34);
+		btnAsignarManzanas.setBounds(274, 721, 436, 34);
 		frame.getContentPane().add(btnAsignarManzanas);
 		
 		JButton btnCargarCensistas = new JButton("Cargar censistas");
 		btnCargarCensistas.setFont(new Font("Verdana", Font.PLAIN, 13));
-		btnCargarCensistas.setBounds(276, 574, 200, 34);
+		btnCargarCensistas.setBounds(274, 676, 200, 34);
 		btnCargarCensistas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -249,10 +213,73 @@ public class MainForm {
 			}	
 		});
 		btnCargarManzanas.setFont(new Font("Verdana", Font.PLAIN, 13));
-		btnCargarManzanas.setBounds(512, 574, 200, 34);
+		btnCargarManzanas.setBounds(510, 676, 200, 34);
 		frame.getContentPane().add(btnCargarManzanas);
+		
+		JProgressBar progressBar = new JProgressBar();
+		progressBar.setBounds(395, 628, 200, 25);
+		frame.getContentPane().add(progressBar);
 			
 		
+	}
+
+	private void crearFramePrincipal() {
+		frame = new JFrame();
+		frame.setBounds(100, 100, 1094, 805);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.getContentPane().setLayout(null);
+	}
+
+	private void crearTablaManzanas() {
+		JScrollPane scrollPaneManzanas = new JScrollPane();
+		scrollPaneManzanas.setBounds(519, 27, 549, 227);
+		frame.getContentPane().add(scrollPaneManzanas);
+		
+		tablaManzanas = new JTable();
+		modeloTablaManzanas = new DefaultTableModel(new Object[][] {}, new String[] { "Nro Manzana", "Coordenadas" });
+		tablaManzanas.setModel(modeloTablaManzanas);
+	
+		tablaManzanas.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		tablaManzanas.setBounds(477, 27, 350, 227);
+		tablaManzanas.getTableHeader().setReorderingAllowed(false);
+		tablaManzanas.getTableHeader().setResizingAllowed(false);
+		tablaManzanas.getColumnModel().getColumn(0).setPreferredWidth(40);
+		
+		scrollPaneManzanas.setViewportView(tablaManzanas);
+	}
+
+	private void crearTablaCencistas() {
+		JScrollPane scrollPaneCensistas = new JScrollPane();
+		scrollPaneCensistas.setBounds(10, 27, 468, 227);
+		frame.getContentPane().add(scrollPaneCensistas);
+		
+		tablaCensistas =  new JTable();
+		tablaCensistas.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		tablaCensistas.setBounds(33, 27, 127, 162);
+		tablaCensistas.setDefaultRenderer(Object.class, new ImagenTabla());
+		modeloTablaCensistas = new DefaultTableModel(new Object[][] {},
+				new String[] { "Nombre censista", "Foto censista" , "Manzana/s asignada/s"});
+
+		tablaCensistas.setModel(modeloTablaCensistas);
+		tablaCensistas.getTableHeader().setReorderingAllowed(false);
+		tablaCensistas.getTableHeader().setResizingAllowed(false);
+		tablaCensistas.getColumnModel().getColumn(0).setPreferredWidth(40);
+		scrollPaneCensistas.setViewportView(tablaCensistas);
+	}
+
+	private void crearMapa() {
+		JPanel panelMapa = new JPanel();
+		panelMapa.setBounds(213, 265, 561, 352);
+		frame.getContentPane().add(panelMapa);
+		
+		mapa = new JMapViewer();
+		mapa.setScrollWrapEnabled(true);
+		mapa.setDisplayPosition(new Coordinate(-34.542826297705645, -58.71398400055889), 12);
+		mapa.setBounds(panelMapa.getBounds());
+		panelMapa.add(mapa);
+		
+		DefaultMapController controladorMapa = new DefaultMapController(mapa);
+		controladorMapa.setMovementMouseButton(MouseEvent.BUTTON1);
 	}
 	
 	protected String obtenerValoresStringManzanas(ArrayList<Manzana> manzanasAsignadas) {
@@ -346,6 +373,4 @@ public class MainForm {
 		}
 
 	}
-	
-	
 }
