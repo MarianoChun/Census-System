@@ -21,15 +21,17 @@ public class RadioCensal {
 
 	public void generarManzanas() {
 		int nroManzana = 0;
-		while(nroManzana < cantManzanas()) {
+		while (nroManzana < cantManzanas()) {
 			manzanas.put(nroManzana, new Manzana(nroManzana));
 			nroManzana++;
 		}
 	}
+
 	public void agregarManzana(Manzana manzana) {
 		verificarManzana(manzana.getNroManzana());
 		manzanas.put(manzana.getNroManzana(), manzana);
 	}
+
 	public void agregarManzanaContigua(Manzana primerManzana, Manzana segundaManzana) {
 		int i = primerManzana.getNroManzana();
 		int j = segundaManzana.getNroManzana();
@@ -124,18 +126,17 @@ public class RadioCensal {
 			return false;
 		return true;
 	}
-	
+
 	public RadioCensal clone() {
 		RadioCensal ret = new RadioCensal(this.cantManzanas());
 		Map<Integer, Manzana> manzanas = this.getManzanas();
-		
-		for(Manzana manzana : manzanas.values()) {
+
+		for (Manzana manzana : manzanas.values()) {
 			ret.agregarManzana(manzana);
-			for(Integer vecino : this.manzanasVecinas(manzana.getNroManzana()))
+			for (Integer vecino : this.manzanasVecinas(manzana.getNroManzana()))
 				ret.agregarManzanaContigua(manzana, this.getManzana(vecino));
 		}
-		
-		
+
 		return ret;
 	}
 }

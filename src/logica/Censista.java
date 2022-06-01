@@ -1,13 +1,12 @@
 package logica;
 
-import java.io.File;
 import java.util.ArrayList;
 
-public class Censista implements Cloneable{
+public class Censista implements Cloneable {
 	private ArrayList<Manzana> manzanasAsignadas;
 	private String nombre;
-	private byte[] foto; 
- 
+	private byte[] foto;
+
 	public Censista(String nombre) {
 		this.nombre = nombre;
 		this.manzanasAsignadas = new ArrayList<Manzana>();
@@ -29,7 +28,7 @@ public class Censista implements Cloneable{
 	public void asignarManzanas(ArrayList<Manzana> manzanas) {
 		verificarSizeManzanasAAsignar(manzanas);
 		verificarExcesoDeManzanasAAsignar(manzanas);
-		
+
 		for (Manzana m : manzanas) {
 			asignarManzana(m);
 		}
@@ -43,7 +42,8 @@ public class Censista implements Cloneable{
 
 	private void verificarExcesoDeManzanasAAsignar(ArrayList<Manzana> manzanas) {
 		if (cantManzanasAsignadas() + manzanas.size() > 3) {
-			throw new IllegalArgumentException("Asignar dicha cantidad de manzanas excede la capacidad de manzanas del censista");
+			throw new IllegalArgumentException(
+					"Asignar dicha cantidad de manzanas excede la capacidad de manzanas del censista");
 		}
 	}
 
@@ -54,15 +54,15 @@ public class Censista implements Cloneable{
 
 		return clon;
 	}
-	
+
 	public void setFoto(byte[] foto) {
 		this.foto = foto;
 	}
-	
+
 	public byte[] getFoto() {
 		return foto;
 	}
-	
+
 	public String getNombre() {
 		return nombre;
 	}

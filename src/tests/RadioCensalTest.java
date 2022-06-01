@@ -19,7 +19,7 @@ public class RadioCensalTest {
 
 		assertTrue(r.existeManzanaContigua(0, 1));
 	}
-	
+
 	@Test
 	public void manzanaContiguaInexistenteTest() {
 		RadioCensal r = new RadioCensal(4);
@@ -56,28 +56,28 @@ public class RadioCensalTest {
 
 		assertEquals(esperado, r.manzanasVecinas(3));
 	}
-	
-	@Test 
+
+	@Test
 	public void gradoDeManzanaTest() {
 		RadioCensal r = new RadioCensal(5);
 
 		r.agregarManzanaContigua(new Manzana(2), new Manzana(3));
 		r.agregarManzanaContigua(new Manzana(3), new Manzana(4));
-		
+
 		assertEquals(2, r.gradoManzana(3));
-	}	
-	
+	}
+
 	@Test
 	public void cloneTest() {
 		RadioCensal r = new RadioCensal(5);
 
 		r.agregarManzanaContigua(new Manzana(2), new Manzana(3));
 		r.agregarManzanaContigua(new Manzana(3), new Manzana(4));
-		
+
 		RadioCensal rClone = r.clone();
 		assertEquals(rClone.cantManzanas(), r.cantManzanas());
 		assertTrue(rClone.existeManzanaContigua(2, 3));
 		assertTrue(rClone.existeManzanaContigua(3, 4));
-		
+
 	}
 }

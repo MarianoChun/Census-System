@@ -93,7 +93,7 @@ public class AsignadorDeManzanasGolosoTest {
 		ArrayList<Manzana> manzanasAsignadasTito = censistas.get(1).getManzanasAsignadas();
 		ArrayList<Manzana> manzanasAsignadasMonica = censistas.get(2).getManzanasAsignadas();
 		ArrayList<Manzana> manzanasAsignadasNahuel = censistas.get(3).getManzanasAsignadas();
-		
+
 //		System.out.println(manzanasAsignadasJuan);
 //		System.out.println(manzanasAsignadasTito);
 //		System.out.println(manzanasAsignadasMonica);

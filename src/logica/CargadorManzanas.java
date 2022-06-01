@@ -14,17 +14,18 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 public class CargadorManzanas {
 	RadioCensal radio;
 	String pathExcel;
-	
+
 	public CargadorManzanas(String pathExcel) {
 		this.pathExcel = pathExcel;
 		this.radio = new RadioCensal(cantManzanasExcel());
 		cargarManzanasDesdeExcel();
 	}
-	
+
 	public void cargarManzanasYVecinosDesdeExcel() {
 		cargarManzanasDesdeExcel();
 		cargarVecinosManzanasDesdeExcel();
 	}
+
 	private void cargarManzanasDesdeExcel() {
 		try {
 			Iterator<Row> itr = obtenerIteradorExcel();
@@ -37,10 +38,10 @@ public class CargadorManzanas {
 			while (itr.hasNext()) {
 
 				Row row = itr.next();
-		
+
 				nroManzanaActual = (int) row.getCell(0).getNumericCellValue();
 				coordenadaActual = formateador.formatCellValue(row.getCell(1));
-				
+
 				manzanaActual = new Manzana(nroManzanaActual, obtenerCoordeanda(coordenadaActual));
 				radio.agregarManzana(manzanaActual);
 			}
@@ -48,7 +49,7 @@ public class CargadorManzanas {
 			e.printStackTrace();
 		}
 	}
-	
+
 	private void cargarVecinosManzanasDesdeExcel() {
 		try {
 			Iterator<Row> itr = obtenerIteradorExcel();
@@ -59,10 +60,10 @@ public class CargadorManzanas {
 
 			while (itr.hasNext()) {
 				Row row = itr.next();
-				
+
 				vecinosManzana = obtenerVecinosManzana(formateador.formatCellValue(row.getCell(2)));
-				nroManzanaActual = (int) row.getCell(0).getNumericCellValue();	
-				for(Integer vecinoActual : vecinosManzana) {
+				nroManzanaActual = (int) row.getCell(0).getNumericCellValue();
+				for (Integer vecinoActual : vecinosManzana) {
 					radio.agregarManzanaContigua(radio.getManzana(nroManzanaActual), radio.getManzana(vecinoActual));
 				}
 			}
@@ -70,6 +71,7 @@ public class CargadorManzanas {
 			e.printStackTrace();
 		}
 	}
+
 	private int cantManzanasExcel() {
 		XSSFWorkbook workbook = null;
 		try {
@@ -79,9 +81,9 @@ public class CargadorManzanas {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
 		// Se le resta 1 porque no se cuentan los encabezados del excel
-		return workbook.getSheetAt(0).getPhysicalNumberOfRows() - 1; 
+		return workbook.getSheetAt(0).getPhysicalNumberOfRows() - 1;
 	}
 
 	private XSSFWorkbook obtenerWorkbookExcel() throws FileNotFoundException, IOException {
@@ -95,22 +97,23 @@ public class CargadorManzanas {
 		XSSFWorkbook workbook = new XSSFWorkbook(archivo);
 		return workbook;
 	}
+
 	private Coordenada obtenerCoordeanda(String coordenada) {
-		String[] coordeandas =  coordenada.split(", ");
-		return new Coordenada(Double.parseDouble(coordeandas[0]) , Double.parseDouble(coordeandas[1]));
+		String[] coordeandas = coordenada.split(", ");
+		return new Coordenada(Double.parseDouble(coordeandas[0]), Double.parseDouble(coordeandas[1]));
 	}
-	
+
 	private ArrayList<Integer> obtenerVecinosManzana(String vecinos) {
-		String[] vecinosStringManzana =  vecinos.split(",");
+		String[] vecinosStringManzana = vecinos.split(",");
 		ArrayList<Integer> vecinosManzanas = new ArrayList<Integer>();
-		
-		for(String vecinoActual : vecinosStringManzana) {
+
+		for (String vecinoActual : vecinosStringManzana) {
 			vecinosManzanas.add(Integer.parseInt(vecinoActual));
 		}
-		
+
 		return vecinosManzanas;
 	}
-	
+
 	private Iterator<Row> obtenerIteradorExcel() throws FileNotFoundException, IOException {
 		XSSFWorkbook workbook = obtenerWorkbookExcel();
 		XSSFSheet sheet = workbook.getSheetAt(0);
@@ -118,13 +121,12 @@ public class CargadorManzanas {
 		Iterator<Row> itr = sheet.iterator();
 		itr.next();
 		workbook.close();
-		
+
 		return itr;
 	}
 
 	public RadioCensal getRadioCensal() {
 		return radio;
 	}
-	
-	
+
 }

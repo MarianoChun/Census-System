@@ -18,7 +18,7 @@ public class Manzana implements Cloneable {
 
 	public Manzana clone() {
 		Manzana clon = new Manzana(this.nroManzana, this.coordenadas);
-		return clon;		
+		return clon;
 	}
 
 	public int getNroManzana() {
@@ -28,6 +28,7 @@ public class Manzana implements Cloneable {
 	public Coordenada getCoordenada() {
 		return this.coordenadas;
 	}
+
 	private void verificarNroManzana(int i) {
 		if (i < 0) {
 			throw new IllegalArgumentException("El nro de manzana no puede ser negativo");
@@ -66,7 +67,5 @@ public class Manzana implements Cloneable {
 			return false;
 		return true;
 	}
-
-	
 
 }

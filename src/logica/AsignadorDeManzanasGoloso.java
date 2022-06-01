@@ -24,7 +24,6 @@ public class AsignadorDeManzanasGoloso {
 
 	}
 
-	
 	private ArrayList<Manzana> obtenerArrayManzanas(RadioCensal radioCensal) {
 		Collection<Manzana> setManzanas = radioCensal.getManzanas().values();
 		return new ArrayList<Manzana>(setManzanas);
@@ -84,7 +83,7 @@ public class AsignadorDeManzanasGoloso {
 	private boolean estaManzanaMarcada(int nroManzana) {
 		return manzanasMarcadas.containsKey(nroManzana);
 	}
-	
+
 	public ArrayList<Censista> getCensistas() {
 		return new ArrayList<Censista>(censistas);
 	}

@@ -1,6 +1,5 @@
 package logica;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -19,13 +18,13 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 public class CargadorCensistas {
 	private Map<Integer, Censista> censistas;
 	private String pathExcel;
-	
+
 	public CargadorCensistas(String pathExcel) {
 		this.pathExcel = pathExcel;
 		this.censistas = new HashMap<Integer, Censista>();
 		cargarCensistasDesdeExcel();
 	}
-	
+
 	public void cargarCensistasDesdeExcel() {
 		try {
 			Iterator<Row> itr = obtenerIteradorExcel();
@@ -46,7 +45,7 @@ public class CargadorCensistas {
 					nombreCensista = row.getCell(0).getStringCellValue().toLowerCase();
 					censista = new Censista(nombreCensista);
 
-					if (!esNombreVacio(nombreCensista) && cell.getColumnIndex() == 0) {					
+					if (!esNombreVacio(nombreCensista) && cell.getColumnIndex() == 0) {
 						censistas.put(i, censista);
 						censista.setFoto(fotosCensistas.get(i).getData());
 						i++;
@@ -60,13 +59,14 @@ public class CargadorCensistas {
 		}
 	}
 
-	public Map<Integer, Censista> getCensistas(){
+	public Map<Integer, Censista> getCensistas() {
 		return censistas;
 	}
-	
-	public ArrayList<Censista> getCensistasArray(){
+
+	public ArrayList<Censista> getCensistasArray() {
 		return new ArrayList<Censista>(censistas.values());
 	}
+
 	private boolean esNombreVacio(String nombre) {
 		return nombre.equals("");
 	}
@@ -82,9 +82,10 @@ public class CargadorCensistas {
 		XSSFWorkbook workbook = new XSSFWorkbook(archivo);
 		List<XSSFPictureData> fotos = workbook.getAllPictures();
 		workbook.close();
-		
+
 		return fotos;
 	}
+
 	private Iterator<Row> obtenerIteradorExcel() throws FileNotFoundException, IOException {
 		FileInputStream archivo;
 		try {
@@ -99,10 +100,7 @@ public class CargadorCensistas {
 		Iterator<Row> itr = sheet.iterator();
 		itr.next();
 		workbook.close();
-		
+
 		return itr;
 	}
-	
-	
-	
 }
