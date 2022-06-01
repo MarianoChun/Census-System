@@ -3,7 +3,7 @@ package logica;
 import java.io.File;
 import java.util.ArrayList;
 
-public class Censista {
+public class Censista implements Cloneable{
 	private ArrayList<Manzana> manzanasAsignadas;
 	private String nombre;
 	private byte[] foto; 
@@ -47,6 +47,14 @@ public class Censista {
 		}
 	}
 
+	public Censista clone() {
+		Censista clon = new Censista(this.nombre);
+		clon.setFoto(this.foto);
+		clon.asignarManzanas(this.manzanasAsignadas);
+
+		return clon;
+		
+	}
 	public void setFoto(byte[] foto) {
 		this.foto = foto;
 	}

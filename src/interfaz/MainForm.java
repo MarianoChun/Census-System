@@ -140,16 +140,13 @@ public class MainForm {
 		JButton btnAsignarManzanas = new JButton("Asignar manzanas a censistas");
 		btnAsignarManzanas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// TODO: Faltaria buscar una forma para que el programa no falle al apretar repetidamente este boton
-				// ya que el sistema de alguna forma vuelve a usar la misma instancia de censistas para ejecutar el algoritmo goloso (Incurre en un error de asignacion al querer asignar mas manzanas de las permitidas)
-				// Intente clonar tanto los censistas como las manzanas pero no parece funcionar, aunque sigo creyendo que el problema viene por algun aliasing
-//				sistema = new Sistema(radioCensal, cargadorCensistas.getCensistasArray());
-//				ArrayList<Censista> censistas = sistema.obtenerCensistasAsignados();
-				ArrayList<Censista> censistas = new Sistema(radioCensal, cargadorCensistas.getCensistasArray()).obtenerCensistasAsignados();
+
+				ArrayList<Censista> instanciaCensistas = clonarCensistas(cargadorCensistas.getCensistasArray());
+				ArrayList<Censista> censistasAsignados = new Sistema(radioCensal, instanciaCensistas).obtenerCensistasAsignados();
 				ArrayList<Manzana> manzanasAsignadas = new ArrayList<>();
 				removerRegistrosTabla(modeloTablaCensistas);
 				
-				for(Censista censista : censistas) {
+				for(Censista censista : censistasAsignados) {
 					manzanasAsignadas = censista.getManzanasAsignadas();
 					ImageIcon fotoCensista = new ImageIcon(new ImageIcon(censista.getFoto()).getImage().getScaledInstance(25, 25, Image.SCALE_DEFAULT));
 					JLabel fotoAColocar = new JLabel();
@@ -294,6 +291,12 @@ public class MainForm {
 		return coordenadasVecino;
 	}
 	
+	public static ArrayList<Censista> clonarCensistas(ArrayList<Censista> censistas){
+		ArrayList<Censista> clonCensistas = new ArrayList<Censista>();
+		censistas.stream().forEach(c -> clonCensistas.add(c.clone()));
+		
+		return clonCensistas;
+	}
 	private String formateoPath() {
 		File archivo = selectorArchivos.getSelectedFile();
 		String path = archivo.getAbsolutePath().replaceAll("\\\\", "/");

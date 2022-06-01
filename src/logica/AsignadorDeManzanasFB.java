@@ -99,7 +99,7 @@ public class AsignadorDeManzanasFB {
 		
 		return sonVecinas(grupo.get(0), grupo.get(1)) && sonVecinas(grupo.get(1), grupo.get(2));
 	}
-
+	
 
 	private boolean sonVecinas(Manzana manzana, Manzana otraManzana) {
 		return radioCensal.manzanasVecinas(manzana.getNroManzana()).contains(otraManzana.getNroManzana());
