@@ -1,6 +1,6 @@
 package logica;
 
-public class Manzana {
+public class Manzana implements Cloneable {
 	private int nroManzana;
 	private Coordenada coordenadas; // son las coordenadas en caso de usar geolocalizacion
 
@@ -14,6 +14,11 @@ public class Manzana {
 		verificarNroManzana(nroManzana);
 		this.coordenadas = new Coordenada(0.0, 0.0);
 		this.nroManzana = nroManzana;
+	}
+
+	public Manzana clone() {
+		Manzana clon = new Manzana(this.nroManzana, this.coordenadas);
+		return clon;		
 	}
 
 	public int getNroManzana() {

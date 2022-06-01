@@ -32,7 +32,7 @@ public class asignadorFB {
 		
 		AsignadorDeManzanasFB asignador = new AsignadorDeManzanasFB(null, radioCensal);
 //		asignador.construirGrupoDeManzanasAsignables(0);
-		System.out.println(asignador.asignarManzanasACensistas());
+		//System.out.println(asignador.asignarManzanasACensistas());
 		for(ArrayList<Manzana> manzanas : asignador.asignarManzanasACensistas()) {
 			System.out.print("[");
 			for(Manzana manzana : manzanas) {

@@ -53,8 +53,8 @@ public class Censista implements Cloneable{
 		clon.asignarManzanas(this.manzanasAsignadas);
 
 		return clon;
-		
 	}
+	
 	public void setFoto(byte[] foto) {
 		this.foto = foto;
 	}

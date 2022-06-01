@@ -52,13 +52,13 @@ public class AsignadorDeManzanasFB {
 //		grupoActual.stream().forEach(m -> System.out.print(m.getNroManzana()));
 //		System.out.println();
 		
-		if(grupoActual.size() <= 3 && esCamino(grupoActual)) {
+		if((grupoActual.size() <= 3 && grupoActual.size() >= 1) && esCamino(grupoActual)) {
 			System.out.println("Pasa " + grupoActual);
 			gruposActual.add(grupoActual);
 //			System.out.println("grupos " + grupos);
 		}
-		if(gruposActual.size() < grupos.size()) {
-			grupos =  gruposActual;
+		if(gruposActual.size() < grupos.size() && gruposActual.size() > 0) {
+			grupos =  clonarGrupos(gruposActual);
 			System.out.println("grupos actual: "+ gruposActual);
 			System.out.println("grupos: "+grupos);
 		}
@@ -105,6 +105,20 @@ public class AsignadorDeManzanasFB {
 		for(int i = 0;i<cantElementosVacios;i++)
 			ret.add(null);
 		return ret;
+	}
+	
+	private static ArrayList<ArrayList<Manzana>> clonarGrupos(ArrayList<ArrayList<Manzana>> grupos){
+		ArrayList<ArrayList<Manzana>> clon = new ArrayList<ArrayList<Manzana>>();
+		grupos.stream().forEach(a -> clon.add(clonarGrupo(a)));
+		
+		return clon;
+	}
+	
+	private static ArrayList<Manzana> clonarGrupo(ArrayList<Manzana> grupo){
+		ArrayList<Manzana> clon = new ArrayList<Manzana>();
+		grupo.stream().forEach(m -> clon.add(m.clone()));
+
+		return clon;
 	}
 	
 //	private ArrayList<Integer> obtenerNrosManzanas(){
