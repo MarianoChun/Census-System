@@ -57,6 +57,13 @@ public class RadioCensal {
 		return ret;
 	}
 
+	public boolean sonVecinos(int i, int j) {
+		verificarManzana(i);
+		verificarManzana(j);
+		
+		return manzanasVecinas(i).contains(j);
+	}
+	
 	public int gradoManzana(int i) {
 		return manzanasVecinas(i).size();
 	}
