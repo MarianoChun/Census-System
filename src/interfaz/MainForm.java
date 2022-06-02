@@ -210,6 +210,7 @@ public class MainForm {
 		frame.getContentPane().add(btnCargarManzanas);
 
 		JProgressBar progressBar = new JProgressBar();
+		progressBar.setForeground(new Color(204, 255, 51));
 		progressBar.setBounds(395, 628, 200, 25);
 		frame.getContentPane().add(progressBar);
 

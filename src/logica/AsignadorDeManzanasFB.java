@@ -15,7 +15,7 @@ public class AsignadorDeManzanasFB {
 	private ArrayList<Manzana> manzanas;
 
 	private ArrayList<ArrayList<Manzana>> grupos;
-	private ArrayList<ArrayList<Manzana>> gruposActual;
+	private ArrayList<ArrayList<Manzana>> gruposActuales;
 	private ArrayList<Manzana> grupoActual;
 
 	public AsignadorDeManzanasFB(ArrayList<Censista> censistas, RadioCensal radioCensal) {
@@ -36,7 +36,7 @@ public class AsignadorDeManzanasFB {
 		 */
 		this.grupos = crearArrayListConCantFijaElementosVacios(radioCensal.cantManzanas());
 		System.out.println(grupos.size());
-		this.gruposActual = new ArrayList<ArrayList<Manzana>>();
+		this.gruposActuales = new ArrayList<ArrayList<Manzana>>();
 		this.grupoActual = new ArrayList<Manzana>();
 		construirGrupoDeManzanasAsignables(0);
 		return this.grupos;
@@ -54,12 +54,12 @@ public class AsignadorDeManzanasFB {
 
 		if ((grupoActual.size() <= 3 && grupoActual.size() >= 1) && esCamino(grupoActual)) {
 			System.out.println("Pasa " + grupoActual);
-			gruposActual.add(grupoActual);
+			gruposActuales.add(grupoActual);
 //			System.out.println("grupos " + grupos);
 		}
-		if (gruposActual.size() < grupos.size() && gruposActual.size() > 0) {
-			grupos = clonarGrupos(gruposActual);
-			System.out.println("grupos actual: " + gruposActual);
+		if (gruposActuales.size() < grupos.size() && gruposActuales.size() > 0) {
+			grupos = clonarGrupos(gruposActuales);
+			System.out.println("grupos actual: " + gruposActuales);
 			System.out.println("grupos: " + grupos);
 		}
 		if (nroManzana == radioCensal.cantManzanas() - 1) {
