@@ -3,11 +3,6 @@ package logica;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.stream.IntStream;
-
-import org.apache.poi.ss.formula.eval.NotImplementedException;
-import org.apache.poi.util.SystemOutLogger;
 
 public class AsignadorDeManzanasFB {
 	private RadioCensal radioCensal;
