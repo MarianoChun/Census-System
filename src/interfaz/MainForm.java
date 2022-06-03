@@ -182,7 +182,7 @@ public class MainForm {
 
 						HashMap<Integer, Manzana> manzanas = radioCensal.getManzanas();
 						removerRegistrosTabla(modeloTablaManzanas);
-
+						limpiarMapaDePolygonsYMarkers();
 						for (Manzana manzana : manzanas.values()) {
 							Coordenada coordenada = manzana.getCoordenada();
 
@@ -375,6 +375,11 @@ public class MainForm {
 		JLabel fotoAColocar = new JLabel();
 		fotoAColocar.setIcon(fotoCensista);
 		return fotoAColocar;
+	}
+
+	private void limpiarMapaDePolygonsYMarkers() {
+		mapa.removeAllMapPolygons();
+		mapa.removeAllMapMarkers();
 	}
 
 	public class ImagenTabla extends DefaultTableCellRenderer {
