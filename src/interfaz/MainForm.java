@@ -35,11 +35,13 @@ import logica.Coordenada;
 import logica.Manzana;
 import logica.RadioCensal;
 import logica.Sistema;
+import logica.ThreadTime;
 
 import java.awt.Color;
 import java.awt.Component;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
@@ -66,6 +68,7 @@ public class MainForm {
 	private JButton btnAsignarManzanasAG;
 	private JButton btnAsignarManzanasFB;
 	private JProgressBar progressBar;
+	private ThreadTime threadTiempo;
 
 	/**
 	 * Launch the application.
@@ -95,7 +98,8 @@ public class MainForm {
 	 */
 	private void initialize() {
 		crearFramePrincipal();
-
+		threadTiempo = new ThreadTime();
+		threadTiempo.start();
 		crearMapa();
 
 		crearTablaCencistas();
@@ -221,26 +225,37 @@ public class MainForm {
 		btnAsignarManzanasAG.setEnabled(false);
 		btnAsignarManzanasAG.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
+				long tiempoInicial = threadTiempo.getTiempoActualMs();
+				
 				ArrayList<Censista> instanciaCensistas = clonarCensistas(cargadorCensistas.getCensistasArray());
 				ArrayList<Censista> censistasAsignados = new Sistema(radioCensal, instanciaCensistas)
 						.obtenerCensistasAsignadosGoloso();
 				mostrarCensistasEnTabla(censistasAsignados);
+				
+				long tiempoFinal = threadTiempo.getTiempoActualMs();
+				long tiempoAlgoritmo = (tiempoFinal - tiempoInicial);
+				popUpInfoTiempoDeEjecución(tiempoAlgoritmo);
 			}
 		});
 		btnAsignarManzanasAG.setFont(new Font("Verdana", Font.PLAIN, 13));
 		btnAsignarManzanasAG.setBounds(115, 687, 378, 34);
 		frmAsignadorDeCensistas.getContentPane().add(btnAsignarManzanasAG);
 	}
-
+	
 	private void crearBotonAsignarManzanasFB() {
 		btnAsignarManzanasFB = new JButton("Asignar manzanas a censistas (Fuerza bruta)");
 		btnAsignarManzanasFB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				long tiempoInicial = threadTiempo.getTiempoActualMs();
+				
 				ArrayList<Censista> instanciaCensistas = clonarCensistas(cargadorCensistas.getCensistasArray());
 				ArrayList<Censista> censistasAsignados = new Sistema(radioCensal, instanciaCensistas)
 						.obtenerCensistasAsignadosFB();
 				mostrarCensistasEnTabla(censistasAsignados);
+				
+				long tiempoFinal = threadTiempo.getTiempoActualMs();
+				long tiempoAlgoritmo = (tiempoFinal - tiempoInicial);
+				popUpInfoTiempoDeEjecución(tiempoAlgoritmo);
 			}
 		});
 		
@@ -250,6 +265,13 @@ public class MainForm {
 		frmAsignadorDeCensistas.getContentPane().add(btnAsignarManzanasFB);
 	}
 
+	private void popUpInfoTiempoDeEjecución(long tiempo) {
+		StringBuilder str = new StringBuilder();
+
+		JOptionPane.showMessageDialog(frmAsignadorDeCensistas,
+				str.append("El tiempo de ejecución del algoritmo fue: ").append(tiempo).append(" ms."));
+	}
+	
 	private void crearFramePrincipal() {
 		frmAsignadorDeCensistas = new JFrame();
 		frmAsignadorDeCensistas.setTitle("Asignador de censistas");
