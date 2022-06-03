@@ -80,6 +80,7 @@ public class CargadorCensistas {
 		}
 		// Creamos una instancia Workbook que hace referencia al archivo .xlsx
 		XSSFWorkbook workbook = new XSSFWorkbook(archivo);
+
 		List<XSSFPictureData> fotos = workbook.getAllPictures();
 		workbook.close();
 

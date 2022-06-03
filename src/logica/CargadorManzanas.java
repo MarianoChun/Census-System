@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -38,12 +39,16 @@ public class CargadorManzanas {
 			while (itr.hasNext()) {
 
 				Row row = itr.next();
+				if (row.getCell(0).getCellTypeEnum() == CellType.NUMERIC) {
+					nroManzanaActual = (int) row.getCell(0).getNumericCellValue();
+					coordenadaActual = formateador.formatCellValue(row.getCell(1));
 
-				nroManzanaActual = (int) row.getCell(0).getNumericCellValue();
-				coordenadaActual = formateador.formatCellValue(row.getCell(1));
+					manzanaActual = new Manzana(nroManzanaActual, obtenerCoordeanda(coordenadaActual));
+					radio.agregarManzana(manzanaActual);
+				} else {
+					break;
+				}
 
-				manzanaActual = new Manzana(nroManzanaActual, obtenerCoordeanda(coordenadaActual));
-				radio.agregarManzana(manzanaActual);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -61,11 +66,16 @@ public class CargadorManzanas {
 			while (itr.hasNext()) {
 				Row row = itr.next();
 
-				vecinosManzana = obtenerVecinosManzana(formateador.formatCellValue(row.getCell(2)));
-				nroManzanaActual = (int) row.getCell(0).getNumericCellValue();
-				for (Integer vecinoActual : vecinosManzana) {
-					radio.agregarManzanaContigua(radio.getManzana(nroManzanaActual), radio.getManzana(vecinoActual));
+				if (row.getCell(0).getCellTypeEnum() == CellType.NUMERIC) {
+					vecinosManzana = obtenerVecinosManzana(formateador.formatCellValue(row.getCell(2)));
+					nroManzanaActual = (int) row.getCell(0).getNumericCellValue();
+					for (Integer vecinoActual : vecinosManzana) {
+						radio.agregarManzanaContigua(radio.getManzana(nroManzanaActual),radio.getManzana(vecinoActual));
+					}
+				} else {
+					break;
 				}
+
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -73,17 +83,26 @@ public class CargadorManzanas {
 	}
 
 	private int cantManzanasExcel() {
-		XSSFWorkbook workbook = null;
+		int cantManzanas = 0;
 		try {
-			workbook = obtenerWorkbookExcel();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+			Iterator<Row> iterador = obtenerIteradorExcel();
+
+			while (iterador.hasNext()) {
+				Row row = iterador.next();
+
+				if (row.getCell(0).getCellTypeEnum() == CellType.NUMERIC) {
+					cantManzanas++;
+				} else {
+					break;
+				}
+
+			}
 		} catch (IOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
-		// Se le resta 1 porque no se cuentan los encabezados del excel
-		return workbook.getSheetAt(0).getPhysicalNumberOfRows() - 1;
+		return cantManzanas;
 	}
 
 	private XSSFWorkbook obtenerWorkbookExcel() throws FileNotFoundException, IOException {
