@@ -70,25 +70,25 @@ public class AsignadorDeManzanasFB {
 		solucion = new ArrayList<ArrayList<Manzana>>();
 		
 		int indice = 0;
-		int tamañoSolucion = 0;
-		while(tamañoSolucion != radioCensal.cantManzanas()) {
+		int tamanoSolucion = 0;
+		while(tamanoSolucion != radioCensal.cantManzanas()) {
 			ArrayList<Manzana> grupoAsignable = grupos.get(indice);		
 			if(esGrupoValido(grupoAsignable)) {
 				solucion.add(grupoAsignable);
 			}
 				
 			indice++;
-			tamañoSolucion = obtenerTamanoSolucion();
+			tamanoSolucion = obtenerTamanoSolucion();
 		}
 		return solucion;
 	}
 
 	private int obtenerTamanoSolucion() {
-		int tamaño = 0;
+		int tamano = 0;
 		for(ArrayList<Manzana> grupoSolucion : solucion) {
-			tamaño += grupoSolucion.size();
+			tamano += grupoSolucion.size();
 		}
-		return tamaño;
+		return tamano;
 	}
 
 	
