@@ -16,8 +16,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.awt.event.ActionEvent;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.TableColumnModelListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
 
 import org.openstreetmap.gui.jmapviewer.Coordinate;
 import org.openstreetmap.gui.jmapviewer.DefaultMapController;
@@ -39,6 +42,8 @@ import java.awt.Component;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
+
 import java.awt.Font;
 import javax.swing.JProgressBar;
 import java.awt.event.MouseEvent;
@@ -56,6 +61,8 @@ public class MainForm {
 	private JTable tablaManzanas;
 	private JFileChooser selectorArchivos;
 	private JMapViewer mapa;
+	private JButton btnAsignarManzanasAG;
+	private JButton btnAsignarManzanasFB;
 
 	/**
 	 * Launch the application.
@@ -92,8 +99,8 @@ public class MainForm {
 
 		crearTablaManzanas();
 
-		JButton btnAsignarManzanas = new JButton("Asignar manzanas a censistas");
-		btnAsignarManzanas.addActionListener(new ActionListener() {
+		btnAsignarManzanasAG = new JButton("Asignar manzanas a censistas (Goloso)");
+		btnAsignarManzanasAG.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
 				ArrayList<Censista> instanciaCensistas = clonarCensistas(cargadorCensistas.getCensistasArray());
@@ -104,7 +111,7 @@ public class MainForm {
 
 				for (Censista censista : censistasAsignados) {
 					manzanasAsignadas = censista.getManzanasAsignadas();
-					ImageIcon fotoCensista = new ImageIcon(setTamanoFotoCensista(censista, 27, 27));
+					ImageIcon fotoCensista = new ImageIcon(setTamanoFotoCensista(censista, 40, 40));
 					JLabel fotoAColocar = setFotoEnLabel(fotoCensista);
 
 					modeloTablaCensistas.addRow(new Object[] { censista.getNombre(), fotoAColocar,
@@ -112,14 +119,14 @@ public class MainForm {
 				}
 			}
 		});
-		btnAsignarManzanas.setEnabled(false);
-		btnAsignarManzanas.setFont(new Font("Verdana", Font.PLAIN, 13));
-		btnAsignarManzanas.setBounds(274, 721, 436, 34);
-		frame.getContentPane().add(btnAsignarManzanas);
+		btnAsignarManzanasAG.setEnabled(false);
+		btnAsignarManzanasAG.setFont(new Font("Verdana", Font.PLAIN, 13));
+		btnAsignarManzanasAG.setBounds(128, 709, 367, 34);
+		frame.getContentPane().add(btnAsignarManzanasAG);
 
 		JButton btnCargarCensistas = new JButton("Cargar censistas");
 		btnCargarCensistas.setFont(new Font("Verdana", Font.PLAIN, 13));
-		btnCargarCensistas.setBounds(274, 676, 200, 34);
+		btnCargarCensistas.setBounds(295, 664, 200, 34);
 		btnCargarCensistas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
@@ -140,13 +147,14 @@ public class MainForm {
 
 						removerRegistrosTabla(modeloTablaCensistas);
 						for (Censista censista : censistas.values()) {
-							ImageIcon fotoCensista = new ImageIcon(setTamanoFotoCensista(censista, 27, 27));
+							ImageIcon fotoCensista = new ImageIcon(setTamanoFotoCensista(censista, 40, 40));
 							JLabel fotoAColocar = new JLabel();
 							fotoAColocar.setIcon(fotoCensista);
 							modeloTablaCensistas.addRow(new Object[] { censista.getNombre(), fotoAColocar });
 
 						}
 
+						tablaCensistas.getColumnModel().getColumn(1).setWidth(tablaCensistas.getColumnModel().getColumn(1).getPreferredWidth());
 						tablaCensistas.setPreferredScrollableViewportSize(tablaCensistas.getPreferredSize());
 						tablaCensistas.setModel(modeloTablaCensistas);
 
@@ -157,7 +165,7 @@ public class MainForm {
 					System.out.println("No se ha seleccionado ningún fichero");
 				}
 
-				habilitarBtnAsignarManzanas(btnAsignarManzanas);
+				habilitarBtnsAsignarManzanas();
 			}
 		});
 		frame.getContentPane().add(btnCargarCensistas);
@@ -202,17 +210,28 @@ public class MainForm {
 					System.out.println("No se ha seleccionado ningún fichero");
 				}
 
-				habilitarBtnAsignarManzanas(btnAsignarManzanas);
+				habilitarBtnsAsignarManzanas();
 			}
 		});
 		btnCargarManzanas.setFont(new Font("Verdana", Font.PLAIN, 13));
-		btnCargarManzanas.setBounds(510, 676, 200, 34);
+		btnCargarManzanas.setBounds(519, 664, 200, 34);
 		frame.getContentPane().add(btnCargarManzanas);
 
 		JProgressBar progressBar = new JProgressBar();
 		progressBar.setForeground(new Color(204, 255, 51));
 		progressBar.setBounds(395, 628, 200, 25);
 		frame.getContentPane().add(progressBar);
+		
+		btnAsignarManzanasFB = new JButton("Asignar manzanas a censistas (Fuerza bruta)");
+		btnAsignarManzanasFB.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		
+		btnAsignarManzanasFB.setFont(new Font("Verdana", Font.PLAIN, 13));
+		btnAsignarManzanasFB.setEnabled(false);
+		btnAsignarManzanasFB.setBounds(519, 709, 367, 34);
+		frame.getContentPane().add(btnAsignarManzanasFB);
 
 	}
 
@@ -251,7 +270,7 @@ public class MainForm {
 
 	private void crearTablaCencistas() {
 		JScrollPane scrollPaneCensistas = new JScrollPane();
-		scrollPaneCensistas.setBounds(10, 27, 468, 227);
+		scrollPaneCensistas.setBounds(65, 27, 409, 227);
 		frame.getContentPane().add(scrollPaneCensistas);
 
 		tablaCensistas = new JTable();
@@ -259,7 +278,9 @@ public class MainForm {
 		tablaCensistas.setRowSelectionAllowed(false);
 		tablaCensistas.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		tablaCensistas.setBounds(33, 27, 127, 162);
+		tablaCensistas.setRowHeight(50);
 		tablaCensistas.setDefaultRenderer(Object.class, new ImagenTabla());
+		
 		modeloTablaCensistas = new DefaultTableModel(new Object[][] {},
 				new String[] { "Nombre censista", "Foto censista", "Manzana/s asignada/s" }) {
 			@Override
@@ -269,10 +290,12 @@ public class MainForm {
 			    }
 		};
 
+		
 		tablaCensistas.setModel(modeloTablaCensistas);
+		tablaCensistas.getColumnModel().getColumn(0).setWidth(5);
+		tablaCensistas.getColumnModel().getColumn(1).setWidth(5);
 		tablaCensistas.getTableHeader().setReorderingAllowed(false);
 		tablaCensistas.getTableHeader().setResizingAllowed(false);
-		tablaCensistas.getColumnModel().getColumn(0).setPreferredWidth(40);
 		scrollPaneCensistas.setViewportView(tablaCensistas);
 	}
 
@@ -361,13 +384,15 @@ public class MainForm {
 		return modeloTablaCensistas.getRowCount() != 0;
 	}
 
-	private void habilitarBtnAsignarManzanas(JButton btnAsignarManzanas) {
+	private void habilitarBtnsAsignarManzanas() {
 		if (estanRegistrosCensistasCargados() && estanRegistrosManzanasCargados()) {
-			btnAsignarManzanas.setEnabled(true);
+			btnAsignarManzanasAG.setEnabled(true);
+			btnAsignarManzanasFB.setEnabled(true);
 		}
 	}
 
 	private Image setTamanoFotoCensista(Censista censista, int ancho, int alto) {
+
 		return new ImageIcon(censista.getFoto()).getImage().getScaledInstance(ancho, alto, Image.SCALE_DEFAULT);
 	}
 
