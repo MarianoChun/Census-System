@@ -9,9 +9,9 @@ public class AsignadorDeManzanasFB {
 	private ArrayList<Censista> censistas;
 	private ArrayList<Manzana> manzanas;
 
-	private ArrayList<ArrayList<Manzana>> grupos;
-	private ArrayList<ArrayList<Manzana>> gruposActuales;
-	private ArrayList<Manzana> grupoActual;
+	private ArrayList<ArrayList<Manzana>> gruposAsignables;
+	private ArrayList<Manzana> grupoAsignable;
+	private static ArrayList<ArrayList<Manzana>> solucion;
 
 	public AsignadorDeManzanasFB(ArrayList<Censista> censistas, RadioCensal radioCensal) {
 		this.censistas = censistas;
@@ -20,8 +20,6 @@ public class AsignadorDeManzanasFB {
 		// Ordenado de menor a mayor de acuerdo al grado de la manzana (cant vecinos)
 		Collections.sort(manzanas,
 				(p, q) -> radioCensal.gradoManzana(q.getNroManzana()) - radioCensal.gradoManzana(p.getNroManzana()));
-
-//		construirGrupoDeManzanasAsignables(0);
 	}
 
 //Asigna los grupos de manzanas a los censistas
@@ -29,12 +27,12 @@ public class AsignadorDeManzanasFB {
 		/*
 		 * Construir los grupos de manzanas asignables Asignar a censistas
 		 */
-		this.grupos = crearArrayListConCantFijaElementosVacios(radioCensal.cantManzanas());
-		System.out.println(grupos.size());
-		this.gruposActuales = new ArrayList<ArrayList<Manzana>>();
-		this.grupoActual = new ArrayList<Manzana>();
+		this.gruposAsignables = new ArrayList<ArrayList<Manzana>>();
+		this.grupoAsignable = new ArrayList<Manzana>();
+		
 		construirGrupoDeManzanasAsignables(0);
-		return this.grupos;
+		armarSolucion(this.gruposAsignables);
+		return AsignadorDeManzanasFB.solucion;
 	}
 
 	// El criterio para definir que una solucion es mejor que otra es si tiene menos
@@ -44,34 +42,73 @@ public class AsignadorDeManzanasFB {
 //Genera todos los grupos de manzanas asignables posibles y devuelve el de menor tamaño
 	@SuppressWarnings("unchecked")
 	public void construirGrupoDeManzanasAsignables(int nroManzana) {
-//		grupoActual.stream().forEach(m -> System.out.print(m.getNroManzana()));
-//		System.out.println();
 
-		if ((grupoActual.size() <= 3 && grupoActual.size() >= 1) && esCamino(grupoActual)) {
-			System.out.println("Pasa " + grupoActual);
-			gruposActuales.add(grupoActual);
-//			System.out.println("grupos " + grupos);
-		}
-		if (gruposActuales.size() < grupos.size() && gruposActuales.size() > 0) {
-			grupos = clonarGrupos(gruposActuales);
-			System.out.println("grupos actual: " + gruposActuales);
-			System.out.println("grupos: " + grupos);
-		}
-		if (nroManzana == radioCensal.cantManzanas() - 1) {
+		if (nroManzana == radioCensal.cantManzanas()) {
+			if ((grupoAsignable.size() >= 1 && grupoAsignable.size() <= 3) && elemsSonContiguos(grupoAsignable)) {
+				gruposAsignables.add((ArrayList<Manzana>) grupoAsignable.clone());
+			}	
 			return;
 		}
-		grupoActual.add(radioCensal.getManzana(nroManzana));
+
+		grupoAsignable.add(radioCensal.getManzana(nroManzana));
 		construirGrupoDeManzanasAsignables(nroManzana + 1);
 
-		grupoActual.remove(radioCensal.getManzana(nroManzana));
+		grupoAsignable.remove(radioCensal.getManzana(nroManzana));
 		construirGrupoDeManzanasAsignables(nroManzana + 1);
 	}
 
-	public ArrayList<ArrayList<Manzana>> getGrupos() {
-		return grupos;
+	private ArrayList<ArrayList<Manzana>> armarSolucion(ArrayList<ArrayList<Manzana>> grupos) {
+		
+		Collections.sort(grupos, (p, q) -> q.size() - p.size());
+		solucion = new ArrayList<ArrayList<Manzana>>();
+		
+		int indice = 0;
+		int tamanoSolucion = 0;
+		while(tamanoSolucion != radioCensal.cantManzanas()) {
+			ArrayList<Manzana> grupoAsignable = grupos.get(indice);		
+			if(esGrupoValido(grupoAsignable)) {
+				solucion.add(grupoAsignable);
+			}
+				
+			indice++;
+			tamanoSolucion = obtenerTamanoSolucion();
+		}
+		return solucion;
 	}
 
-	private boolean esCamino(ArrayList<Manzana> grupo) {
+	private int obtenerTamanoSolucion() {
+		int tamano = 0;
+		for(ArrayList<Manzana> grupoSolucion : solucion) {
+			tamano += grupoSolucion.size();
+		}
+		return tamano;
+	}
+
+	
+	private static boolean esGrupoValido(ArrayList<Manzana> grupo) {
+		if(solucion.size() == 0)
+			return true;
+		
+		return solucion.stream().allMatch(grupoSolucion -> sonDisjuntos(grupoSolucion, grupo));
+	}
+	private static boolean sonDisjuntos(ArrayList<Manzana> grupo, ArrayList<Manzana> otroGrupo) {
+		ArrayList<Integer> nrosManzanaGrupo = extraerNrosManzana(grupo);
+		ArrayList<Integer> nrosManzanaOtroGrupo = extraerNrosManzana(otroGrupo);
+		
+		return nrosManzanaGrupo.stream().allMatch(n -> !nrosManzanaOtroGrupo.contains(n)) &&
+				nrosManzanaOtroGrupo.stream().allMatch(n -> !nrosManzanaGrupo.contains(n));
+		
+	}
+	
+	private static ArrayList<Integer> extraerNrosManzana(ArrayList<Manzana> manzanas){
+		ArrayList<Integer> nrosManzana = new ArrayList<Integer>();
+		
+		for(Manzana manzana : manzanas)
+			nrosManzana.add(manzana.getNroManzana());
+		
+		return nrosManzana;
+	}
+	private boolean elemsSonContiguos(ArrayList<Manzana> grupo) {
 		if (grupo.size() == 0) {
 			return false;
 		}
@@ -80,16 +117,31 @@ public class AsignadorDeManzanasFB {
 			return true;
 		}
 		if (grupo.size() == 2) {
-			return sonVecinas(grupo.get(0), grupo.get(1));
+			return radioCensal.sonVecinos(grupo.get(0).getNroManzana(), grupo.get(1).getNroManzana());
 		}
 
-		return sonVecinas(grupo.get(0), grupo.get(1)) && sonVecinas(grupo.get(1), grupo.get(2));
+		return sonContiguos(grupo);
 	}
 
-	private boolean sonVecinas(Manzana manzana, Manzana otraManzana) {
-		return radioCensal.manzanasVecinas(manzana.getNroManzana()).contains(otraManzana.getNroManzana());
+	private boolean sonContiguos(ArrayList<Manzana> grupo) {
+		int[] nrosManzanas = grupo.stream().mapToInt(m -> m.getNroManzana()).toArray();
+		
+		// Si algun vertice es vecino de los otros dos, son contiguos
+		if(radioCensal.sonVecinos(nrosManzanas[0], nrosManzanas[1]) && radioCensal.sonVecinos(nrosManzanas[0], nrosManzanas[2])) {
+			return true;
+		}
+		
+		if(radioCensal.sonVecinos(nrosManzanas[1], nrosManzanas[0]) && radioCensal.sonVecinos(nrosManzanas[1], nrosManzanas[2])) {
+			return true;
+		}
+		
+		if(radioCensal.sonVecinos(nrosManzanas[2], nrosManzanas[0]) && radioCensal.sonVecinos(nrosManzanas[2], nrosManzanas[1])) {
+			return true;
+		}
+		
+		return false;
+		
 	}
-
 	private ArrayList<Manzana> obtenerArrayManzanas(RadioCensal radioCensal) {
 		Collection<Manzana> setManzanas = radioCensal.getManzanas().values();
 		return new ArrayList<Manzana>(setManzanas);
@@ -115,13 +167,4 @@ public class AsignadorDeManzanasFB {
 
 		return clon;
 	}
-
-//	private ArrayList<Integer> obtenerNrosManzanas(){
-//		ArrayList<Integer> nrosManzanas = new ArrayList<Integer>();
-//		for(Manzana manzana : manzanas) {
-//			nrosManzanas.add(manzana.getNroManzana());
-//		}
-//		
-//		return nrosManzanas;
-//	}
 }

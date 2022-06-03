@@ -229,7 +229,15 @@ public class MainForm {
 		frame.getContentPane().add(scrollPaneManzanas);
 
 		tablaManzanas = new JTable();
-		modeloTablaManzanas = new DefaultTableModel(new Object[][] {}, new String[] { "Nro Manzana", "Coordenadas" });
+		tablaManzanas.setFocusable(false);
+		tablaManzanas.setRowSelectionAllowed(false);
+		modeloTablaManzanas = new DefaultTableModel(new Object[][] {}, new String[] { "Nro Manzana", "Coordenadas" }) {
+			@Override
+			public boolean isCellEditable(int row, int column) {
+			       //all cells false
+			       return false;
+			    }
+		};
 		tablaManzanas.setModel(modeloTablaManzanas);
 
 		tablaManzanas.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
@@ -247,11 +255,19 @@ public class MainForm {
 		frame.getContentPane().add(scrollPaneCensistas);
 
 		tablaCensistas = new JTable();
+		tablaCensistas.setFocusable(false);
+		tablaCensistas.setRowSelectionAllowed(false);
 		tablaCensistas.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		tablaCensistas.setBounds(33, 27, 127, 162);
 		tablaCensistas.setDefaultRenderer(Object.class, new ImagenTabla());
 		modeloTablaCensistas = new DefaultTableModel(new Object[][] {},
-				new String[] { "Nombre censista", "Foto censista", "Manzana/s asignada/s" });
+				new String[] { "Nombre censista", "Foto censista", "Manzana/s asignada/s" }) {
+			@Override
+			public boolean isCellEditable(int row, int column) {
+			       //all cells false
+			       return false;
+			    }
+		};
 
 		tablaCensistas.setModel(modeloTablaCensistas);
 		tablaCensistas.getTableHeader().setReorderingAllowed(false);
