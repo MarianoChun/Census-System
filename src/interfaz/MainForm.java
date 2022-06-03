@@ -47,10 +47,11 @@ import javax.swing.ListSelectionModel;
 import java.awt.Font;
 import javax.swing.JProgressBar;
 import java.awt.event.MouseEvent;
+import javax.swing.JScrollBar;
 
 public class MainForm {
 
-	private JFrame frame;
+	private JFrame frmAsignadorDeCensistas;
 	private CargadorCensistas cargadorCensistas;
 	private CargadorManzanas cargadorManzanas;
 	private DefaultTableModel modeloTablaCensistas;
@@ -72,7 +73,7 @@ public class MainForm {
 			public void run() {
 				try {
 					MainForm window = new MainForm();
-					window.frame.setVisible(true);
+					window.frmAsignadorDeCensistas.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -100,6 +101,7 @@ public class MainForm {
 		crearTablaManzanas();
 
 		btnAsignarManzanasAG = new JButton("Asignar manzanas a censistas (Goloso)");
+		btnAsignarManzanasAG.setEnabled(false);
 		btnAsignarManzanasAG.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
@@ -109,10 +111,9 @@ public class MainForm {
 				mostrarCensistasEnTabla(censistasAsignados);
 			}
 		});
-		btnAsignarManzanasAG.setEnabled(false);
 		btnAsignarManzanasAG.setFont(new Font("Verdana", Font.PLAIN, 13));
-		btnAsignarManzanasAG.setBounds(128, 709, 367, 34);
-		frame.getContentPane().add(btnAsignarManzanasAG);
+		btnAsignarManzanasAG.setBounds(115, 666, 378, 34);
+		frmAsignadorDeCensistas.getContentPane().add(btnAsignarManzanasAG);
 
 		btnAsignarManzanasFB = new JButton("Asignar manzanas a censistas (Fuerza bruta)");
 		btnAsignarManzanasFB.addActionListener(new ActionListener() {
@@ -126,12 +127,12 @@ public class MainForm {
 		
 		btnAsignarManzanasFB.setFont(new Font("Verdana", Font.PLAIN, 13));
 		btnAsignarManzanasFB.setEnabled(false);
-		btnAsignarManzanasFB.setBounds(519, 709, 367, 34);
-		frame.getContentPane().add(btnAsignarManzanasFB);
+		btnAsignarManzanasFB.setBounds(496, 666, 367, 34);
+		frmAsignadorDeCensistas.getContentPane().add(btnAsignarManzanasFB);
 		
 		JButton btnCargarCensistas = new JButton("Cargar censistas");
 		btnCargarCensistas.setFont(new Font("Verdana", Font.PLAIN, 13));
-		btnCargarCensistas.setBounds(295, 664, 200, 34);
+		btnCargarCensistas.setBounds(293, 631, 200, 34);
 		btnCargarCensistas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
@@ -173,7 +174,7 @@ public class MainForm {
 				habilitarBtnsAsignarManzanas();
 			}
 		});
-		frame.getContentPane().add(btnCargarCensistas);
+		frmAsignadorDeCensistas.getContentPane().add(btnCargarCensistas);
 
 		JButton btnCargarManzanas = new JButton("Cargar manzanas");
 		btnCargarManzanas.addActionListener(new ActionListener() {
@@ -219,27 +220,29 @@ public class MainForm {
 			}
 		});
 		btnCargarManzanas.setFont(new Font("Verdana", Font.PLAIN, 13));
-		btnCargarManzanas.setBounds(519, 664, 200, 34);
-		frame.getContentPane().add(btnCargarManzanas);
+		btnCargarManzanas.setBounds(496, 631, 200, 34);
+		frmAsignadorDeCensistas.getContentPane().add(btnCargarManzanas);
 
 		JProgressBar progressBar = new JProgressBar();
 		progressBar.setForeground(new Color(204, 255, 51));
-		progressBar.setBounds(395, 628, 200, 25);
-		frame.getContentPane().add(progressBar);
+		progressBar.setBounds(293, 606, 403, 14);
+		frmAsignadorDeCensistas.getContentPane().add(progressBar);
 
 	}
 
 	private void crearFramePrincipal() {
-		frame = new JFrame();
-		frame.setBounds(100, 100, 1094, 805);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(null);
+		frmAsignadorDeCensistas = new JFrame();
+		frmAsignadorDeCensistas.setTitle("Asignador de censistas");
+		frmAsignadorDeCensistas.setResizable(false);
+		frmAsignadorDeCensistas.setBounds(100, 100, 1094, 805);
+		frmAsignadorDeCensistas.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmAsignadorDeCensistas.getContentPane().setLayout(null);	
 	}
 
 	private void crearTablaManzanas() {
 		JScrollPane scrollPaneManzanas = new JScrollPane();
-		scrollPaneManzanas.setBounds(519, 27, 549, 227);
-		frame.getContentPane().add(scrollPaneManzanas);
+		scrollPaneManzanas.setBounds(496, 11, 549, 227);
+		frmAsignadorDeCensistas.getContentPane().add(scrollPaneManzanas);
 
 		tablaManzanas = new JTable();
 		tablaManzanas.setFocusable(false);
@@ -264,8 +267,8 @@ public class MainForm {
 
 	private void crearTablaCencistas() {
 		JScrollPane scrollPaneCensistas = new JScrollPane();
-		scrollPaneCensistas.setBounds(65, 27, 409, 227);
-		frame.getContentPane().add(scrollPaneCensistas);
+		scrollPaneCensistas.setBounds(31, 11, 409, 227);
+		frmAsignadorDeCensistas.getContentPane().add(scrollPaneCensistas);
 
 		tablaCensistas = new JTable();
 		tablaCensistas.setFocusable(false);
@@ -295,8 +298,8 @@ public class MainForm {
 
 	private void crearMapa() {
 		JPanel panelMapa = new JPanel();
-		panelMapa.setBounds(213, 265, 561, 352);
-		frame.getContentPane().add(panelMapa);
+		panelMapa.setBounds(213, 243, 561, 352);
+		frmAsignadorDeCensistas.getContentPane().add(panelMapa);
 
 		mapa = new JMapViewer();
 		mapa.setScrollWrapEnabled(true);
