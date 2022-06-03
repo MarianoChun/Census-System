@@ -105,18 +105,8 @@ public class MainForm {
 
 				ArrayList<Censista> instanciaCensistas = clonarCensistas(cargadorCensistas.getCensistasArray());
 				ArrayList<Censista> censistasAsignados = new Sistema(radioCensal, instanciaCensistas)
-						.obtenerCensistasAsignados();
-				ArrayList<Manzana> manzanasAsignadas = new ArrayList<>();
-				removerRegistrosTabla(modeloTablaCensistas);
-
-				for (Censista censista : censistasAsignados) {
-					manzanasAsignadas = censista.getManzanasAsignadas();
-					ImageIcon fotoCensista = new ImageIcon(setTamanoFotoCensista(censista, 40, 40));
-					JLabel fotoAColocar = setFotoEnLabel(fotoCensista);
-
-					modeloTablaCensistas.addRow(new Object[] { censista.getNombre(), fotoAColocar,
-							obtenerValoresStringManzanas(manzanasAsignadas) });
-				}
+						.obtenerCensistasAsignadosGoloso();
+				mostrarCensistasEnTabla(censistasAsignados);
 			}
 		});
 		btnAsignarManzanasAG.setEnabled(false);
@@ -124,6 +114,21 @@ public class MainForm {
 		btnAsignarManzanasAG.setBounds(128, 709, 367, 34);
 		frame.getContentPane().add(btnAsignarManzanasAG);
 
+		btnAsignarManzanasFB = new JButton("Asignar manzanas a censistas (Fuerza bruta)");
+		btnAsignarManzanasFB.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ArrayList<Censista> instanciaCensistas = clonarCensistas(cargadorCensistas.getCensistasArray());
+				ArrayList<Censista> censistasAsignados = new Sistema(radioCensal, instanciaCensistas)
+						.obtenerCensistasAsignadosFB();
+				mostrarCensistasEnTabla(censistasAsignados);
+			}
+		});
+		
+		btnAsignarManzanasFB.setFont(new Font("Verdana", Font.PLAIN, 13));
+		btnAsignarManzanasFB.setEnabled(false);
+		btnAsignarManzanasFB.setBounds(519, 709, 367, 34);
+		frame.getContentPane().add(btnAsignarManzanasFB);
+		
 		JButton btnCargarCensistas = new JButton("Cargar censistas");
 		btnCargarCensistas.setFont(new Font("Verdana", Font.PLAIN, 13));
 		btnCargarCensistas.setBounds(295, 664, 200, 34);
@@ -221,17 +226,6 @@ public class MainForm {
 		progressBar.setForeground(new Color(204, 255, 51));
 		progressBar.setBounds(395, 628, 200, 25);
 		frame.getContentPane().add(progressBar);
-		
-		btnAsignarManzanasFB = new JButton("Asignar manzanas a censistas (Fuerza bruta)");
-		btnAsignarManzanasFB.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		
-		btnAsignarManzanasFB.setFont(new Font("Verdana", Font.PLAIN, 13));
-		btnAsignarManzanasFB.setEnabled(false);
-		btnAsignarManzanasFB.setBounds(519, 709, 367, 34);
-		frame.getContentPane().add(btnAsignarManzanasFB);
 
 	}
 
@@ -405,6 +399,20 @@ public class MainForm {
 	private void limpiarMapaDePolygonsYMarkers() {
 		mapa.removeAllMapPolygons();
 		mapa.removeAllMapMarkers();
+	}
+
+	private void mostrarCensistasEnTabla(ArrayList<Censista> censistas) {
+		ArrayList<Manzana> manzanasAsignadas;
+		removerRegistrosTabla(modeloTablaCensistas);
+
+		for (Censista censista : censistas) {
+			manzanasAsignadas = censista.getManzanasAsignadas();
+			ImageIcon fotoCensista = new ImageIcon(setTamanoFotoCensista(censista, 40, 40));
+			JLabel fotoAColocar = setFotoEnLabel(fotoCensista);
+
+			modeloTablaCensistas.addRow(new Object[] { censista.getNombre(), fotoAColocar,
+					obtenerValoresStringManzanas(manzanasAsignadas) });
+		}
 	}
 
 	public class ImagenTabla extends DefaultTableCellRenderer {

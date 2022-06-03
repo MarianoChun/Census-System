@@ -20,10 +20,11 @@ public class AsignadorDeManzanasFB {
 		// Ordenado de menor a mayor de acuerdo al grado de la manzana (cant vecinos)
 		Collections.sort(manzanas,
 				(p, q) -> radioCensal.gradoManzana(q.getNroManzana()) - radioCensal.gradoManzana(p.getNroManzana()));
+		asignarManzanasACensistas();
 	}
 
 //Asigna los grupos de manzanas a los censistas
-	public ArrayList<ArrayList<Manzana>> asignarManzanasACensistas() {
+	private void asignarManzanasACensistas() {
 		/*
 		 * Construir los grupos de manzanas asignables Asignar a censistas
 		 */
@@ -32,7 +33,16 @@ public class AsignadorDeManzanasFB {
 		
 		construirGrupoDeManzanasAsignables(0);
 		armarSolucion(this.gruposAsignables);
-		return AsignadorDeManzanasFB.solucion;
+		
+		int indice = 0;
+		for (ArrayList<Manzana> grupoManzana : solucion) {
+			if (censistas.size() == indice) {
+				break;
+			}
+
+			censistas.get(indice).asignarManzanas(grupoManzana);
+			indice++;
+		}
 	}
 
 	// El criterio para definir que una solucion es mejor que otra es si tiene menos
@@ -147,24 +157,28 @@ public class AsignadorDeManzanasFB {
 		return new ArrayList<Manzana>(setManzanas);
 	}
 
-	private ArrayList<ArrayList<Manzana>> crearArrayListConCantFijaElementosVacios(int cantElementosVacios) {
-		ArrayList<ArrayList<Manzana>> ret = new ArrayList<ArrayList<Manzana>>();
-		for (int i = 0; i < cantElementosVacios; i++)
-			ret.add(null);
-		return ret;
-	}
-
-	private static ArrayList<ArrayList<Manzana>> clonarGrupos(ArrayList<ArrayList<Manzana>> grupos) {
-		ArrayList<ArrayList<Manzana>> clon = new ArrayList<ArrayList<Manzana>>();
-		grupos.stream().forEach(a -> clon.add(clonarGrupo(a)));
-
-		return clon;
-	}
+//	private ArrayList<ArrayList<Manzana>> crearArrayListConCantFijaElementosVacios(int cantElementosVacios) {
+//		ArrayList<ArrayList<Manzana>> ret = new ArrayList<ArrayList<Manzana>>();
+//		for (int i = 0; i < cantElementosVacios; i++)
+//			ret.add(null);
+//		return ret;
+//	}
+//
+//	private static ArrayList<ArrayList<Manzana>> clonarGrupos(ArrayList<ArrayList<Manzana>> grupos) {
+//		ArrayList<ArrayList<Manzana>> clon = new ArrayList<ArrayList<Manzana>>();
+//		grupos.stream().forEach(a -> clon.add(clonarGrupo(a)));
+//
+//		return clon;
+//	}
 
 	private static ArrayList<Manzana> clonarGrupo(ArrayList<Manzana> grupo) {
 		ArrayList<Manzana> clon = new ArrayList<Manzana>();
 		grupo.stream().forEach(m -> clon.add(m.clone()));
 
 		return clon;
+	}
+	
+	public ArrayList<Censista> getCensistas() {
+		return new ArrayList<Censista>(censistas);
 	}
 }

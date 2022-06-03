@@ -32,16 +32,16 @@ public class asignadorFB {
 
 		AsignadorDeManzanasFB asignador = new AsignadorDeManzanasFB(null, radioCensal);
 
-		ArrayList<ArrayList<Manzana>> gruposAsignables = asignador.asignarManzanasACensistas();
-		System.out.print("La solucion por FB es: ");
-		for (ArrayList<Manzana> manzanas : gruposAsignables) {
-			System.out.print("[");
-			for (Manzana manzana : manzanas) {
-				System.out.print(manzana.getNroManzana());
-			}
-			System.out.print("], ");
-		}
-		System.out.print("\n");
+//		ArrayList<ArrayList<Manzana>> gruposAsignables = asignador.asignarManzanasACensistas();
+//		System.out.print("La solucion por FB es: ");
+//		for (ArrayList<Manzana> manzanas : gruposAsignables) {
+//			System.out.print("[");
+//			for (Manzana manzana : manzanas) {
+//				System.out.print(manzana.getNroManzana());
+//			}
+//			System.out.print("], ");
+//		}
+//		System.out.print("\n");
 	}
 
 }
