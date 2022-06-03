@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
-public class AsignadorDeManzanasFB {
+import javax.swing.SwingWorker;
+
+public class AsignadorDeManzanasFB{
 	private RadioCensal radioCensal;
 	private ArrayList<Censista> censistas;
 	private ArrayList<Manzana> manzanas;
