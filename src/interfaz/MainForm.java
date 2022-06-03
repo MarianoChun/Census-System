@@ -229,7 +229,7 @@ public class MainForm {
 			}
 		});
 		btnAsignarManzanasAG.setFont(new Font("Verdana", Font.PLAIN, 13));
-		btnAsignarManzanasAG.setBounds(115, 666, 378, 34);
+		btnAsignarManzanasAG.setBounds(115, 687, 378, 34);
 		frmAsignadorDeCensistas.getContentPane().add(btnAsignarManzanasAG);
 	}
 
@@ -246,7 +246,7 @@ public class MainForm {
 		
 		btnAsignarManzanasFB.setFont(new Font("Verdana", Font.PLAIN, 13));
 		btnAsignarManzanasFB.setEnabled(false);
-		btnAsignarManzanasFB.setBounds(496, 666, 367, 34);
+		btnAsignarManzanasFB.setBounds(497, 687, 367, 34);
 		frmAsignadorDeCensistas.getContentPane().add(btnAsignarManzanasFB);
 	}
 
