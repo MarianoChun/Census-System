@@ -94,11 +94,6 @@ public class AsignadorDeManzanasGolosoTest {
 		ArrayList<Manzana> manzanasAsignadasMonica = censistas.get(2).getManzanasAsignadas();
 		ArrayList<Manzana> manzanasAsignadasNahuel = censistas.get(3).getManzanasAsignadas();
 
-//		System.out.println(manzanasAsignadasJuan);
-//		System.out.println(manzanasAsignadasTito);
-//		System.out.println(manzanasAsignadasMonica);
-//		System.out.println(manzanasAsignadasNahuel);
-
 		ArrayList<Manzana> manzanasEsperadasJuan = new ArrayList<Manzana>();
 		manzanasEsperadasJuan.add(new Manzana(2));
 		manzanasEsperadasJuan.add(new Manzana(3));
@@ -123,19 +118,6 @@ public class AsignadorDeManzanasGolosoTest {
 			ArrayList<Manzana> manzanasAsignadasCensista = censista.getManzanasAsignadas();
 			manzanasAsignadasCensista.sort((p, q) -> p.getNroManzana() - q.getNroManzana());
 		}
-
-		// Imprime las manzanas asignadas de cada cencista que tenga alguna asignada.
-//		int i = 0;
-//		for(Censista censista : censistas) {
-//			if(censista.getManzanasAsignadas().size() == 0) {
-//				break;
-//			}
-//			ArrayList<Manzana> manzanasAsignadasCensista  = censista.getManzanasAsignadas();
-//			manzanasAsignadasCensista.sort((p,q) -> p.getNroManzana() - q.getNroManzana());
-//			System.out.println("censista nro: " + i + " " + manzanasAsignadasCensista.toString());
-//			i++;
-//			
-//		}
 
 		assertTrue(manzanasAsignadasJuan.equals(manzanasEsperadasJuan));
 		assertTrue(manzanasAsignadasTito.equals(manzanasEsperadasTito));
