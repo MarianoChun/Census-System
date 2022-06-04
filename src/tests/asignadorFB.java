@@ -51,6 +51,8 @@ public class asignadorFB {
 		radioCensal.agregarManzanaContigua(new Manzana(7), new Manzana(8));
 		// ------
 		
+		System.out.println(new AsignadorDeManzanasFB(censistas, radioCensal).getRecorridos());
+		
 		ArrayList<Censista> censistasAsignados = new Sistema(radioCensal, censistas).obtenerCensistasAsignadosFB();
 
 		ArrayList<Manzana> manzanasAsignadasJuan = censistasAsignados.get(0).getManzanasAsignadas();
@@ -73,6 +75,7 @@ public class asignadorFB {
 		manzanasEsperadasMonica.add(new Manzana(8));
 
 		ordenarManzanasAsignadasDeMenorAMayor();
+		
 		
 		assertTrue(manzanasAsignadasJuan.equals(manzanasEsperadasJuan));
 		assertTrue(manzanasAsignadasTito.equals(manzanasEsperadasTito));

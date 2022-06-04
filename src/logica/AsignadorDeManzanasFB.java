@@ -14,7 +14,11 @@ public class AsignadorDeManzanasFB{
 	private ArrayList<ArrayList<Manzana>> gruposAsignables;
 	private ArrayList<Manzana> grupoAsignable;
 	private static ArrayList<ArrayList<Manzana>> solucion;
+	
+	private ArrayList<ArrayList<Manzana>> recorridosActual;
+	private ArrayList<ArrayList<Manzana>> recorridos;
 
+	
 	public AsignadorDeManzanasFB(ArrayList<Censista> censistas, RadioCensal radioCensal) {
 		this.censistas = censistas;
 		this.radioCensal = radioCensal;
@@ -33,7 +37,17 @@ public class AsignadorDeManzanasFB{
 		this.gruposAsignables = new ArrayList<ArrayList<Manzana>>();
 		this.grupoAsignable = new ArrayList<Manzana>();
 		
+		
+		
 		construirGrupoDeManzanasAsignables(0);
+		
+//		Intento de otro algoritmo de FB
+		Collections.sort(gruposAsignables, (p, q) -> q.size() - p.size());
+		this.recorridosActual= new ArrayList<ArrayList<Manzana>>();
+		this.recorridos = armarSolucion(this.gruposAsignables);
+		construirGrupoDeRecorridos(0);
+//		
+		
 		armarSolucion(this.gruposAsignables);
 		
 		int indice = 0;
@@ -69,6 +83,24 @@ public class AsignadorDeManzanasFB{
 		construirGrupoDeManzanasAsignables(nroManzana + 1);
 	}
 
+/*	Genera todos los grupos de recorridos posibles y solo almacena el que es mejor a la solución trivial
+ * y tiene tamaño almenos 1 y hasta cantManzanas / 3
+ */
+	public void construirGrupoDeRecorridos(int indiceRecorridos) {
+		
+		if(indiceRecorridos == gruposAsignables.size()-1)
+			return;
+		if(recorridosActual.size() < recorridos.size() && recorridosActual.size() >= 1 && recorridosActual.size() <= (int) radioCensal.cantManzanas()/3) {
+			recorridos = (ArrayList<ArrayList<Manzana>>) recorridosActual.clone();
+		}
+		
+		recorridosActual.add(gruposAsignables.get(indiceRecorridos));
+		construirGrupoDeRecorridos(indiceRecorridos+1);
+		
+		recorridosActual.remove(gruposAsignables.get(indiceRecorridos));
+		construirGrupoDeRecorridos(indiceRecorridos+1);
+	}
+	
 	private ArrayList<ArrayList<Manzana>> armarSolucion(ArrayList<ArrayList<Manzana>> grupos) {
 		
 		Collections.sort(grupos, (p, q) -> q.size() - p.size());
@@ -182,5 +214,9 @@ public class AsignadorDeManzanasFB{
 	
 	public ArrayList<Censista> getCensistas() {
 		return new ArrayList<Censista>(censistas);
+	}
+	
+	public ArrayList<ArrayList<Manzana>> getRecorridos(){
+		return recorridos;
 	}
 }
