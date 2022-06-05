@@ -54,7 +54,7 @@ public class AsignadorGolosoSW extends SwingWorker<ArrayList<Censista>, Object> 
 		if (this.isCancelled() == false) {
 			progressBar.setIndeterminate(false);
 			FuncionesAuxiliares.mostrarCensistasEnTabla(modeloTablaCensistas, censistasAsignados);
-			progressBar.setBackground(Color.GREEN);
+			progressBar.setBackground(new Color(204, 255, 51));
 		} else if (this.isCancelled()) {
 			progressBar.setIndeterminate(false);
 			progressBar.setBackground(Color.RED);

@@ -37,6 +37,7 @@ import java.awt.Color;
 import java.awt.Component;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
@@ -113,23 +114,41 @@ public class MainForm {
 
 		crearBarraDeProgreso();
 
+		crearBotonCancelar();
+	}
+
+	private void crearBotonCancelar() {
 		btnCancelar = new JButton("Cancelar");
 		btnCancelar.setFont(new Font("Verdana", Font.PLAIN, 13));
 		btnCancelar.setEnabled(false);
+		btnCancelar.setBounds(470, 721, 132, 34);
 		btnCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (asignadorFBSWon) {
-					asignadorFBSW.cancel(true);
-					asignadorFBSWon = false;
-				}
-				if (asignadorGolosoSWon) {
-					asignadorGolosoSW.cancel(true);
-					asignadorGolosoSWon = false;
-				}
+				ventanaCancelarEjecucion();
 			}
 		});
-		btnCancelar.setBounds(470, 721, 132, 34);
 		frmAsignadorDeCensistas.getContentPane().add(btnCancelar);
+	}
+	
+	private void ventanaCancelarEjecucion() {
+		int opcion = JOptionPane.showConfirmDialog(frmAsignadorDeCensistas, "¿Estás seguro?, se perdera todo el progreso", "",
+				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null);
+
+		if (opcion == 0) {
+			cancelarEjecucion();
+		}	
+	}
+
+	private void cancelarEjecucion() {
+		if (asignadorFBSWon) {
+				asignadorFBSW.cancel(true);
+				asignadorFBSWon = false;
+		}
+		if (asignadorGolosoSWon) {
+				asignadorGolosoSW.cancel(true);
+				asignadorGolosoSWon = false;
+		}
+		
 	}
 
 	@SuppressWarnings("deprecation")
@@ -249,7 +268,6 @@ public class MainForm {
 		btnAsignarManzanasAG.addActionListener(new ActionListener() {
 			@SuppressWarnings("deprecation")
 			public void actionPerformed(ActionEvent e) {
-				modeloTablaCensistas.setRowCount(0);
 				ArrayList<Censista> instanciaCensistas = clonarCensistas(cargadorCensistas.getCensistasArray());
 				ArrayList<Censista> censistasAsignados = new ArrayList<Censista>();
 				progressBar.show(true);
@@ -271,7 +289,6 @@ public class MainForm {
 		btnAsignarManzanasFB.addActionListener(new ActionListener() {
 			@SuppressWarnings("deprecation")
 			public void actionPerformed(ActionEvent e) {
-				modeloTablaCensistas.setRowCount(0);
 				ArrayList<Censista> instanciaCensistas = clonarCensistas(cargadorCensistas.getCensistasArray());
 				ArrayList<Censista> censistasAsignados = new ArrayList<Censista>();
 				progressBar.show(true);
