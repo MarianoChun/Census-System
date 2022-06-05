@@ -69,6 +69,7 @@ public class MainForm {
 	private JButton btnAsignarManzanasFB;
 	private JProgressBar progressBar;
 	private ThreadTime threadTiempo;
+//	private ArrayList<Censista> censistasAsignados = new ArrayList<Censista>();
 
 	/**
 	 * Launch the application.
@@ -250,14 +251,15 @@ public class MainForm {
 				
 				ArrayList<Censista> instanciaCensistas = clonarCensistas(cargadorCensistas.getCensistasArray());
 				ArrayList<Censista> censistasAsignados = new ArrayList<Censista>();
-				AsignadorFBSW asignadorFBSW = new AsignadorFBSW(progressBar, censistasAsignados, radioCensal.clone());
+				AsignadorFBSW asignadorFBSW = new AsignadorFBSW(instanciaCensistas, censistasAsignados, radioCensal, progressBar, tablaCensistas, modeloTablaCensistas);
 				asignadorFBSW.execute();
+//				System.out.println(censistasAsignados.size());
+//				
+//				mostrarCensistasEnTabla(censistasAsignados);
 				
-				mostrarCensistasEnTabla(censistasAsignados);
-				
-				long tiempoFinal = threadTiempo.getTiempoActualMs();
-				long tiempoAlgoritmo = (tiempoFinal - tiempoInicial);
-				popUpInfoTiempoDeEjecución(tiempoAlgoritmo);
+//				long tiempoFinal = threadTiempo.getTiempoActualMs();
+//				long tiempoAlgoritmo = (tiempoFinal - tiempoInicial);
+//				popUpInfoTiempoDeEjecución(tiempoAlgoritmo);
 			}
 		});
 		
