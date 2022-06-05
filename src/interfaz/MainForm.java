@@ -68,7 +68,6 @@ public class MainForm {
 	private JButton btnAsignarManzanasAG;
 	private JButton btnAsignarManzanasFB;
 	private JProgressBar progressBar;
-	private ThreadTime threadTiempo;
 //	private ArrayList<Censista> censistasAsignados = new ArrayList<Censista>();
 
 	/**
@@ -99,8 +98,7 @@ public class MainForm {
 	 */
 	private void initialize() {
 		crearFramePrincipal();
-		threadTiempo = new ThreadTime();
-		threadTiempo.start();
+	
 		crearMapa();
 
 		crearTablaCencistas();
@@ -226,16 +224,16 @@ public class MainForm {
 		btnAsignarManzanasAG.setEnabled(false);
 		btnAsignarManzanasAG.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				long tiempoInicial = threadTiempo.getTiempoActualMs();
-				
-				ArrayList<Censista> instanciaCensistas = clonarCensistas(cargadorCensistas.getCensistasArray());
-				ArrayList<Censista> censistasAsignados = new Sistema(radioCensal, instanciaCensistas)
-						.obtenerCensistasAsignadosGoloso();
-				mostrarCensistasEnTabla(censistasAsignados);
-				
-				long tiempoFinal = threadTiempo.getTiempoActualMs();
-				long tiempoAlgoritmo = (tiempoFinal - tiempoInicial);
-				popUpInfoTiempoDeEjecución(tiempoAlgoritmo);
+//				long tiempoInicial = threadTiempo.getTiempoActualMs();
+//				
+//				ArrayList<Censista> instanciaCensistas = clonarCensistas(cargadorCensistas.getCensistasArray());
+//				ArrayList<Censista> censistasAsignados = new Sistema(radioCensal, instanciaCensistas)
+//						.obtenerCensistasAsignadosGoloso();
+//				mostrarCensistasEnTabla(censistasAsignados);
+//				
+//				long tiempoFinal = threadTiempo.getTiempoActualMs();
+//				long tiempoAlgoritmo = (tiempoFinal - tiempoInicial);
+//				popUpInfoTiempoDeEjecución(tiempoAlgoritmo);
 			}
 		});
 		btnAsignarManzanasAG.setFont(new Font("Verdana", Font.PLAIN, 13));
@@ -247,19 +245,16 @@ public class MainForm {
 		btnAsignarManzanasFB = new JButton("Asignar manzanas a censistas (Fuerza bruta)");
 		btnAsignarManzanasFB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				long tiempoInicial = threadTiempo.getTiempoActualMs();
-				
 				ArrayList<Censista> instanciaCensistas = clonarCensistas(cargadorCensistas.getCensistasArray());
 				ArrayList<Censista> censistasAsignados = new ArrayList<Censista>();
-				AsignadorFBSW asignadorFBSW = new AsignadorFBSW(instanciaCensistas, censistasAsignados, radioCensal, progressBar, tablaCensistas, modeloTablaCensistas);
+				AsignadorFBSW asignadorFBSW = new AsignadorFBSW(instanciaCensistas, 
+																censistasAsignados, 
+																radioCensal, 
+																progressBar, 
+																tablaCensistas, 
+																modeloTablaCensistas, 
+																frmAsignadorDeCensistas);
 				asignadorFBSW.execute();
-//				System.out.println(censistasAsignados.size());
-//				
-//				mostrarCensistasEnTabla(censistasAsignados);
-				
-//				long tiempoFinal = threadTiempo.getTiempoActualMs();
-//				long tiempoAlgoritmo = (tiempoFinal - tiempoInicial);
-//				popUpInfoTiempoDeEjecución(tiempoAlgoritmo);
 			}
 		});
 		
@@ -269,12 +264,7 @@ public class MainForm {
 		frmAsignadorDeCensistas.getContentPane().add(btnAsignarManzanasFB);
 	}
 
-	private void popUpInfoTiempoDeEjecución(long tiempo) {
-		StringBuilder str = new StringBuilder();
-
-		JOptionPane.showMessageDialog(frmAsignadorDeCensistas,
-				str.append("El tiempo de ejecución del algoritmo fue: ").append(tiempo).append(" ms."));
-	}
+	
 	
 	private void crearFramePrincipal() {
 		frmAsignadorDeCensistas = new JFrame();
