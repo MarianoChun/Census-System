@@ -70,7 +70,10 @@ public class MainForm {
 	private JButton btnCancelar;
 	private JProgressBar progressBar;
 	private AsignadorFBSW asignadorFBSW;
-
+	private AsignadorGolosoSW asignadorGolosoSW;
+	private boolean asignadorFBSWon;
+	private boolean asignadorGolosoSWon;
+	
 	/**
 	 * Launch the application.
 	 */
@@ -126,7 +129,14 @@ public class MainForm {
 		btnCancelar.setEnabled(false);
 		btnCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				asignadorFBSW.cancel(true);
+				if(asignadorFBSWon) {
+					asignadorFBSW.cancel(true);
+					asignadorFBSWon = false;
+				}
+				if(asignadorGolosoSWon) {
+					asignadorGolosoSW.cancel(true);
+					asignadorGolosoSWon = false;
+				}
 			}
 		});
 		btnCancelar.setBounds(827, 687, 132, 34);
@@ -235,16 +245,20 @@ public class MainForm {
 		btnAsignarManzanasAG.setEnabled(false);
 		btnAsignarManzanasAG.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-//				long tiempoInicial = threadTiempo.getTiempoActualMs();
-//				
-//				ArrayList<Censista> instanciaCensistas = clonarCensistas(cargadorCensistas.getCensistasArray());
-//				ArrayList<Censista> censistasAsignados = new Sistema(radioCensal, instanciaCensistas)
-//						.obtenerCensistasAsignadosGoloso();
-//				mostrarCensistasEnTabla(censistasAsignados);
-//				
-//				long tiempoFinal = threadTiempo.getTiempoActualMs();
-//				long tiempoAlgoritmo = (tiempoFinal - tiempoInicial);
-//				popUpInfoTiempoDeEjecución(tiempoAlgoritmo);
+				
+				ArrayList<Censista> instanciaCensistas = clonarCensistas(cargadorCensistas.getCensistasArray());
+				ArrayList<Censista> censistasAsignados = new ArrayList<Censista>();
+				progressBar.setBackground(Color.WHITE);
+				asignadorGolosoSW = new AsignadorGolosoSW(instanciaCensistas, 
+												  censistasAsignados, 
+												  radioCensal, 
+												  progressBar, 
+												  tablaCensistas, 
+												  modeloTablaCensistas, 
+												  frmAsignadorDeCensistas);
+				asignadorGolosoSW.execute();
+				btnCancelar.setEnabled(true);
+				asignadorGolosoSWon = true;
 			}
 		});
 		btnAsignarManzanasAG.setFont(new Font("Verdana", Font.PLAIN, 13));
@@ -269,6 +283,7 @@ public class MainForm {
 												  frmAsignadorDeCensistas);
 				asignadorFBSW.execute();
 				btnCancelar.setEnabled(true);
+				asignadorFBSWon = true;
 			}
 		});
 		btnAsignarManzanasFB.setFont(new Font("Verdana", Font.PLAIN, 13));
