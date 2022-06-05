@@ -42,10 +42,10 @@ public class AsignadorDeManzanasFB{
 		construirManzanasAsignables(0);
 		
 //		Intento de otro algoritmo de FB
-		Collections.sort(gruposDeManzanasAsignables, (p, q) -> q.size() - p.size());
-		this.recorridosActual= new ArrayList<ArrayList<Manzana>>();
-		this.recorridos = construirSolucion(this.gruposDeManzanasAsignables);
-		construirGrupoDeRecorridos(0);
+//		Collections.sort(gruposDeManzanasAsignables, (p, q) -> q.size() - p.size());
+//		this.recorridosActual= new ArrayList<ArrayList<Manzana>>();
+//		this.recorridos = construirSolucion(this.gruposDeManzanasAsignables);
+//		construirGrupoDeRecorridos(0);
 //		
 		
 		construirSolucion(this.gruposDeManzanasAsignables);

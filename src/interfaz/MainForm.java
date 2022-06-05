@@ -249,8 +249,10 @@ public class MainForm {
 				long tiempoInicial = threadTiempo.getTiempoActualMs();
 				
 				ArrayList<Censista> instanciaCensistas = clonarCensistas(cargadorCensistas.getCensistasArray());
-				ArrayList<Censista> censistasAsignados = new Sistema(radioCensal, instanciaCensistas)
-						.obtenerCensistasAsignadosFB();
+				ArrayList<Censista> censistasAsignados = new ArrayList<Censista>();
+				AsignadorFBSW asignadorFBSW = new AsignadorFBSW(progressBar, censistasAsignados, radioCensal.clone());
+				asignadorFBSW.execute();
+				
 				mostrarCensistasEnTabla(censistasAsignados);
 				
 				long tiempoFinal = threadTiempo.getTiempoActualMs();
