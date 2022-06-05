@@ -67,8 +67,9 @@ public class MainForm {
 	private JMapViewer mapa;
 	private JButton btnAsignarManzanasAG;
 	private JButton btnAsignarManzanasFB;
+	private JButton btnCancelar;
 	private JProgressBar progressBar;
-//	private ArrayList<Censista> censistasAsignados = new ArrayList<Censista>();
+	private AsignadorFBSW asignadorFBSW;
 
 	/**
 	 * Launch the application.
@@ -120,6 +121,16 @@ public class MainForm {
 		progressBar.setValue(0);
 		progressBar.setStringPainted(true); 
 		frmAsignadorDeCensistas.getContentPane().add(progressBar);
+		
+		btnCancelar = new JButton("Cancelar");
+		btnCancelar.setEnabled(false);
+		btnCancelar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				asignadorFBSW.cancel(true);
+			}
+		});
+		btnCancelar.setBounds(827, 687, 132, 34);
+		frmAsignadorDeCensistas.getContentPane().add(btnCancelar);
 	}
 	
 	private void crearBotonCargarManzanas() {
@@ -237,7 +248,7 @@ public class MainForm {
 			}
 		});
 		btnAsignarManzanasAG.setFont(new Font("Verdana", Font.PLAIN, 13));
-		btnAsignarManzanasAG.setBounds(115, 687, 378, 34);
+		btnAsignarManzanasAG.setBounds(62, 687, 378, 34);
 		frmAsignadorDeCensistas.getContentPane().add(btnAsignarManzanasAG);
 	}
 	
@@ -245,27 +256,29 @@ public class MainForm {
 		btnAsignarManzanasFB = new JButton("Asignar manzanas a censistas (Fuerza bruta)");
 		btnAsignarManzanasFB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
 				ArrayList<Censista> instanciaCensistas = clonarCensistas(cargadorCensistas.getCensistasArray());
 				ArrayList<Censista> censistasAsignados = new ArrayList<Censista>();
-				AsignadorFBSW asignadorFBSW = new AsignadorFBSW(instanciaCensistas, 
-																censistasAsignados, 
-																radioCensal, 
-																progressBar, 
-																tablaCensistas, 
-																modeloTablaCensistas, 
-																frmAsignadorDeCensistas);
+				progressBar.setBackground(Color.WHITE);
+				asignadorFBSW = new AsignadorFBSW(instanciaCensistas, 
+												  censistasAsignados, 
+												  radioCensal, 
+												  progressBar, 
+												  tablaCensistas, 
+												  modeloTablaCensistas, 
+												  frmAsignadorDeCensistas);
 				asignadorFBSW.execute();
+				btnCancelar.setEnabled(true);
 			}
 		});
-		
 		btnAsignarManzanasFB.setFont(new Font("Verdana", Font.PLAIN, 13));
 		btnAsignarManzanasFB.setEnabled(false);
-		btnAsignarManzanasFB.setBounds(497, 687, 367, 34);
+		btnAsignarManzanasFB.setBounds(450, 687, 367, 34);
 		frmAsignadorDeCensistas.getContentPane().add(btnAsignarManzanasFB);
+		
+		
 	}
 
-	
-	
 	private void crearFramePrincipal() {
 		frmAsignadorDeCensistas = new JFrame();
 		frmAsignadorDeCensistas.setTitle("Asignador de censistas");
