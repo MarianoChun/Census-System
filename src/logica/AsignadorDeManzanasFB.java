@@ -11,8 +11,8 @@ public class AsignadorDeManzanasFB{
 	private ArrayList<Censista> censistas;
 	private ArrayList<Manzana> manzanas;
 
-	private ArrayList<ArrayList<Manzana>> gruposAsignables;
-	private ArrayList<Manzana> grupoAsignable;
+	private ArrayList<ArrayList<Manzana>> gruposDeManzanasAsignables;
+	private ArrayList<Manzana> manzanasAsignables;
 	private static ArrayList<ArrayList<Manzana>> solucion;
 	
 	private ArrayList<ArrayList<Manzana>> recorridosActual;
@@ -34,21 +34,21 @@ public class AsignadorDeManzanasFB{
 		/*
 		 * Construir los grupos de manzanas asignables Asignar a censistas
 		 */
-		this.gruposAsignables = new ArrayList<ArrayList<Manzana>>();
-		this.grupoAsignable = new ArrayList<Manzana>();
+		this.gruposDeManzanasAsignables = new ArrayList<ArrayList<Manzana>>();
+		this.manzanasAsignables = new ArrayList<Manzana>();
 		
 		
 		
-		construirGrupoDeManzanasAsignables(0);
+		construirManzanasAsignables(0);
 		
 //		Intento de otro algoritmo de FB
-		Collections.sort(gruposAsignables, (p, q) -> q.size() - p.size());
+		Collections.sort(gruposDeManzanasAsignables, (p, q) -> q.size() - p.size());
 		this.recorridosActual= new ArrayList<ArrayList<Manzana>>();
-		this.recorridos = armarSolucion(this.gruposAsignables);
+		this.recorridos = construirSolucion(this.gruposDeManzanasAsignables);
 		construirGrupoDeRecorridos(0);
 //		
 		
-		armarSolucion(this.gruposAsignables);
+		construirSolucion(this.gruposDeManzanasAsignables);
 		
 		int indice = 0;
 		for (ArrayList<Manzana> grupoManzana : solucion) {
@@ -67,20 +67,20 @@ public class AsignadorDeManzanasFB{
 	// posibles.
 //Genera todos los grupos de manzanas asignables posibles y devuelve el de menor tamaño
 	@SuppressWarnings("unchecked")
-	public void construirGrupoDeManzanasAsignables(int nroManzana) {
+	public void construirManzanasAsignables(int nroManzana) {
 
 		if (nroManzana == radioCensal.cantManzanas()) {
-			if ((grupoAsignable.size() >= 1 && grupoAsignable.size() <= 3) && elemsSonContiguos(grupoAsignable)) {
-				gruposAsignables.add((ArrayList<Manzana>) grupoAsignable.clone());
+			if ((manzanasAsignables.size() >= 1 && manzanasAsignables.size() <= 3) && elementosSonContiguos(manzanasAsignables)) {
+				gruposDeManzanasAsignables.add((ArrayList<Manzana>) manzanasAsignables.clone());
 			}	
 			return;
 		}
 
-		grupoAsignable.add(radioCensal.getManzana(nroManzana));
-		construirGrupoDeManzanasAsignables(nroManzana + 1);
+		manzanasAsignables.add(radioCensal.getManzana(nroManzana));
+		construirManzanasAsignables(nroManzana + 1);
 
-		grupoAsignable.remove(radioCensal.getManzana(nroManzana));
-		construirGrupoDeManzanasAsignables(nroManzana + 1);
+		manzanasAsignables.remove(radioCensal.getManzana(nroManzana));
+		construirManzanasAsignables(nroManzana + 1);
 	}
 
 /*	Genera todos los grupos de recorridos posibles y solo almacena el que es mejor a la solución trivial
@@ -88,20 +88,20 @@ public class AsignadorDeManzanasFB{
  */
 	public void construirGrupoDeRecorridos(int indiceRecorridos) {
 		
-		if(indiceRecorridos == gruposAsignables.size()-1)
+		if(indiceRecorridos == gruposDeManzanasAsignables.size()-1)
 			return;
 		if(recorridosActual.size() < recorridos.size() && recorridosActual.size() >= 1 && recorridosActual.size() <= (int) radioCensal.cantManzanas()/3) {
 			recorridos = (ArrayList<ArrayList<Manzana>>) recorridosActual.clone();
 		}
 		
-		recorridosActual.add(gruposAsignables.get(indiceRecorridos));
+		recorridosActual.add(gruposDeManzanasAsignables.get(indiceRecorridos));
 		construirGrupoDeRecorridos(indiceRecorridos+1);
 		
-		recorridosActual.remove(gruposAsignables.get(indiceRecorridos));
+		recorridosActual.remove(gruposDeManzanasAsignables.get(indiceRecorridos));
 		construirGrupoDeRecorridos(indiceRecorridos+1);
 	}
 	
-	private ArrayList<ArrayList<Manzana>> armarSolucion(ArrayList<ArrayList<Manzana>> grupos) {
+	private ArrayList<ArrayList<Manzana>> construirSolucion(ArrayList<ArrayList<Manzana>> grupos) {
 		
 		Collections.sort(grupos, (p, q) -> q.size() - p.size());
 		solucion = new ArrayList<ArrayList<Manzana>>();
@@ -133,18 +133,18 @@ public class AsignadorDeManzanasFB{
 		if(solucion.size() == 0)
 			return true;
 		
-		return solucion.stream().allMatch(grupoSolucion -> sonDisjuntos(grupoSolucion, grupo));
+		return solucion.stream().allMatch(grupoSolucion -> gruposSonDisjuntos(grupoSolucion, grupo));
 	}
-	private static boolean sonDisjuntos(ArrayList<Manzana> grupo, ArrayList<Manzana> otroGrupo) {
-		ArrayList<Integer> nrosManzanaGrupo = extraerNrosManzana(grupo);
-		ArrayList<Integer> nrosManzanaOtroGrupo = extraerNrosManzana(otroGrupo);
+	private static boolean gruposSonDisjuntos(ArrayList<Manzana> grupo, ArrayList<Manzana> otroGrupo) {
+		ArrayList<Integer> nrosManzanaGrupo = extraerNumerosDeManzanas(grupo);
+		ArrayList<Integer> nrosManzanaOtroGrupo = extraerNumerosDeManzanas(otroGrupo);
 		
 		return nrosManzanaGrupo.stream().allMatch(n -> !nrosManzanaOtroGrupo.contains(n)) &&
 				nrosManzanaOtroGrupo.stream().allMatch(n -> !nrosManzanaGrupo.contains(n));
 		
 	}
 	
-	private static ArrayList<Integer> extraerNrosManzana(ArrayList<Manzana> manzanas){
+	private static ArrayList<Integer> extraerNumerosDeManzanas(ArrayList<Manzana> manzanas){
 		ArrayList<Integer> nrosManzana = new ArrayList<Integer>();
 		
 		for(Manzana manzana : manzanas)
@@ -152,7 +152,7 @@ public class AsignadorDeManzanasFB{
 		
 		return nrosManzana;
 	}
-	private boolean elemsSonContiguos(ArrayList<Manzana> grupo) {
+	private boolean elementosSonContiguos(ArrayList<Manzana> grupo) {
 		if (grupo.size() == 0) {
 			return false;
 		}
@@ -164,11 +164,11 @@ public class AsignadorDeManzanasFB{
 			return radioCensal.sonVecinos(grupo.get(0).getNroManzana(), grupo.get(1).getNroManzana());
 		}
 
-		return sonContiguos(grupo);
+		return tresManzanasSonContiguas(grupo);
 	}
 
-	private boolean sonContiguos(ArrayList<Manzana> grupo) {
-		int[] nrosManzanas = grupo.stream().mapToInt(m -> m.getNroManzana()).toArray();
+	private boolean tresManzanasSonContiguas(ArrayList<Manzana> grupoDeTresManzanas) {
+		int[] nrosManzanas = grupoDeTresManzanas.stream().mapToInt(m -> m.getNroManzana()).toArray();
 		
 		// Si algun vertice es vecino de los otros dos, son contiguos
 		if(radioCensal.sonVecinos(nrosManzanas[0], nrosManzanas[1]) && radioCensal.sonVecinos(nrosManzanas[0], nrosManzanas[2])) {
