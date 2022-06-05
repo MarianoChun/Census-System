@@ -99,7 +99,7 @@ public class MainForm {
 
 		crearMapa();
 
-		crearTablaCencistas();
+		crearTablaCensistas();
 
 		crearTablaManzanas();
 
@@ -249,7 +249,7 @@ public class MainForm {
 		btnAsignarManzanasAG.addActionListener(new ActionListener() {
 			@SuppressWarnings("deprecation")
 			public void actionPerformed(ActionEvent e) {
-
+				modeloTablaCensistas.setRowCount(0);
 				ArrayList<Censista> instanciaCensistas = clonarCensistas(cargadorCensistas.getCensistasArray());
 				ArrayList<Censista> censistasAsignados = new ArrayList<Censista>();
 				progressBar.show(true);
@@ -271,7 +271,7 @@ public class MainForm {
 		btnAsignarManzanasFB.addActionListener(new ActionListener() {
 			@SuppressWarnings("deprecation")
 			public void actionPerformed(ActionEvent e) {
-
+				modeloTablaCensistas.setRowCount(0);
 				ArrayList<Censista> instanciaCensistas = clonarCensistas(cargadorCensistas.getCensistasArray());
 				ArrayList<Censista> censistasAsignados = new ArrayList<Censista>();
 				progressBar.show(true);
@@ -326,7 +326,7 @@ public class MainForm {
 		scrollPaneManzanas.setViewportView(tablaManzanas);
 	}
 
-	private void crearTablaCencistas() {
+	private void crearTablaCensistas() {
 		JScrollPane scrollPaneCensistas = new JScrollPane();
 		scrollPaneCensistas.setBounds(31, 11, 409, 227);
 		frmAsignadorDeCensistas.getContentPane().add(scrollPaneCensistas);
