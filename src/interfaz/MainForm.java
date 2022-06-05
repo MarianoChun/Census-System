@@ -114,6 +114,7 @@ public class MainForm {
 		crearBarraDeProgreso();
 
 		btnCancelar = new JButton("Cancelar");
+		btnCancelar.setFont(new Font("Verdana", Font.PLAIN, 13));
 		btnCancelar.setEnabled(false);
 		btnCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -127,10 +128,11 @@ public class MainForm {
 				}
 			}
 		});
-		btnCancelar.setBounds(827, 687, 132, 34);
+		btnCancelar.setBounds(425, 721, 132, 34);
 		frmAsignadorDeCensistas.getContentPane().add(btnCancelar);
 	}
 
+	@SuppressWarnings("deprecation")
 	private void crearBarraDeProgreso() {
 		progressBar = new JProgressBar();
 		progressBar.setBackground(SystemColor.menu);
@@ -260,7 +262,7 @@ public class MainForm {
 			}
 		});
 		btnAsignarManzanasAG.setFont(new Font("Verdana", Font.PLAIN, 13));
-		btnAsignarManzanasAG.setBounds(62, 687, 378, 34);
+		btnAsignarManzanasAG.setBounds(113, 676, 380, 34);
 		frmAsignadorDeCensistas.getContentPane().add(btnAsignarManzanasAG);
 	}
 
@@ -283,7 +285,7 @@ public class MainForm {
 		});
 		btnAsignarManzanasFB.setFont(new Font("Verdana", Font.PLAIN, 13));
 		btnAsignarManzanasFB.setEnabled(false);
-		btnAsignarManzanasFB.setBounds(450, 687, 367, 34);
+		btnAsignarManzanasFB.setBounds(496, 676, 372, 34);
 		frmAsignadorDeCensistas.getContentPane().add(btnAsignarManzanasFB);
 
 	}
@@ -295,6 +297,7 @@ public class MainForm {
 		frmAsignadorDeCensistas.setBounds(100, 100, 1094, 805);
 		frmAsignadorDeCensistas.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmAsignadorDeCensistas.getContentPane().setLayout(null);
+		frmAsignadorDeCensistas.setLocationRelativeTo(null);
 	}
 
 	private void crearTablaManzanas() {
