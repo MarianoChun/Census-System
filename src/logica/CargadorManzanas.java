@@ -70,7 +70,8 @@ public class CargadorManzanas {
 					vecinosManzana = obtenerVecinosManzana(formateador.formatCellValue(row.getCell(2)));
 					nroManzanaActual = (int) row.getCell(0).getNumericCellValue();
 					for (Integer vecinoActual : vecinosManzana) {
-						radio.agregarManzanaContigua(radio.getManzana(nroManzanaActual),radio.getManzana(vecinoActual));
+						radio.agregarManzanaContigua(radio.getManzana(nroManzanaActual),
+								radio.getManzana(vecinoActual));
 					}
 				} else {
 					break;

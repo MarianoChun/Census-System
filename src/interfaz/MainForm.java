@@ -16,11 +16,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.awt.event.ActionEvent;
 import javax.swing.border.TitledBorder;
-import javax.swing.event.TableColumnModelListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
-import javax.swing.table.TableColumnModel;
 
 import org.openstreetmap.gui.jmapviewer.Coordinate;
 import org.openstreetmap.gui.jmapviewer.DefaultMapController;
@@ -35,22 +32,19 @@ import logica.Coordenada;
 import logica.Manzana;
 import logica.RadioCensal;
 import logica.Sistema;
-import logica.ThreadTime;
 
 import java.awt.Color;
 import java.awt.Component;
 
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.ListSelectionModel;
-import javax.swing.SwingUtilities;
 
 import java.awt.Font;
 import javax.swing.JProgressBar;
 import java.awt.event.MouseEvent;
-import javax.swing.JScrollBar;
+import java.awt.SystemColor;
+import javax.swing.border.LineBorder;
 
 public class MainForm {
 
@@ -73,7 +67,7 @@ public class MainForm {
 	private AsignadorGolosoSW asignadorGolosoSW;
 	private boolean asignadorFBSWon;
 	private boolean asignadorGolosoSWon;
-	
+
 	/**
 	 * Launch the application.
 	 */
@@ -102,7 +96,7 @@ public class MainForm {
 	 */
 	private void initialize() {
 		crearFramePrincipal();
-	
+
 		crearMapa();
 
 		crearTablaCencistas();
@@ -112,28 +106,22 @@ public class MainForm {
 		crearBotonAsignarManzanasAG();
 
 		crearBotonAsignarManzanasFB();
-		
+
 		crearBotonCargarCensistas();
 
 		crearBotonCargarManzanas();
-		
-		progressBar = new JProgressBar();
-		progressBar.setForeground(new Color(204, 255, 51));
-		progressBar.setBounds(293, 606, 403, 14);
-		progressBar.setMaximum(100);
-		progressBar.setValue(0);
-		progressBar.setStringPainted(true); 
-		frmAsignadorDeCensistas.getContentPane().add(progressBar);
-		
+
+		crearBarraDeProgreso();
+
 		btnCancelar = new JButton("Cancelar");
 		btnCancelar.setEnabled(false);
 		btnCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(asignadorFBSWon) {
+				if (asignadorFBSWon) {
 					asignadorFBSW.cancel(true);
 					asignadorFBSWon = false;
 				}
-				if(asignadorGolosoSWon) {
+				if (asignadorGolosoSWon) {
 					asignadorGolosoSW.cancel(true);
 					asignadorGolosoSWon = false;
 				}
@@ -142,7 +130,19 @@ public class MainForm {
 		btnCancelar.setBounds(827, 687, 132, 34);
 		frmAsignadorDeCensistas.getContentPane().add(btnCancelar);
 	}
-	
+
+	private void crearBarraDeProgreso() {
+		progressBar = new JProgressBar();
+		progressBar.setBackground(SystemColor.menu);
+		progressBar.setForeground(new Color(204, 255, 51));
+		progressBar.setBounds(293, 606, 403, 14);
+		progressBar.setMaximum(100);
+		progressBar.setValue(0);
+		progressBar.setBorder(new LineBorder(new Color(0, 0, 0)));
+		progressBar.show(false);
+		frmAsignadorDeCensistas.getContentPane().add(progressBar);
+	}
+
 	private void crearBotonCargarManzanas() {
 		JButton btnCargarManzanas = new JButton("Cargar manzanas");
 		btnCargarManzanas.addActionListener(new ActionListener() {
@@ -223,7 +223,8 @@ public class MainForm {
 
 						}
 
-						tablaCensistas.getColumnModel().getColumn(1).setWidth(tablaCensistas.getColumnModel().getColumn(1).getPreferredWidth());
+						tablaCensistas.getColumnModel().getColumn(1)
+								.setWidth(tablaCensistas.getColumnModel().getColumn(1).getPreferredWidth());
 						tablaCensistas.setPreferredScrollableViewportSize(tablaCensistas.getPreferredSize());
 						tablaCensistas.setModel(modeloTablaCensistas);
 
@@ -244,18 +245,15 @@ public class MainForm {
 		btnAsignarManzanasAG = new JButton("Asignar manzanas a censistas (Goloso)");
 		btnAsignarManzanasAG.setEnabled(false);
 		btnAsignarManzanasAG.addActionListener(new ActionListener() {
+			@SuppressWarnings("deprecation")
 			public void actionPerformed(ActionEvent e) {
-				
+
 				ArrayList<Censista> instanciaCensistas = clonarCensistas(cargadorCensistas.getCensistasArray());
 				ArrayList<Censista> censistasAsignados = new ArrayList<Censista>();
+				progressBar.show(true);
 				progressBar.setBackground(Color.WHITE);
-				asignadorGolosoSW = new AsignadorGolosoSW(instanciaCensistas, 
-												  censistasAsignados, 
-												  radioCensal, 
-												  progressBar, 
-												  tablaCensistas, 
-												  modeloTablaCensistas, 
-												  frmAsignadorDeCensistas);
+				asignadorGolosoSW = new AsignadorGolosoSW(instanciaCensistas, censistasAsignados, radioCensal,
+						progressBar, tablaCensistas, modeloTablaCensistas, frmAsignadorDeCensistas);
 				asignadorGolosoSW.execute();
 				btnCancelar.setEnabled(true);
 				asignadorGolosoSWon = true;
@@ -265,22 +263,19 @@ public class MainForm {
 		btnAsignarManzanasAG.setBounds(62, 687, 378, 34);
 		frmAsignadorDeCensistas.getContentPane().add(btnAsignarManzanasAG);
 	}
-	
+
 	private void crearBotonAsignarManzanasFB() {
 		btnAsignarManzanasFB = new JButton("Asignar manzanas a censistas (Fuerza bruta)");
 		btnAsignarManzanasFB.addActionListener(new ActionListener() {
+			@SuppressWarnings("deprecation")
 			public void actionPerformed(ActionEvent e) {
-				
+
 				ArrayList<Censista> instanciaCensistas = clonarCensistas(cargadorCensistas.getCensistasArray());
 				ArrayList<Censista> censistasAsignados = new ArrayList<Censista>();
+				progressBar.show(true);
 				progressBar.setBackground(Color.WHITE);
-				asignadorFBSW = new AsignadorFBSW(instanciaCensistas, 
-												  censistasAsignados, 
-												  radioCensal, 
-												  progressBar, 
-												  tablaCensistas, 
-												  modeloTablaCensistas, 
-												  frmAsignadorDeCensistas);
+				asignadorFBSW = new AsignadorFBSW(instanciaCensistas, censistasAsignados, radioCensal, progressBar,
+						tablaCensistas, modeloTablaCensistas, frmAsignadorDeCensistas);
 				asignadorFBSW.execute();
 				btnCancelar.setEnabled(true);
 				asignadorFBSWon = true;
@@ -290,8 +285,7 @@ public class MainForm {
 		btnAsignarManzanasFB.setEnabled(false);
 		btnAsignarManzanasFB.setBounds(450, 687, 367, 34);
 		frmAsignadorDeCensistas.getContentPane().add(btnAsignarManzanasFB);
-		
-		
+
 	}
 
 	private void crearFramePrincipal() {
@@ -300,7 +294,7 @@ public class MainForm {
 		frmAsignadorDeCensistas.setResizable(false);
 		frmAsignadorDeCensistas.setBounds(100, 100, 1094, 805);
 		frmAsignadorDeCensistas.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frmAsignadorDeCensistas.getContentPane().setLayout(null);	
+		frmAsignadorDeCensistas.getContentPane().setLayout(null);
 	}
 
 	private void crearTablaManzanas() {
@@ -314,9 +308,9 @@ public class MainForm {
 		modeloTablaManzanas = new DefaultTableModel(new Object[][] {}, new String[] { "Nro Manzana", "Coordenadas" }) {
 			@Override
 			public boolean isCellEditable(int row, int column) {
-			       //all cells false
-			       return false;
-			    }
+				// all cells false
+				return false;
+			}
 		};
 		tablaManzanas.setModel(modeloTablaManzanas);
 
@@ -341,17 +335,16 @@ public class MainForm {
 		tablaCensistas.setBounds(33, 27, 127, 162);
 		tablaCensistas.setRowHeight(50);
 		tablaCensistas.setDefaultRenderer(Object.class, new ImagenTabla());
-		
+
 		modeloTablaCensistas = new DefaultTableModel(new Object[][] {},
 				new String[] { "Nombre censista", "Foto censista", "Manzana/s asignada/s" }) {
 			@Override
 			public boolean isCellEditable(int row, int column) {
-			       //all cells false
-			       return false;
-			    }
+				// all cells false
+				return false;
+			}
 		};
 
-		
 		tablaCensistas.setModel(modeloTablaCensistas);
 		tablaCensistas.getColumnModel().getColumn(0).setWidth(5);
 		tablaCensistas.getColumnModel().getColumn(1).setWidth(5);

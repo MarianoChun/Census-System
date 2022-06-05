@@ -26,7 +26,7 @@ public class FuncionesAuxiliares {
 					obtenerValoresStringManzanas(manzanasAsignadas) });
 		}
 	}
-	
+
 	static void removerRegistrosTabla(DefaultTableModel modeloTabla) {
 		int cantRegistros = modeloTabla.getRowCount();
 		if (cantRegistros > 1) {
@@ -34,7 +34,7 @@ public class FuncionesAuxiliares {
 			modeloTabla.fireTableDataChanged();
 		}
 	}
-	
+
 	static JLabel setFotoEnLabel(ImageIcon fotoCensista) {
 		JLabel fotoAColocar = new JLabel();
 		fotoAColocar.setIcon(fotoCensista);
@@ -44,7 +44,7 @@ public class FuncionesAuxiliares {
 	static Image setTamanoFotoCensista(Censista censista, int ancho, int alto) {
 		return new ImageIcon(censista.getFoto()).getImage().getScaledInstance(ancho, alto, Image.SCALE_DEFAULT);
 	}
-	
+
 	static String obtenerValoresStringManzanas(ArrayList<Manzana> manzanasAsignadas) {
 		StringBuffer ret = new StringBuffer();
 		ret.append("[ ");
@@ -55,7 +55,7 @@ public class FuncionesAuxiliares {
 
 		return ret.toString();
 	}
-	
+
 	static void popUpInfoTiempoDeEjecución(JFrame frmAsignadorDeCensistas, long tiempo) {
 		StringBuilder str = new StringBuilder();
 

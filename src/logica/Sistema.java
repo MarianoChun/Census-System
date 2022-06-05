@@ -16,7 +16,7 @@ public class Sistema {
 	public ArrayList<Censista> obtenerCensistasAsignadosGoloso() {
 		return new AsignadorDeManzanasGoloso(censistas, radioCensal).getCensistas();
 	}
-	
+
 	public ArrayList<Censista> obtenerCensistasAsignadosFB() {
 		return new AsignadorDeManzanasFB(censistas, radioCensal).getCensistas();
 	}
