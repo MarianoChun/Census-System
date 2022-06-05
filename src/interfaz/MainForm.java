@@ -128,7 +128,7 @@ public class MainForm {
 				}
 			}
 		});
-		btnCancelar.setBounds(425, 721, 132, 34);
+		btnCancelar.setBounds(470, 721, 132, 34);
 		frmAsignadorDeCensistas.getContentPane().add(btnCancelar);
 	}
 
@@ -137,7 +137,7 @@ public class MainForm {
 		progressBar = new JProgressBar();
 		progressBar.setBackground(SystemColor.menu);
 		progressBar.setForeground(new Color(204, 255, 51));
-		progressBar.setBounds(293, 606, 403, 14);
+		progressBar.setBounds(338, 606, 403, 14);
 		progressBar.setMaximum(100);
 		progressBar.setValue(0);
 		progressBar.setBorder(new LineBorder(new Color(0, 0, 0)));
@@ -190,14 +190,14 @@ public class MainForm {
 			}
 		});
 		btnCargarManzanas.setFont(new Font("Verdana", Font.PLAIN, 13));
-		btnCargarManzanas.setBounds(496, 631, 200, 34);
+		btnCargarManzanas.setBounds(541, 631, 200, 34);
 		frmAsignadorDeCensistas.getContentPane().add(btnCargarManzanas);
 	}
 
 	private void crearBotonCargarCensistas() {
 		JButton btnCargarCensistas = new JButton("Cargar censistas");
 		btnCargarCensistas.setFont(new Font("Verdana", Font.PLAIN, 13));
-		btnCargarCensistas.setBounds(293, 631, 200, 34);
+		btnCargarCensistas.setBounds(338, 631, 200, 34);
 		btnCargarCensistas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
@@ -262,7 +262,7 @@ public class MainForm {
 			}
 		});
 		btnAsignarManzanasAG.setFont(new Font("Verdana", Font.PLAIN, 13));
-		btnAsignarManzanasAG.setBounds(113, 676, 380, 34);
+		btnAsignarManzanasAG.setBounds(158, 676, 380, 34);
 		frmAsignadorDeCensistas.getContentPane().add(btnAsignarManzanasAG);
 	}
 
@@ -285,7 +285,7 @@ public class MainForm {
 		});
 		btnAsignarManzanasFB.setFont(new Font("Verdana", Font.PLAIN, 13));
 		btnAsignarManzanasFB.setEnabled(false);
-		btnAsignarManzanasFB.setBounds(496, 676, 372, 34);
+		btnAsignarManzanasFB.setBounds(541, 676, 372, 34);
 		frmAsignadorDeCensistas.getContentPane().add(btnAsignarManzanasFB);
 
 	}
@@ -328,7 +328,7 @@ public class MainForm {
 
 	private void crearTablaCensistas() {
 		JScrollPane scrollPaneCensistas = new JScrollPane();
-		scrollPaneCensistas.setBounds(31, 11, 409, 227);
+		scrollPaneCensistas.setBounds(31, 11, 455, 227);
 		frmAsignadorDeCensistas.getContentPane().add(scrollPaneCensistas);
 
 		tablaCensistas = new JTable();
@@ -358,7 +358,7 @@ public class MainForm {
 
 	private void crearMapa() {
 		JPanel panelMapa = new JPanel();
-		panelMapa.setBounds(213, 243, 561, 352);
+		panelMapa.setBounds(258, 243, 561, 352);
 		frmAsignadorDeCensistas.getContentPane().add(panelMapa);
 
 		mapa = new JMapViewer();
