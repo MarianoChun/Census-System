@@ -14,6 +14,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Vector;
 import java.awt.event.ActionEvent;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -261,6 +262,7 @@ public class MainForm {
 		btnAsignarManzanasAG.addActionListener(new ActionListener() {
 			@SuppressWarnings("deprecation")
 			public void actionPerformed(ActionEvent e) {
+				limpiarCeldasManzanasAsignadas();
 				ArrayList<Censista> instanciaCensistas = clonarCensistas(cargadorCensistas.getCensistasArray());
 				ArrayList<Censista> censistasAsignados = new ArrayList<Censista>();
 				progressBar.show(true);
@@ -282,6 +284,7 @@ public class MainForm {
 		btnAsignarManzanasFB.addActionListener(new ActionListener() {
 			@SuppressWarnings("deprecation")
 			public void actionPerformed(ActionEvent e) {
+				limpiarCeldasManzanasAsignadas();
 				ArrayList<Censista> instanciaCensistas = clonarCensistas(cargadorCensistas.getCensistasArray());
 				ArrayList<Censista> censistasAsignados = new ArrayList<Censista>();
 				progressBar.show(true);
@@ -299,7 +302,14 @@ public class MainForm {
 		frmAsignadorDeCensistas.getContentPane().add(btnAsignarManzanasFB);
 
 	}
-
+	
+	private void limpiarCeldasManzanasAsignadas() {
+		int fila = tablaCensistas.getRowCount();
+		for (int i = 0; i < fila; i++) {
+			modeloTablaCensistas.setValueAt("", i, 2);
+		}
+	}
+	
 	private void crearFramePrincipal() {
 		frmAsignadorDeCensistas = new JFrame();
 		frmAsignadorDeCensistas.setTitle("Asignador de censistas");
