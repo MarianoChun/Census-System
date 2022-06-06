@@ -9,7 +9,6 @@ public class Sistema {
 
 	@SuppressWarnings("unchecked")
 	public Sistema(RadioCensal radioCensal, ArrayList<Censista> censistas) {
-//		this.asignador = new AsignadorDeManzanasGoloso((ArrayList<Censista>)censistas.clone(), (RadioCensal)radioCensal.clone());
 		this.radioCensal = (RadioCensal) radioCensal.clone();
 		this.censistas = (ArrayList<Censista>) censistas.clone();
 	}

@@ -7,7 +7,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class RadioCensal {
+public class RadioCensal implements Cloneable{
 	private boolean[][] A;
 	private HashMap<Integer, Manzana> manzanas;
 	private ArrayList<ManzanaContigua> manzanasContiguas; // aristas
@@ -135,6 +135,7 @@ public class RadioCensal {
 		return true;
 	}
 
+	@Override
 	public RadioCensal clone() {
 		RadioCensal ret = new RadioCensal(this.cantManzanas());
 		Map<Integer, Manzana> manzanas = this.getManzanas();

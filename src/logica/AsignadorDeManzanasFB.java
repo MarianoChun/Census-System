@@ -30,7 +30,6 @@ public class AsignadorDeManzanasFB {
 		this.manzanasAsignables = new ArrayList<Manzana>();
 
 		construirManzanasAsignables(0);
-
 		construirSolucion(this.gruposDeManzanasAsignables);
 
 		int indice = 0;
@@ -183,7 +182,7 @@ public class AsignadorDeManzanasFB {
 		Collection<Manzana> setManzanas = radioCensal.getManzanas().values();
 		return new ArrayList<Manzana>(setManzanas);
 	}
-
+	
 	public ArrayList<Censista> getCensistas() {
 		return new ArrayList<Censista>(censistas);
 	}

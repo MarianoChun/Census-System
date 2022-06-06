@@ -62,8 +62,7 @@ public class AsignadorDeManzanasGoloso {
 		}
 	}
 
-	// Debe devolver como máximo un array list de 3 manzanas. 0 < ArrayList.size <=
-	// 3;
+	// Debe devolver como máximo un array list de 3 manzanas. 1 <= ArrayList.size <=3;
 	// La manzana actual debe incluirse en el arrayList
 	private ArrayList<Manzana> manzanasVecinasNoMarcadas(Manzana manzana) {
 		ArrayList<Manzana> manzanasVecinasNoMarcadas = new ArrayList<Manzana>();

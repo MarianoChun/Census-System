@@ -52,7 +52,7 @@ public class asignadorFB {
 		radioCensal.agregarManzanaContigua(new Manzana(7), new Manzana(8));
 		// ------
 
-		System.out.println(new AsignadorDeManzanasFB(censistas, radioCensal).getRecorridos());
+//		System.out.println(new AsignadorDeManzanasFB(censistas, radioCensal).getRecorridos());
 
 		ArrayList<Censista> censistasAsignados = new Sistema(radioCensal, censistas).obtenerCensistasAsignadosFB();
 
