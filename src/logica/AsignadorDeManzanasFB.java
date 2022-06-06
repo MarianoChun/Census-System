@@ -53,8 +53,7 @@ public class AsignadorDeManzanasFB {
 	public void construirManzanasAsignables(int nroManzana) {
 
 		if (nroManzana == radioCensal.cantManzanas()) {
-			if ((manzanasAsignables.size() >= 1 && manzanasAsignables.size() <= 3)
-					&& elementosSonContiguos(manzanasAsignables)) {
+			if (hayManzanasAsignables() && elementosSonContiguos(manzanasAsignables)) {
 				gruposDeManzanasAsignables.add((ArrayList<Manzana>) manzanasAsignables.clone());
 			}
 			return;
@@ -65,6 +64,10 @@ public class AsignadorDeManzanasFB {
 
 		manzanasAsignables.remove(radioCensal.getManzana(nroManzana));
 		construirManzanasAsignables(nroManzana + 1);
+	}
+
+	private boolean hayManzanasAsignables() {
+		return manzanasAsignables.size() >= 1 && manzanasAsignables.size() <= 3;
 	}
 
 	/*
@@ -159,23 +162,27 @@ public class AsignadorDeManzanasFB {
 		int[] nrosManzanas = grupoDeTresManzanas.stream().mapToInt(m -> m.getNroManzana()).toArray();
 
 		// Si algun vertice es vecino de los otros dos, son contiguos
-		if (radioCensal.sonVecinos(nrosManzanas[0], nrosManzanas[1])
-				&& radioCensal.sonVecinos(nrosManzanas[0], nrosManzanas[2])) {
+		if (esManzanaContigua(nrosManzanas[0], nrosManzanas[1])
+				&& esManzanaContigua(nrosManzanas[0], nrosManzanas[2])) {
 			return true;
 		}
 
-		if (radioCensal.sonVecinos(nrosManzanas[1], nrosManzanas[0])
-				&& radioCensal.sonVecinos(nrosManzanas[1], nrosManzanas[2])) {
+		if (esManzanaContigua(nrosManzanas[1], nrosManzanas[0])
+				&& esManzanaContigua(nrosManzanas[1], nrosManzanas[2])) {
 			return true;
 		}
 
-		if (radioCensal.sonVecinos(nrosManzanas[2], nrosManzanas[0])
-				&& radioCensal.sonVecinos(nrosManzanas[2], nrosManzanas[1])) {
+		if (esManzanaContigua(nrosManzanas[2], nrosManzanas[0])
+				&& esManzanaContigua(nrosManzanas[2], nrosManzanas[1])) {
 			return true;
 		}
 
 		return false;
 
+	}
+
+	private boolean esManzanaContigua(int i, int j) {
+		return radioCensal.sonVecinos(i, j);
 	}
 
 	private ArrayList<Manzana> obtenerArrayManzanas(RadioCensal radioCensal) {

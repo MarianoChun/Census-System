@@ -310,7 +310,6 @@ public class MainForm {
 		frmAsignadorDeCensistas.setLocationRelativeTo(null);
 	}
 
-	@SuppressWarnings("serial")
 	private void crearTablaManzanas() {
 		JScrollPane scrollPaneManzanas = new JScrollPane();
 		scrollPaneManzanas.setBounds(496, 11, 549, 227);
@@ -342,7 +341,6 @@ public class MainForm {
 		scrollPaneManzanas.setViewportView(tablaManzanas);
 	}
 
-	@SuppressWarnings("serial")
 	private void crearTablaCensistas() {
 		JScrollPane scrollPaneCensistas = new JScrollPane();
 		scrollPaneCensistas.setBounds(31, 11, 455, 227);
@@ -471,7 +469,6 @@ public class MainForm {
 	}
 
 	private Image setTamanoFotoCensista(Censista censista, int ancho, int alto) {
-
 		return new ImageIcon(censista.getFoto()).getImage().getScaledInstance(ancho, alto, Image.SCALE_DEFAULT);
 	}
 

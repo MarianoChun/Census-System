@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import org.junit.Before;
 import org.junit.Test;
 
-import logica.AsignadorDeManzanasFB;
 import logica.Censista;
 import logica.Manzana;
 import logica.RadioCensal;
