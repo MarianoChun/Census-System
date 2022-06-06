@@ -22,7 +22,7 @@ public class AsignadorDeManzanasFB {
 		this.censistas = censistas;
 		this.radioCensal = radioCensal;
 		this.manzanas = obtenerArrayManzanas(radioCensal);
-		// Ordenado de menor a mayor de acuerdo al grado de la manzana (cant vecinos)
+		// Ordenado de menor a mayor de acuerdo al grado de la manzana (cant vecinos/manzanas contiguas)
 		Collections.sort(manzanas,
 				(p, q) -> radioCensal.gradoManzana(q.getNroManzana()) - radioCensal.gradoManzana(p.getNroManzana()));
 		asignarManzanasACensistas();
@@ -30,21 +30,10 @@ public class AsignadorDeManzanasFB {
 
 //Asigna los grupos de manzanas a los censistas
 	private void asignarManzanasACensistas() {
-		/*
-		 * Construir los grupos de manzanas asignables Asignar a censistas
-		 */
 		this.gruposDeManzanasAsignables = new ArrayList<ArrayList<Manzana>>();
 		this.manzanasAsignables = new ArrayList<Manzana>();
 
 		construirManzanasAsignables(0);
-
-//		Intento de otro algoritmo de FB
-//		Collections.sort(gruposDeManzanasAsignables, (p, q) -> q.size() - p.size());
-//		this.recorridosActual= new ArrayList<ArrayList<Manzana>>();
-//		this.recorridos = construirSolucion(this.gruposDeManzanasAsignables);
-//		construirGrupoDeRecorridos(0);
-//		
-
 		construirSolucion(this.gruposDeManzanasAsignables);
 
 		int indice = 0;
@@ -195,20 +184,6 @@ public class AsignadorDeManzanasFB {
 		Collection<Manzana> setManzanas = radioCensal.getManzanas().values();
 		return new ArrayList<Manzana>(setManzanas);
 	}
-
-//	private ArrayList<ArrayList<Manzana>> crearArrayListConCantFijaElementosVacios(int cantElementosVacios) {
-//		ArrayList<ArrayList<Manzana>> ret = new ArrayList<ArrayList<Manzana>>();
-//		for (int i = 0; i < cantElementosVacios; i++)
-//			ret.add(null);
-//		return ret;
-//	}
-//
-//	private static ArrayList<ArrayList<Manzana>> clonarGrupos(ArrayList<ArrayList<Manzana>> grupos) {
-//		ArrayList<ArrayList<Manzana>> clon = new ArrayList<ArrayList<Manzana>>();
-//		grupos.stream().forEach(a -> clon.add(clonarGrupo(a)));
-//
-//		return clon;
-//	}
 
 	private static ArrayList<Manzana> clonarGrupo(ArrayList<Manzana> grupo) {
 		ArrayList<Manzana> clon = new ArrayList<Manzana>();

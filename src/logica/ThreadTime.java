@@ -10,7 +10,6 @@ public class ThreadTime extends Thread {
 		while (true) {
 			tiempoActualNano = System.nanoTime();
 		}
-
 	}
 
 	public long getTiempoActualMs() {

@@ -37,7 +37,13 @@ public class Manzana implements Cloneable {
 
 	@Override
 	public String toString() {
-		return "Manzana [nroManzana=" + nroManzana + ", coordenadas=" + coordenadas + "]";
+		StringBuilder strB = new StringBuilder();
+		strB.append("Manzana [nroManzana=")
+			.append(nroManzana)
+			.append(", coordenadas=")
+			.append(coordenadas)
+			.append("]");
+		return strB.toString();
 	}
 
 	@Override
