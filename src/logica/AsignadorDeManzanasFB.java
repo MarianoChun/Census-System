@@ -13,7 +13,6 @@ public class AsignadorDeManzanasFB {
 	private ArrayList<Manzana> manzanasAsignables;
 	private static ArrayList<ArrayList<Manzana>> solucion;
 
-	private ArrayList<ArrayList<Manzana>> recorridosActual;
 	private ArrayList<ArrayList<Manzana>> recorridos;
 
 	public AsignadorDeManzanasFB(ArrayList<Censista> censistas, RadioCensal radioCensal) {
@@ -22,7 +21,7 @@ public class AsignadorDeManzanasFB {
 		this.manzanas = obtenerArrayManzanas(radioCensal);
 		Collections.sort(manzanas,
 				(p, q) -> radioCensal.gradoManzana(q.getNroManzana()) - radioCensal.gradoManzana(p.getNroManzana()));
-		asignarManzanasACensistas();
+		this.asignarManzanasACensistas();
 	}
 
 	private void asignarManzanasACensistas() {
@@ -50,7 +49,7 @@ public class AsignadorDeManzanasFB {
 	// Genera todos los grupos de manzanas asignables posibles y devuelve el de
 	// menor tamaño
 	@SuppressWarnings("unchecked")
-	public void construirManzanasAsignables(int nroManzana) {
+	private void construirManzanasAsignables(int nroManzana) {
 
 		//caso base
 		if (nroManzana == radioCensal.cantManzanas()) {
@@ -78,27 +77,6 @@ public class AsignadorDeManzanasFB {
 
 	private boolean hayManzanasAsignables() {
 		return manzanasAsignables.size() >= 1 && manzanasAsignables.size() <= 3;
-	}
-
-	/*
-	 * Genera todos los grupos de recorridos posibles y solo almacena el que es
-	 * mejor a la solución trivial y tiene tamaño almenos 1 y hasta cantManzanas / 3
-	 */
-	@SuppressWarnings("unchecked")
-	public void construirGrupoDeRecorridos(int indiceRecorridos) {
-
-		if (indiceRecorridos == gruposDeManzanasAsignables.size() - 1)
-			return;
-		if (recorridosActual.size() < recorridos.size() && recorridosActual.size() >= 1
-				&& recorridosActual.size() <= (int) radioCensal.cantManzanas() / 3) {
-			recorridos = (ArrayList<ArrayList<Manzana>>) recorridosActual.clone();
-		}
-
-		recorridosActual.add(gruposDeManzanasAsignables.get(indiceRecorridos));
-		construirGrupoDeRecorridos(indiceRecorridos + 1);
-
-		recorridosActual.remove(gruposDeManzanasAsignables.get(indiceRecorridos));
-		construirGrupoDeRecorridos(indiceRecorridos + 1);
 	}
 
 	private ArrayList<ArrayList<Manzana>> construirSolucion(ArrayList<ArrayList<Manzana>> grupos) {
