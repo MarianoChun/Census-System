@@ -52,18 +52,28 @@ public class AsignadorDeManzanasFB {
 	@SuppressWarnings("unchecked")
 	public void construirManzanasAsignables(int nroManzana) {
 
+		//caso base
 		if (nroManzana == radioCensal.cantManzanas()) {
 			if (hayManzanasAsignables() && elementosSonContiguos(manzanasAsignables)) {
 				gruposDeManzanasAsignables.add((ArrayList<Manzana>) manzanasAsignables.clone());
 			}
 			return;
 		}
-
-		manzanasAsignables.add(radioCensal.getManzana(nroManzana));
+		
+		//caso recursivo
+		asignarManzana(nroManzana);
 		construirManzanasAsignables(nroManzana + 1);
 
+		eliminarManzana(nroManzana);
+		construirManzanasAsignables(nroManzana + 1);
+	}
+
+	private void eliminarManzana(int nroManzana) {
 		manzanasAsignables.remove(radioCensal.getManzana(nroManzana));
-		construirManzanasAsignables(nroManzana + 1);
+	}
+
+	private void asignarManzana(int nroManzana) {
+		manzanasAsignables.add(radioCensal.getManzana(nroManzana));
 	}
 
 	private boolean hayManzanasAsignables() {
