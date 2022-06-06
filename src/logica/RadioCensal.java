@@ -92,6 +92,7 @@ public class RadioCensal {
 		return manzanasContiguas;
 	}
 
+	@SuppressWarnings("unchecked")
 	public HashMap<Integer, Manzana> getManzanas() {
 		return (HashMap<Integer, Manzana>) manzanas.clone();
 	}

@@ -31,7 +31,6 @@ import logica.Censista;
 import logica.Coordenada;
 import logica.Manzana;
 import logica.RadioCensal;
-import logica.Sistema;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -55,7 +54,6 @@ public class MainForm {
 	private DefaultTableModel modeloTablaCensistas;
 	private DefaultTableModel modeloTablaManzanas;
 	private RadioCensal radioCensal;
-	private Sistema sistema;
 	private JTable tablaCensistas;
 	private JTable tablaManzanas;
 	private JFileChooser selectorArchivos;
@@ -85,16 +83,10 @@ public class MainForm {
 		});
 	}
 
-	/**
-	 * Create the application.
-	 */
 	public MainForm() {
 		initialize();
 	}
 
-	/**
-	 * Initialize the contents of the frame.
-	 */
 	private void initialize() {
 		crearFramePrincipal();
 
@@ -129,26 +121,27 @@ public class MainForm {
 		});
 		frmAsignadorDeCensistas.getContentPane().add(btnCancelar);
 	}
-	
+
 	private void ventanaCancelarEjecucion() {
-		int opcion = JOptionPane.showConfirmDialog(frmAsignadorDeCensistas, "¿Estás seguro?, se perdera todo el progreso", "",
-				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null);
+		int opcion = JOptionPane.showConfirmDialog(frmAsignadorDeCensistas,
+				"¿Estás seguro?, se perdera todo el progreso", "", JOptionPane.YES_NO_OPTION,
+				JOptionPane.QUESTION_MESSAGE, null);
 
 		if (opcion == 0) {
 			cancelarEjecucion();
-		}	
+		}
 	}
 
 	private void cancelarEjecucion() {
 		if (asignadorFBSWon) {
-				asignadorFBSW.cancel(true);
-				asignadorFBSWon = false;
+			asignadorFBSW.cancel(true);
+			asignadorFBSWon = false;
 		}
 		if (asignadorGolosoSWon) {
-				asignadorGolosoSW.cancel(true);
-				asignadorGolosoSWon = false;
+			asignadorGolosoSW.cancel(true);
+			asignadorGolosoSWon = false;
 		}
-		
+
 	}
 
 	@SuppressWarnings("deprecation")
@@ -273,7 +266,7 @@ public class MainForm {
 				progressBar.show(true);
 				progressBar.setBackground(Color.WHITE);
 				asignadorGolosoSW = new AsignadorGolosoSW(instanciaCensistas, censistasAsignados, radioCensal,
-						progressBar, tablaCensistas, modeloTablaCensistas, frmAsignadorDeCensistas);
+						progressBar, modeloTablaCensistas, frmAsignadorDeCensistas);
 				asignadorGolosoSW.execute();
 				btnCancelar.setEnabled(true);
 				asignadorGolosoSWon = true;
@@ -294,7 +287,7 @@ public class MainForm {
 				progressBar.show(true);
 				progressBar.setBackground(Color.WHITE);
 				asignadorFBSW = new AsignadorFBSW(instanciaCensistas, censistasAsignados, radioCensal, progressBar,
-						tablaCensistas, modeloTablaCensistas, frmAsignadorDeCensistas);
+						modeloTablaCensistas, frmAsignadorDeCensistas);
 				asignadorFBSW.execute();
 				btnCancelar.setEnabled(true);
 				asignadorFBSWon = true;
@@ -326,6 +319,11 @@ public class MainForm {
 		tablaManzanas.setFocusable(false);
 		tablaManzanas.setRowSelectionAllowed(false);
 		modeloTablaManzanas = new DefaultTableModel(new Object[][] {}, new String[] { "Nro Manzana", "Coordenadas" }) {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			public boolean isCellEditable(int row, int column) {
 				// all cells false
@@ -358,6 +356,11 @@ public class MainForm {
 
 		modeloTablaCensistas = new DefaultTableModel(new Object[][] {},
 				new String[] { "Nombre censista", "Foto censista", "Manzana/s asignada/s" }) {
+			/**
+					 * 
+					 */
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			public boolean isCellEditable(int row, int column) {
 				// all cells false
@@ -470,32 +473,15 @@ public class MainForm {
 		return new ImageIcon(censista.getFoto()).getImage().getScaledInstance(ancho, alto, Image.SCALE_DEFAULT);
 	}
 
-	private JLabel setFotoEnLabel(ImageIcon fotoCensista) {
-		JLabel fotoAColocar = new JLabel();
-		fotoAColocar.setIcon(fotoCensista);
-		return fotoAColocar;
-	}
-
 	private void limpiarMapaDePolygonsYMarkers() {
 		mapa.removeAllMapPolygons();
 		mapa.removeAllMapMarkers();
 	}
 
-	private void mostrarCensistasEnTabla(ArrayList<Censista> censistas) {
-		ArrayList<Manzana> manzanasAsignadas;
-		removerRegistrosTabla(modeloTablaCensistas);
-
-		for (Censista censista : censistas) {
-			manzanasAsignadas = censista.getManzanasAsignadas();
-			ImageIcon fotoCensista = new ImageIcon(setTamanoFotoCensista(censista, 40, 40));
-			JLabel fotoAColocar = setFotoEnLabel(fotoCensista);
-
-			modeloTablaCensistas.addRow(new Object[] { censista.getNombre(), fotoAColocar,
-					obtenerValoresStringManzanas(manzanasAsignadas) });
-		}
-	}
-
 	public class ImagenTabla extends DefaultTableCellRenderer {
+
+		private static final long serialVersionUID = 1L;
+
 		@Override
 		public Component getTableCellRendererComponent(JTable JTable, Object value, boolean bln, boolean bln1, int i,
 				int j) {

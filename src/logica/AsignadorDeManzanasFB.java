@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
-import javax.swing.SwingWorker;
-
 public class AsignadorDeManzanasFB {
 	private RadioCensal radioCensal;
 	private ArrayList<Censista> censistas;
@@ -22,28 +20,16 @@ public class AsignadorDeManzanasFB {
 		this.censistas = censistas;
 		this.radioCensal = radioCensal;
 		this.manzanas = obtenerArrayManzanas(radioCensal);
-		// Ordenado de menor a mayor de acuerdo al grado de la manzana (cant vecinos)
 		Collections.sort(manzanas,
 				(p, q) -> radioCensal.gradoManzana(q.getNroManzana()) - radioCensal.gradoManzana(p.getNroManzana()));
 		asignarManzanasACensistas();
 	}
 
-//Asigna los grupos de manzanas a los censistas
 	private void asignarManzanasACensistas() {
-		/*
-		 * Construir los grupos de manzanas asignables Asignar a censistas
-		 */
 		this.gruposDeManzanasAsignables = new ArrayList<ArrayList<Manzana>>();
 		this.manzanasAsignables = new ArrayList<Manzana>();
 
 		construirManzanasAsignables(0);
-
-//		Intento de otro algoritmo de FB
-//		Collections.sort(gruposDeManzanasAsignables, (p, q) -> q.size() - p.size());
-//		this.recorridosActual= new ArrayList<ArrayList<Manzana>>();
-//		this.recorridos = construirSolucion(this.gruposDeManzanasAsignables);
-//		construirGrupoDeRecorridos(0);
-//		
 
 		construirSolucion(this.gruposDeManzanasAsignables);
 
@@ -62,7 +48,8 @@ public class AsignadorDeManzanasFB {
 	// grupos asignables.
 	// La mejor solucion es la que tenga la menor cantidad de grupos asignables
 	// posibles.
-//Genera todos los grupos de manzanas asignables posibles y devuelve el de menor tamaño
+	// Genera todos los grupos de manzanas asignables posibles y devuelve el de
+	// menor tamaño
 	@SuppressWarnings("unchecked")
 	public void construirManzanasAsignables(int nroManzana) {
 
@@ -85,6 +72,7 @@ public class AsignadorDeManzanasFB {
 	 * Genera todos los grupos de recorridos posibles y solo almacena el que es
 	 * mejor a la solución trivial y tiene tamaño almenos 1 y hasta cantManzanas / 3
 	 */
+	@SuppressWarnings("unchecked")
 	public void construirGrupoDeRecorridos(int indiceRecorridos) {
 
 		if (indiceRecorridos == gruposDeManzanasAsignables.size() - 1)
@@ -194,27 +182,6 @@ public class AsignadorDeManzanasFB {
 	private ArrayList<Manzana> obtenerArrayManzanas(RadioCensal radioCensal) {
 		Collection<Manzana> setManzanas = radioCensal.getManzanas().values();
 		return new ArrayList<Manzana>(setManzanas);
-	}
-
-//	private ArrayList<ArrayList<Manzana>> crearArrayListConCantFijaElementosVacios(int cantElementosVacios) {
-//		ArrayList<ArrayList<Manzana>> ret = new ArrayList<ArrayList<Manzana>>();
-//		for (int i = 0; i < cantElementosVacios; i++)
-//			ret.add(null);
-//		return ret;
-//	}
-//
-//	private static ArrayList<ArrayList<Manzana>> clonarGrupos(ArrayList<ArrayList<Manzana>> grupos) {
-//		ArrayList<ArrayList<Manzana>> clon = new ArrayList<ArrayList<Manzana>>();
-//		grupos.stream().forEach(a -> clon.add(clonarGrupo(a)));
-//
-//		return clon;
-//	}
-
-	private static ArrayList<Manzana> clonarGrupo(ArrayList<Manzana> grupo) {
-		ArrayList<Manzana> clon = new ArrayList<Manzana>();
-		grupo.stream().forEach(m -> clon.add(m.clone()));
-
-		return clon;
 	}
 
 	public ArrayList<Censista> getCensistas() {

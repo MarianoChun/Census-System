@@ -5,7 +5,6 @@ import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JProgressBar;
-import javax.swing.JTable;
 import javax.swing.SwingWorker;
 import javax.swing.table.DefaultTableModel;
 
@@ -16,7 +15,6 @@ import logica.ThreadTime;
 
 public class AsignadorGolosoSW extends SwingWorker<ArrayList<Censista>, Object> {
 	private JProgressBar progressBar;
-	private JTable tablaCensistas;
 	private DefaultTableModel modeloTablaCensistas;
 	private JFrame frmAsignadorDeCensistas;
 	private RadioCensal radioCensal;
@@ -25,11 +23,10 @@ public class AsignadorGolosoSW extends SwingWorker<ArrayList<Censista>, Object> 
 	private ThreadTime threadTiempo;
 
 	public AsignadorGolosoSW(ArrayList<Censista> instanciaCensistas, ArrayList<Censista> censistasAsignados,
-			RadioCensal radioCensal, JProgressBar progressBar, JTable tablaCensistas,
-			DefaultTableModel modeloTablaCensistas, JFrame frmAsignadorDeCensistas) {
+			RadioCensal radioCensal, JProgressBar progressBar, DefaultTableModel modeloTablaCensistas,
+			JFrame frmAsignadorDeCensistas) {
 		this.instanciaCensistas = instanciaCensistas;
 		this.radioCensal = radioCensal;
-		this.tablaCensistas = tablaCensistas;
 		this.modeloTablaCensistas = modeloTablaCensistas;
 		this.progressBar = progressBar;
 		this.frmAsignadorDeCensistas = frmAsignadorDeCensistas;

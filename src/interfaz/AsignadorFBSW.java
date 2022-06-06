@@ -1,28 +1,21 @@
 package interfaz;
 
 import java.awt.Color;
-import java.awt.Image;
 import java.util.ArrayList;
-import java.util.concurrent.CancellationException;
-import java.util.concurrent.ExecutionException;
 
-import javax.swing.ImageIcon;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JProgressBar;
-import javax.swing.JTable;
 import javax.swing.SwingWorker;
 import javax.swing.table.DefaultTableModel;
 
 import logica.Censista;
-import logica.Manzana;
 import logica.RadioCensal;
 import logica.Sistema;
 import logica.ThreadTime;
 
 public class AsignadorFBSW extends SwingWorker<ArrayList<Censista>, Object> {
 	private JProgressBar progressBar;
-	private JTable tablaCensistas;
+	// private JTable tablaCensistas;
 	private DefaultTableModel modeloTablaCensistas;
 	private JFrame frmAsignadorDeCensistas;
 	private RadioCensal radioCensal;
@@ -31,11 +24,11 @@ public class AsignadorFBSW extends SwingWorker<ArrayList<Censista>, Object> {
 	private ThreadTime threadTiempo;
 
 	public AsignadorFBSW(ArrayList<Censista> instanciaCensistas, ArrayList<Censista> censistasAsignados,
-			RadioCensal radioCensal, JProgressBar progressBar, JTable tablaCensistas,
-			DefaultTableModel modeloTablaCensistas, JFrame frmAsignadorDeCensistas) {
+			RadioCensal radioCensal, JProgressBar progressBar, DefaultTableModel modeloTablaCensistas,
+			JFrame frmAsignadorDeCensistas) {
 		this.instanciaCensistas = instanciaCensistas;
 		this.radioCensal = radioCensal;
-		this.tablaCensistas = tablaCensistas;
+		// this.tablaCensistas = tablaCensistas;
 		this.modeloTablaCensistas = modeloTablaCensistas;
 		this.progressBar = progressBar;
 		this.frmAsignadorDeCensistas = frmAsignadorDeCensistas;
