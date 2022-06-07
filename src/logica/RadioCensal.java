@@ -31,7 +31,7 @@ public class RadioCensal implements Cloneable{
 		verificarManzana(manzana.getNroManzana());
 		manzanas.put(manzana.getNroManzana(), manzana);
 	}
-
+	
 	public void agregarManzanaContigua(Manzana primerManzana, Manzana segundaManzana) {
 		int i = primerManzana.getNroManzana();
 		int j = segundaManzana.getNroManzana();
@@ -57,6 +57,22 @@ public class RadioCensal implements Cloneable{
 		return ret;
 	}
 
+	private void verificarManzana(int i) {
+		if (i < 0 || i >= A.length) {
+			throw new IllegalArgumentException("Ingrese un nro de manzana valida entre 0 y cantManzanas - 1");
+		}
+	}
+	
+	private void verificarDistintos(int i, int j) {
+		if (i == j) {
+			throw new IllegalArgumentException("No puede ingresar manzanas con el mismo nro de manzana");
+		}
+	}
+	
+	public boolean existeManzanaContigua(int i, int j) {
+		return A[i][j];
+	}
+	
 	public boolean sonVecinos(int i, int j) {
 		verificarManzana(i);
 		verificarManzana(j);
@@ -68,24 +84,8 @@ public class RadioCensal implements Cloneable{
 		return manzanasVecinas(i).size();
 	}
 
-	private void verificarManzana(int i) {
-		if (i < 0 || i >= A.length) {
-			throw new IllegalArgumentException("Ingrese un nro de manzana valida entre 0 y cantManzanas - 1");
-		}
-	}
-
-	private void verificarDistintos(int i, int j) {
-		if (i == j) {
-			throw new IllegalArgumentException("No puede ingresar manzanas con el mismo nro de manzana");
-		}
-	}
-
 	public int cantManzanas() {
 		return A.length;
-	}
-
-	public boolean existeManzanaContigua(int i, int j) {
-		return A[i][j];
 	}
 
 	public ArrayList<ManzanaContigua> getManzanasContiguas() {

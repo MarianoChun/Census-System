@@ -59,34 +59,6 @@ public class CargadorCensistas {
 		}
 	}
 
-	public Map<Integer, Censista> getCensistas() {
-		return censistas;
-	}
-
-	public ArrayList<Censista> getCensistasArray() {
-		return new ArrayList<Censista>(censistas.values());
-	}
-
-	private boolean esNombreVacio(String nombre) {
-		return nombre.equals("");
-	}
-
-	private List<XSSFPictureData> obtenerImagenesCensistas() throws IOException {
-		FileInputStream archivo;
-		try {
-			archivo = new FileInputStream(this.getClass().getResource(pathExcel).getPath());
-		} catch (NullPointerException e) {
-			archivo = new FileInputStream(pathExcel);
-		}
-		// Creamos una instancia Workbook que hace referencia al archivo .xlsx
-		XSSFWorkbook workbook = new XSSFWorkbook(archivo);
-
-		List<XSSFPictureData> fotos = workbook.getAllPictures();
-		workbook.close();
-
-		return fotos;
-	}
-
 	private Iterator<Row> obtenerIteradorExcel() throws FileNotFoundException, IOException {
 		FileInputStream archivo;
 		try {
@@ -103,5 +75,33 @@ public class CargadorCensistas {
 		workbook.close();
 
 		return itr;
+	}
+	
+	private List<XSSFPictureData> obtenerImagenesCensistas() throws IOException {
+		FileInputStream archivo;
+		try {
+			archivo = new FileInputStream(this.getClass().getResource(pathExcel).getPath());
+		} catch (NullPointerException e) {
+			archivo = new FileInputStream(pathExcel);
+		}
+		// Creamos una instancia Workbook que hace referencia al archivo .xlsx
+		XSSFWorkbook workbook = new XSSFWorkbook(archivo);
+
+		List<XSSFPictureData> fotos = workbook.getAllPictures();
+		workbook.close();
+
+		return fotos;
+	}
+	
+	private boolean esNombreVacio(String nombre) {
+		return nombre.equals("");
+	}
+	
+	public Map<Integer, Censista> getCensistas() {
+		return censistas;
+	}
+
+	public ArrayList<Censista> getCensistasArray() {
+		return new ArrayList<Censista>(censistas.values());
 	}
 }

@@ -24,6 +24,11 @@ public class AsignadorDeManzanasFB {
 		this.asignarManzanasACensistas();
 	}
 
+	private ArrayList<Manzana> obtenerArrayManzanas(RadioCensal radioCensal) {
+		Collection<Manzana> setManzanas = radioCensal.getManzanas().values();
+		return new ArrayList<Manzana>(setManzanas);
+	}
+	
 	private void asignarManzanasACensistas() {
 		this.gruposDeManzanasAsignables = new ArrayList<ArrayList<Manzana>>();
 		this.manzanasAsignables = new ArrayList<Manzana>();
@@ -67,70 +72,10 @@ public class AsignadorDeManzanasFB {
 		construirManzanasAsignables(nroManzana + 1);
 	}
 
-	private void eliminarManzana(int nroManzana) {
-		manzanasAsignables.remove(radioCensal.getManzana(nroManzana));
-	}
-
-	private void asignarManzana(int nroManzana) {
-		manzanasAsignables.add(radioCensal.getManzana(nroManzana));
-	}
-
 	private boolean hayManzanasAsignables() {
 		return manzanasAsignables.size() >= 1 && manzanasAsignables.size() <= 3;
 	}
-
-	private ArrayList<ArrayList<Manzana>> construirSolucion(ArrayList<ArrayList<Manzana>> grupos) {
-
-		Collections.sort(grupos, (p, q) -> q.size() - p.size());
-		solucion = new ArrayList<ArrayList<Manzana>>();
-
-		int indice = 0;
-		int tamanoSolucion = 0;
-		while (tamanoSolucion != radioCensal.cantManzanas()) {
-			ArrayList<Manzana> grupoAsignable = grupos.get(indice);
-			if (esGrupoValido(grupoAsignable)) {
-				solucion.add(grupoAsignable);
-			}
-
-			indice++;
-			tamanoSolucion = obtenerTamanoSolucion();
-		}
-		return solucion;
-	}
-
-	private int obtenerTamanoSolucion() {
-		int tamano = 0;
-		for (ArrayList<Manzana> grupoSolucion : solucion) {
-			tamano += grupoSolucion.size();
-		}
-		return tamano;
-	}
-
-	private static boolean esGrupoValido(ArrayList<Manzana> grupo) {
-		if (solucion.size() == 0)
-			return true;
-
-		return solucion.stream().allMatch(grupoSolucion -> gruposSonDisjuntos(grupoSolucion, grupo));
-	}
-
-	private static boolean gruposSonDisjuntos(ArrayList<Manzana> grupo, ArrayList<Manzana> otroGrupo) {
-		ArrayList<Integer> nrosManzanaGrupo = extraerNumerosDeManzanas(grupo);
-		ArrayList<Integer> nrosManzanaOtroGrupo = extraerNumerosDeManzanas(otroGrupo);
-
-		return nrosManzanaGrupo.stream().allMatch(n -> !nrosManzanaOtroGrupo.contains(n))
-				&& nrosManzanaOtroGrupo.stream().allMatch(n -> !nrosManzanaGrupo.contains(n));
-
-	}
-
-	private static ArrayList<Integer> extraerNumerosDeManzanas(ArrayList<Manzana> manzanas) {
-		ArrayList<Integer> nrosManzana = new ArrayList<Integer>();
-
-		for (Manzana manzana : manzanas)
-			nrosManzana.add(manzana.getNroManzana());
-
-		return nrosManzana;
-	}
-
+	
 	private boolean elementosSonContiguos(ArrayList<Manzana> grupo) {
 		if (grupo.size() == 0) {
 			return false;
@@ -145,7 +90,7 @@ public class AsignadorDeManzanasFB {
 
 		return tresManzanasSonContiguas(grupo);
 	}
-
+	
 	private boolean tresManzanasSonContiguas(ArrayList<Manzana> grupoDeTresManzanas) {
 		int[] nrosManzanas = grupoDeTresManzanas.stream().mapToInt(m -> m.getNroManzana()).toArray();
 
@@ -172,10 +117,65 @@ public class AsignadorDeManzanasFB {
 	private boolean esManzanaContigua(int i, int j) {
 		return radioCensal.sonVecinos(i, j);
 	}
+	
+	private void asignarManzana(int nroManzana) {
+		manzanasAsignables.add(radioCensal.getManzana(nroManzana));
+	}
+	
+	private void eliminarManzana(int nroManzana) {
+		manzanasAsignables.remove(radioCensal.getManzana(nroManzana));
+	}
 
-	private ArrayList<Manzana> obtenerArrayManzanas(RadioCensal radioCensal) {
-		Collection<Manzana> setManzanas = radioCensal.getManzanas().values();
-		return new ArrayList<Manzana>(setManzanas);
+	private ArrayList<ArrayList<Manzana>> construirSolucion(ArrayList<ArrayList<Manzana>> grupos) {
+
+		Collections.sort(grupos, (p, q) -> q.size() - p.size());
+		solucion = new ArrayList<ArrayList<Manzana>>();
+
+		int indice = 0;
+		int tamanoSolucion = 0;
+		while (tamanoSolucion != radioCensal.cantManzanas()) {
+			ArrayList<Manzana> grupoAsignable = grupos.get(indice);
+			if (esGrupoValido(grupoAsignable)) {
+				solucion.add(grupoAsignable);
+			}
+
+			indice++;
+			tamanoSolucion = obtenerTamanoSolucion();
+		}
+		return solucion;
+	}
+
+	private static boolean esGrupoValido(ArrayList<Manzana> grupo) {
+		if (solucion.size() == 0)
+			return true;
+
+		return solucion.stream().allMatch(grupoSolucion -> gruposSonDisjuntos(grupoSolucion, grupo));
+	}
+	
+	private static boolean gruposSonDisjuntos(ArrayList<Manzana> grupo, ArrayList<Manzana> otroGrupo) {
+		ArrayList<Integer> nrosManzanaGrupo = extraerNumerosDeManzanas(grupo);
+		ArrayList<Integer> nrosManzanaOtroGrupo = extraerNumerosDeManzanas(otroGrupo);
+
+		return nrosManzanaGrupo.stream().allMatch(n -> !nrosManzanaOtroGrupo.contains(n))
+				&& nrosManzanaOtroGrupo.stream().allMatch(n -> !nrosManzanaGrupo.contains(n));
+
+	}
+	
+	private static ArrayList<Integer> extraerNumerosDeManzanas(ArrayList<Manzana> manzanas) {
+		ArrayList<Integer> nrosManzana = new ArrayList<Integer>();
+
+		for (Manzana manzana : manzanas)
+			nrosManzana.add(manzana.getNroManzana());
+
+		return nrosManzana;
+	}
+	
+	private int obtenerTamanoSolucion() {
+		int tamano = 0;
+		for (ArrayList<Manzana> grupoSolucion : solucion) {
+			tamano += grupoSolucion.size();
+		}
+		return tamano;
 	}
 	
 	public ArrayList<Censista> getCensistas() {

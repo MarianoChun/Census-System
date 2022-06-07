@@ -91,226 +91,24 @@ public class MainForm {
 		crearFramePrincipal();
 
 		crearMapa();
-
-		crearTablaCensistas();
-
+		
 		crearTablaManzanas();
+		
+		crearTablaCensistas();
 
 		crearBotonAsignarManzanasAG();
 
 		crearBotonAsignarManzanasFB();
 
-		crearBotonCargarCensistas();
-
 		crearBotonCargarManzanas();
+		
+		crearBotonCargarCensistas();
 
 		crearBarraDeProgreso();
 
 		crearBotonCancelar();
 	}
 
-	private void crearBotonCancelar() {
-		btnCancelar = new JButton("Cancelar");
-		btnCancelar.setFont(new Font("Verdana", Font.PLAIN, 13));
-		btnCancelar.setEnabled(false);
-		btnCancelar.setBounds(470, 721, 132, 34);
-		btnCancelar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				ventanaCancelarEjecucion();
-			}
-		});
-		frmAsignadorDeCensistas.getContentPane().add(btnCancelar);
-	}
-
-	private void ventanaCancelarEjecucion() {
-		int opcion = JOptionPane.showConfirmDialog(frmAsignadorDeCensistas,
-				"¿Estás seguro?, se perdera todo el progreso", "", JOptionPane.YES_NO_OPTION,
-				JOptionPane.QUESTION_MESSAGE, null);
-
-		if (opcion == 0) {
-			cancelarEjecucion();
-		}
-	}
-
-	private void cancelarEjecucion() {
-		if (asignadorFBSWon) {
-			asignadorFBSW.cancel(true);
-			asignadorFBSWon = false;
-		}
-		if (asignadorGolosoSWon) {
-			asignadorGolosoSW.cancel(true);
-			asignadorGolosoSWon = false;
-		}
-
-	}
-
-	@SuppressWarnings("deprecation")
-	private void crearBarraDeProgreso() {
-		progressBar = new JProgressBar();
-		progressBar.setBackground(SystemColor.menu);
-		progressBar.setForeground(new Color(204, 255, 51));
-		progressBar.setBounds(338, 606, 403, 14);
-		progressBar.setMaximum(100);
-		progressBar.setValue(0);
-		progressBar.setBorder(new LineBorder(new Color(0, 0, 0)));
-		progressBar.show(false);
-		frmAsignadorDeCensistas.getContentPane().add(progressBar);
-	}
-
-	private void crearBotonCargarManzanas() {
-		JButton btnCargarManzanas = new JButton("Cargar manzanas");
-		btnCargarManzanas.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				File directorioAMostrar = new File(System.getProperty("user.dir") + "/src/listas_de_manzanas");
-				selectorArchivos = new JFileChooser();
-				selectorArchivos.setCurrentDirectory(directorioAMostrar);
-
-				int valor = selectorArchivos.showOpenDialog(selectorArchivos);
-
-				if (valor == JFileChooser.APPROVE_OPTION) {
-					try {
-
-						String path = formateoPath();
-
-						cargadorManzanas = new CargadorManzanas(path);
-						cargadorManzanas.cargarManzanasYVecinosDesdeExcel();
-						radioCensal = cargadorManzanas.getRadioCensal();
-
-						HashMap<Integer, Manzana> manzanas = radioCensal.getManzanas();
-						removerRegistrosTabla(modeloTablaManzanas);
-						limpiarMapaDePolygonsYMarkers();
-						for (Manzana manzana : manzanas.values()) {
-							Coordenada coordenada = manzana.getCoordenada();
-
-							modeloTablaManzanas.addRow(new Object[] { manzana.getNroManzana(),
-									"X = " + coordenada.getX() + " , Y = " + coordenada.getY() });
-
-							agregarMapPolygonPorCadaVecino(manzana);
-							agregarMapMarkerManzana(manzana);
-						}
-
-						tablaManzanas.setModel(modeloTablaManzanas);
-
-					} catch (Exception ex) {
-						System.out.println(ex.getMessage());
-					}
-				} else {
-					System.out.println("No se ha seleccionado ningún fichero");
-				}
-
-				habilitarBtnsAsignarManzanas();
-			}
-		});
-		btnCargarManzanas.setFont(new Font("Verdana", Font.PLAIN, 13));
-		btnCargarManzanas.setBounds(541, 631, 200, 34);
-		frmAsignadorDeCensistas.getContentPane().add(btnCargarManzanas);
-	}
-
-	private void crearBotonCargarCensistas() {
-		JButton btnCargarCensistas = new JButton("Cargar censistas");
-		btnCargarCensistas.setFont(new Font("Verdana", Font.PLAIN, 13));
-		btnCargarCensistas.setBounds(338, 631, 200, 34);
-		btnCargarCensistas.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-
-				File directorioAMostrar = new File(System.getProperty("user.dir") + "/src/listas_de_censistas");
-				selectorArchivos = new JFileChooser();
-				selectorArchivos.setCurrentDirectory(directorioAMostrar);
-
-				int valor = selectorArchivos.showOpenDialog(selectorArchivos);
-
-				if (valor == JFileChooser.APPROVE_OPTION) {
-					try {
-						String path = formateoPath();
-
-						cargadorCensistas = new CargadorCensistas(path);
-						cargadorCensistas.cargarCensistasDesdeExcel();
-
-						Map<Integer, Censista> censistas = cargadorCensistas.getCensistas();
-
-						removerRegistrosTabla(modeloTablaCensistas);
-						for (Censista censista : censistas.values()) {
-							ImageIcon fotoCensista = new ImageIcon(setTamanoFotoCensista(censista, 40, 40));
-							JLabel fotoAColocar = new JLabel();
-							fotoAColocar.setIcon(fotoCensista);
-							modeloTablaCensistas.addRow(new Object[] { censista.getNombre(), fotoAColocar });
-
-						}
-
-						tablaCensistas.getColumnModel().getColumn(1)
-								.setWidth(tablaCensistas.getColumnModel().getColumn(1).getPreferredWidth());
-						tablaCensistas.setPreferredScrollableViewportSize(tablaCensistas.getPreferredSize());
-						tablaCensistas.setModel(modeloTablaCensistas);
-
-					} catch (Exception ex) {
-						System.out.println(ex.getMessage());
-					}
-				} else {
-					System.out.println("No se ha seleccionado ningún fichero");
-				}
-
-				habilitarBtnsAsignarManzanas();
-			}
-		});
-		frmAsignadorDeCensistas.getContentPane().add(btnCargarCensistas);
-	}
-
-	private void crearBotonAsignarManzanasAG() {
-		btnAsignarManzanasAG = new JButton("Asignar manzanas a censistas (Goloso)");
-		btnAsignarManzanasAG.setEnabled(false);
-		btnAsignarManzanasAG.addActionListener(new ActionListener() {
-			@SuppressWarnings("deprecation")
-			public void actionPerformed(ActionEvent e) {
-				limpiarCeldasManzanasAsignadas();
-				
-				ArrayList<Censista> instanciaCensistas = clonarCensistas(cargadorCensistas.getCensistasArray());
-				ArrayList<Censista> censistasAsignados = new ArrayList<Censista>();
-				progressBar.show(true);
-				progressBar.setBackground(Color.WHITE);
-				asignadorGolosoSW = new AsignadorGolosoSW(instanciaCensistas, censistasAsignados, radioCensal,
-						progressBar, modeloTablaCensistas, frmAsignadorDeCensistas, btnAsignarManzanasAG, btnAsignarManzanasFB);
-				asignadorGolosoSW.execute();
-				btnCancelar.setEnabled(true);
-				asignadorGolosoSWon = true;
-			}
-		});
-		btnAsignarManzanasAG.setFont(new Font("Verdana", Font.PLAIN, 13));
-		btnAsignarManzanasAG.setBounds(158, 676, 380, 34);
-		frmAsignadorDeCensistas.getContentPane().add(btnAsignarManzanasAG);
-	}
-
-	private void crearBotonAsignarManzanasFB() {
-		btnAsignarManzanasFB = new JButton("Asignar manzanas a censistas (Fuerza bruta)");
-		btnAsignarManzanasFB.addActionListener(new ActionListener() {
-			@SuppressWarnings("deprecation")
-			public void actionPerformed(ActionEvent e) {
-				limpiarCeldasManzanasAsignadas();
-			
-				ArrayList<Censista> instanciaCensistas = clonarCensistas(cargadorCensistas.getCensistasArray());
-				ArrayList<Censista> censistasAsignados = new ArrayList<Censista>();
-				progressBar.show(true);
-				progressBar.setBackground(Color.WHITE);
-				asignadorFBSW = new AsignadorFBSW(instanciaCensistas, censistasAsignados, radioCensal, progressBar,
-						modeloTablaCensistas, frmAsignadorDeCensistas, btnAsignarManzanasAG, btnAsignarManzanasFB);
-				asignadorFBSW.execute();
-				btnCancelar.setEnabled(true);
-				asignadorFBSWon = true;
-			}
-		});
-		btnAsignarManzanasFB.setFont(new Font("Verdana", Font.PLAIN, 13));
-		btnAsignarManzanasFB.setEnabled(false);
-		btnAsignarManzanasFB.setBounds(541, 676, 372, 34);
-		frmAsignadorDeCensistas.getContentPane().add(btnAsignarManzanasFB);
-
-	}
-	
-	private void limpiarCeldasManzanasAsignadas() {
-		int fila = tablaCensistas.getRowCount();
-		for (int i = 0; i < fila; i++) {
-			modeloTablaCensistas.setValueAt("", i, 2);
-		}
-	}
-	
 	private void crearFramePrincipal() {
 		frmAsignadorDeCensistas = new JFrame();
 		frmAsignadorDeCensistas.setTitle("Asignador de censistas");
@@ -320,7 +118,22 @@ public class MainForm {
 		frmAsignadorDeCensistas.getContentPane().setLayout(null);
 		frmAsignadorDeCensistas.setLocationRelativeTo(null);
 	}
+	
+	private void crearMapa() {
+		JPanel panelMapa = new JPanel();
+		panelMapa.setBounds(258, 243, 561, 352);
+		frmAsignadorDeCensistas.getContentPane().add(panelMapa);
 
+		mapa = new JMapViewer();
+		mapa.setScrollWrapEnabled(true);
+		mapa.setDisplayPosition(new Coordinate(-34.542826297705645, -58.71398400055889), 12);
+		mapa.setBounds(panelMapa.getBounds());
+		panelMapa.add(mapa);
+
+		DefaultMapController controladorMapa = new DefaultMapController(mapa);
+		controladorMapa.setMovementMouseButton(MouseEvent.BUTTON1);
+	}
+	
 	private void crearTablaManzanas() {
 		JScrollPane scrollPaneManzanas = new JScrollPane();
 		scrollPaneManzanas.setBounds(496, 11, 549, 227);
@@ -386,31 +199,147 @@ public class MainForm {
 		tablaCensistas.getTableHeader().setResizingAllowed(false);
 		scrollPaneCensistas.setViewportView(tablaCensistas);
 	}
-
-	private void crearMapa() {
-		JPanel panelMapa = new JPanel();
-		panelMapa.setBounds(258, 243, 561, 352);
-		frmAsignadorDeCensistas.getContentPane().add(panelMapa);
-
-		mapa = new JMapViewer();
-		mapa.setScrollWrapEnabled(true);
-		mapa.setDisplayPosition(new Coordinate(-34.542826297705645, -58.71398400055889), 12);
-		mapa.setBounds(panelMapa.getBounds());
-		panelMapa.add(mapa);
-
-		DefaultMapController controladorMapa = new DefaultMapController(mapa);
-		controladorMapa.setMovementMouseButton(MouseEvent.BUTTON1);
+	
+	private void crearBotonAsignarManzanasAG() {
+		btnAsignarManzanasAG = new JButton("Asignar manzanas a censistas (Goloso)");
+		btnAsignarManzanasAG.setEnabled(false);
+		btnAsignarManzanasAG.addActionListener(new ActionListener() {
+			@SuppressWarnings("deprecation")
+			public void actionPerformed(ActionEvent e) {
+				limpiarCeldasManzanasAsignadas();
+				
+				ArrayList<Censista> instanciaCensistas = clonarCensistas(cargadorCensistas.getCensistasArray());
+				ArrayList<Censista> censistasAsignados = new ArrayList<Censista>();
+				progressBar.show(true);
+				progressBar.setBackground(Color.WHITE);
+				asignadorGolosoSW = new AsignadorGolosoSW(instanciaCensistas, censistasAsignados, radioCensal,
+						progressBar, modeloTablaCensistas, frmAsignadorDeCensistas, btnAsignarManzanasAG, btnAsignarManzanasFB);
+				asignadorGolosoSW.execute();
+				btnCancelar.setEnabled(true);
+				asignadorGolosoSWon = true;
+			}
+		});
+		btnAsignarManzanasAG.setFont(new Font("Verdana", Font.PLAIN, 13));
+		btnAsignarManzanasAG.setBounds(158, 676, 380, 34);
+		frmAsignadorDeCensistas.getContentPane().add(btnAsignarManzanasAG);
 	}
 
-	protected String obtenerValoresStringManzanas(ArrayList<Manzana> manzanasAsignadas) {
-		StringBuffer ret = new StringBuffer();
-		ret.append("[ ");
-		for (Manzana manzana : manzanasAsignadas) {
-			ret.append(manzana.getNroManzana()).append(" ");
-		}
-		ret.append(" ]");
+	private void crearBotonAsignarManzanasFB() {
+		btnAsignarManzanasFB = new JButton("Asignar manzanas a censistas (Fuerza bruta)");
+		btnAsignarManzanasFB.addActionListener(new ActionListener() {
+			@SuppressWarnings("deprecation")
+			public void actionPerformed(ActionEvent e) {
+				limpiarCeldasManzanasAsignadas();
+			
+				ArrayList<Censista> instanciaCensistas = clonarCensistas(cargadorCensistas.getCensistasArray());
+				ArrayList<Censista> censistasAsignados = new ArrayList<Censista>();
+				progressBar.show(true);
+				progressBar.setBackground(Color.WHITE);
+				asignadorFBSW = new AsignadorFBSW(instanciaCensistas, censistasAsignados, radioCensal, progressBar,
+						modeloTablaCensistas, frmAsignadorDeCensistas, btnAsignarManzanasAG, btnAsignarManzanasFB);
+				asignadorFBSW.execute();
+				btnCancelar.setEnabled(true);
+				asignadorFBSWon = true;
+			}
+		});
+		btnAsignarManzanasFB.setFont(new Font("Verdana", Font.PLAIN, 13));
+		btnAsignarManzanasFB.setEnabled(false);
+		btnAsignarManzanasFB.setBounds(541, 676, 372, 34);
+		frmAsignadorDeCensistas.getContentPane().add(btnAsignarManzanasFB);
 
-		return ret.toString();
+	}
+	
+	private void limpiarCeldasManzanasAsignadas() {
+		int fila = tablaCensistas.getRowCount();
+		for (int i = 0; i < fila; i++) {
+			modeloTablaCensistas.setValueAt("", i, 2);
+		}
+	}
+	
+	public static ArrayList<Censista> clonarCensistas(ArrayList<Censista> censistas) {
+		ArrayList<Censista> clonCensistas = new ArrayList<Censista>();
+		censistas.stream().forEach(c -> clonCensistas.add(c.clone()));
+
+		return clonCensistas;
+	}
+	
+	private void crearBotonCargarManzanas() {
+		JButton btnCargarManzanas = new JButton("Cargar manzanas");
+		btnCargarManzanas.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				File directorioAMostrar = new File(System.getProperty("user.dir") + "/src/listas_de_manzanas");
+				selectorArchivos = new JFileChooser();
+				selectorArchivos.setCurrentDirectory(directorioAMostrar);
+
+				int valor = selectorArchivos.showOpenDialog(selectorArchivos);
+
+				if (valor == JFileChooser.APPROVE_OPTION) {
+					try {
+
+						String path = formateoPath();
+
+						cargadorManzanas = new CargadorManzanas(path);
+						cargadorManzanas.cargarManzanasYVecinosDesdeExcel();
+						radioCensal = cargadorManzanas.getRadioCensal();
+
+						HashMap<Integer, Manzana> manzanas = radioCensal.getManzanas();
+						removerRegistrosTabla(modeloTablaManzanas);
+						limpiarMapaDePolygonsYMarkers();
+						for (Manzana manzana : manzanas.values()) {
+							agregarManzanaAModeloTabla(manzana);
+							agregarMapPolygonPorCadaVecino(manzana);
+							agregarMapMarkerManzana(manzana);
+						}
+
+						tablaManzanas.setModel(modeloTablaManzanas);
+
+					} catch (Exception ex) {
+						System.out.println(ex.getMessage());
+					}
+				} else {
+					System.out.println("No se ha seleccionado ningún fichero");
+				}
+
+				habilitarBtnsAsignarManzanas();
+			}
+		});
+		btnCargarManzanas.setFont(new Font("Verdana", Font.PLAIN, 13));
+		btnCargarManzanas.setBounds(541, 631, 200, 34);
+		frmAsignadorDeCensistas.getContentPane().add(btnCargarManzanas);
+	}
+
+	private String formateoPath() {
+		File archivo = selectorArchivos.getSelectedFile();
+		String path = archivo.getAbsolutePath().replaceAll("\\\\", "/");
+		return path;
+	}
+	
+	private void agregarManzanaAModeloTabla(Manzana manzana) {
+		Coordenada coordenada = manzana.getCoordenada();
+
+		modeloTablaManzanas.addRow(new Object[] { manzana.getNroManzana(),
+				"X = " + coordenada.getX() + " , Y = " + coordenada.getY() });
+	}
+	
+	private void removerRegistrosTabla(DefaultTableModel modeloTabla) {
+		int cantRegistros = modeloTabla.getRowCount();
+		if (cantRegistros > 1) {
+			modeloTabla.getDataVector().removeAllElements();
+			modeloTabla.fireTableDataChanged();
+		}
+	}
+	
+	private void limpiarMapaDePolygonsYMarkers() {
+		mapa.removeAllMapPolygons();
+		mapa.removeAllMapMarkers();
+	}
+	
+	private void agregarMapPolygonPorCadaVecino(Manzana manzana) {
+		ArrayList<Coordinate> vecinosManzana;
+		for (Integer manzanaVecina : radioCensal.manzanasVecinas(manzana.getNroManzana())) {
+			vecinosManzana = obtenerCoordenadasVecinoManzana(manzana, radioCensal.getManzana(manzanaVecina));
+			mapa.addMapPolygon(new MapPolygonImpl(vecinosManzana));
+		}
 	}
 
 	private ArrayList<Coordinate> obtenerCoordenadasVecinoManzana(Manzana manzana, Manzana vecino) {
@@ -427,43 +356,75 @@ public class MainForm {
 
 		return coordenadasVecino;
 	}
-
-	public static ArrayList<Censista> clonarCensistas(ArrayList<Censista> censistas) {
-		ArrayList<Censista> clonCensistas = new ArrayList<Censista>();
-		censistas.stream().forEach(c -> clonCensistas.add(c.clone()));
-
-		return clonCensistas;
-	}
-
-	private String formateoPath() {
-		File archivo = selectorArchivos.getSelectedFile();
-		String path = archivo.getAbsolutePath().replaceAll("\\\\", "/");
-		return path;
-	}
-
-	private void agregarMapPolygonPorCadaVecino(Manzana manzana) {
-		ArrayList<Coordinate> vecinosManzana;
-		for (Integer manzanaVecina : radioCensal.manzanasVecinas(manzana.getNroManzana())) {
-			vecinosManzana = obtenerCoordenadasVecinoManzana(manzana, radioCensal.getManzana(manzanaVecina));
-			mapa.addMapPolygon(new MapPolygonImpl(vecinosManzana));
-		}
-	}
-
+	
 	private void agregarMapMarkerManzana(Manzana manzana) {
 		Coordenada coordManzana = manzana.getCoordenada();
 		MapMarkerDot marcadorManzana = new MapMarkerDot(Color.RED, coordManzana.getX(), coordManzana.getY());
 		marcadorManzana.setName("" + manzana.getNroManzana());
 		mapa.addMapMarker(marcadorManzana);
 	}
+	
+	private void crearBotonCargarCensistas() {
+		JButton btnCargarCensistas = new JButton("Cargar censistas");
+		btnCargarCensistas.setFont(new Font("Verdana", Font.PLAIN, 13));
+		btnCargarCensistas.setBounds(338, 631, 200, 34);
+		btnCargarCensistas.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
 
-	private void removerRegistrosTabla(DefaultTableModel modeloTabla) {
-		int cantRegistros = modeloTabla.getRowCount();
-		if (cantRegistros > 1) {
-			modeloTabla.getDataVector().removeAllElements();
-			modeloTabla.fireTableDataChanged();
+				File directorioAMostrar = new File(System.getProperty("user.dir") + "/src/listas_de_censistas");
+				selectorArchivos = new JFileChooser();
+				selectorArchivos.setCurrentDirectory(directorioAMostrar);
+
+				int valor = selectorArchivos.showOpenDialog(selectorArchivos);
+
+				if (valor == JFileChooser.APPROVE_OPTION) {
+					try {
+						String path = formateoPath();
+						cargadorCensistas = new CargadorCensistas(path);
+						cargadorCensistas.cargarCensistasDesdeExcel();
+						Map<Integer, Censista> censistas = cargadorCensistas.getCensistas();
+						removerRegistrosTabla(modeloTablaCensistas);
+						
+						for (Censista censista : censistas.values()) {
+							agregarCensistaAModeloTabla(censista);
+						}
+
+						tablaCensistas.getColumnModel().getColumn(1)
+								.setWidth(tablaCensistas.getColumnModel().getColumn(1).getPreferredWidth());
+						tablaCensistas.setPreferredScrollableViewportSize(tablaCensistas.getPreferredSize());
+						tablaCensistas.setModel(modeloTablaCensistas);
+
+					} catch (Exception ex) {
+						System.out.println(ex.getMessage());
+					}
+				} else {
+					System.out.println("No se ha seleccionado ningún fichero");
+				}
+
+				habilitarBtnsAsignarManzanas();
+			}
+		});
+		frmAsignadorDeCensistas.getContentPane().add(btnCargarCensistas);
+	}
+	
+	private void agregarCensistaAModeloTabla(Censista censista) {
+		ImageIcon fotoCensista = new ImageIcon(setTamanoFotoCensista(censista, 40, 40));
+		JLabel fotoAColocar = new JLabel();
+		fotoAColocar.setIcon(fotoCensista);
+		modeloTablaCensistas.addRow(new Object[] { censista.getNombre(), fotoAColocar });
+	}
+	
+	private Image setTamanoFotoCensista(Censista censista, int ancho, int alto) {
+		return new ImageIcon(censista.getFoto()).getImage().getScaledInstance(ancho, alto, Image.SCALE_DEFAULT);
+	}
+	
+	private void habilitarBtnsAsignarManzanas() {
+		if (estanRegistrosCensistasCargados() && estanRegistrosManzanasCargados()) {
+			btnAsignarManzanasAG.setEnabled(true);
+			btnAsignarManzanasFB.setEnabled(true);
 		}
 	}
-
+	
 	private boolean estanRegistrosManzanasCargados() {
 		return modeloTablaManzanas.getRowCount() != 0;
 	}
@@ -471,21 +432,64 @@ public class MainForm {
 	private boolean estanRegistrosCensistasCargados() {
 		return modeloTablaCensistas.getRowCount() != 0;
 	}
+	
+	@SuppressWarnings("deprecation")
+	private void crearBarraDeProgreso() {
+		progressBar = new JProgressBar();
+		progressBar.setBackground(SystemColor.menu);
+		progressBar.setForeground(new Color(204, 255, 51));
+		progressBar.setBounds(338, 606, 403, 14);
+		progressBar.setMaximum(100);
+		progressBar.setValue(0);
+		progressBar.setBorder(new LineBorder(new Color(0, 0, 0)));
+		progressBar.show(false);
+		frmAsignadorDeCensistas.getContentPane().add(progressBar);
+	}
+	
+	private void crearBotonCancelar() {
+		btnCancelar = new JButton("Cancelar");
+		btnCancelar.setFont(new Font("Verdana", Font.PLAIN, 13));
+		btnCancelar.setEnabled(false);
+		btnCancelar.setBounds(470, 721, 132, 34);
+		btnCancelar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ventanaCancelarEjecucion();
+			}
+		});
+		frmAsignadorDeCensistas.getContentPane().add(btnCancelar);
+	}
 
-	private void habilitarBtnsAsignarManzanas() {
-		if (estanRegistrosCensistasCargados() && estanRegistrosManzanasCargados()) {
-			btnAsignarManzanasAG.setEnabled(true);
-			btnAsignarManzanasFB.setEnabled(true);
+	private void ventanaCancelarEjecucion() {
+		int opcion = JOptionPane.showConfirmDialog(frmAsignadorDeCensistas,
+				"¿Estás seguro?, se perdera todo el progreso", "", JOptionPane.YES_NO_OPTION,
+				JOptionPane.QUESTION_MESSAGE, null);
+
+		if (opcion == 0) {
+			cancelarEjecucion();
 		}
 	}
 
-	private Image setTamanoFotoCensista(Censista censista, int ancho, int alto) {
-		return new ImageIcon(censista.getFoto()).getImage().getScaledInstance(ancho, alto, Image.SCALE_DEFAULT);
+	private void cancelarEjecucion() {
+		if (asignadorFBSWon) {
+			asignadorFBSW.cancel(true);
+			asignadorFBSWon = false;
+		}
+		if (asignadorGolosoSWon) {
+			asignadorGolosoSW.cancel(true);
+			asignadorGolosoSWon = false;
+		}
+
 	}
 
-	private void limpiarMapaDePolygonsYMarkers() {
-		mapa.removeAllMapPolygons();
-		mapa.removeAllMapMarkers();
+	protected String obtenerValoresStringManzanas(ArrayList<Manzana> manzanasAsignadas) {
+		StringBuffer ret = new StringBuffer();
+		ret.append("[ ");
+		for (Manzana manzana : manzanasAsignadas) {
+			ret.append(manzana.getNroManzana()).append(" ");
+		}
+		ret.append(" ]");
+
+		return ret.toString();
 	}
 
 	public class ImagenTabla extends DefaultTableCellRenderer {

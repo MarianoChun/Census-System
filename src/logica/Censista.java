@@ -19,12 +19,20 @@ public class Censista implements Cloneable {
 		}
 	}
 
+	private boolean estaManzanaAsignada(Manzana manzana) {
+		return manzanasAsignadas.stream().anyMatch(m -> m.getNroManzana() == manzana.getNroManzana());
+	}
+	
 	private void verificarCantManzanasAsignadas() {
 		if (cantManzanasAsignadas() == 3) {
 			throw new IllegalArgumentException("Solo se le puede asignar al censista un máximo de 3 manzanas");
 		}
 	}
 
+	public int cantManzanasAsignadas() {
+		return manzanasAsignadas.size();
+	}
+	
 	public void asignarManzanas(ArrayList<Manzana> manzanas) {
 		verificarSizeManzanasAAsignar(manzanas);
 		verificarExcesoDeManzanasAAsignar(manzanas);
@@ -65,14 +73,6 @@ public class Censista implements Cloneable {
 
 	public String getNombre() {
 		return nombre;
-	}
-
-	private boolean estaManzanaAsignada(Manzana manzana) {
-		return manzanasAsignadas.stream().anyMatch(m -> m.getNroManzana() == manzana.getNroManzana());
-	}
-
-	public int cantManzanasAsignadas() {
-		return manzanasAsignadas.size();
 	}
 
 	public ArrayList<Manzana> getManzanasAsignadas() {

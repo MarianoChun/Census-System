@@ -1,4 +1,4 @@
-package logica;
+package interfaz;
 
 import java.util.concurrent.TimeUnit;
 

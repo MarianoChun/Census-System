@@ -12,7 +12,6 @@ import javax.swing.table.DefaultTableModel;
 import logica.Censista;
 import logica.RadioCensal;
 import logica.Sistema;
-import logica.ThreadTime;
 
 public class AsignadorGolosoSW extends SwingWorker<ArrayList<Censista>, Object> {
 	private JProgressBar progressBar;

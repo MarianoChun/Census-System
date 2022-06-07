@@ -56,13 +56,8 @@ public class AsignadorDeManzanasGoloso {
 		return grupoDeManzanasAsignables;
 	}
 
-	private void marcarManzanas(ArrayList<Manzana> manzanasVecinasNoAsignadas) {
-		for (Manzana manzana : manzanasVecinasNoAsignadas) {
-			manzanasMarcadas.put(manzana.getNroManzana(), manzana);
-		}
-	}
-
-	// Debe devolver como máximo un array list de 3 manzanas. 1 <= ArrayList.size <=3;
+	// Debe devolver como máximo un array list de 3 manzanas. 1 <= ArrayList.size
+	// <=3;
 	// La manzana actual debe incluirse en el arrayList
 	private ArrayList<Manzana> manzanasVecinasNoMarcadas(Manzana manzana) {
 		ArrayList<Manzana> manzanasVecinasNoMarcadas = new ArrayList<Manzana>();
@@ -81,6 +76,12 @@ public class AsignadorDeManzanasGoloso {
 
 	private boolean estaManzanaMarcada(int nroManzana) {
 		return manzanasMarcadas.containsKey(nroManzana);
+	}
+
+	private void marcarManzanas(ArrayList<Manzana> manzanasVecinasNoAsignadas) {
+		for (Manzana manzana : manzanasVecinasNoAsignadas) {
+			manzanasMarcadas.put(manzana.getNroManzana(), manzana);
+		}
 	}
 
 	public ArrayList<Censista> getCensistas() {

@@ -22,6 +22,29 @@ public class CargadorManzanas {
 		cargarManzanasDesdeExcel();
 	}
 
+	private int cantManzanasExcel() {
+		int cantManzanas = 0;
+		try {
+			Iterator<Row> iterador = obtenerIteradorExcel();
+
+			while (iterador.hasNext()) {
+				Row row = iterador.next();
+
+				if (row.getCell(0).getCellTypeEnum() == CellType.NUMERIC) {
+					cantManzanas++;
+				} else {
+					break;
+				}
+
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return cantManzanas;
+	}
+	
 	public void cargarManzanasYVecinosDesdeExcel() {
 		cargarManzanasDesdeExcel();
 		cargarVecinosManzanasDesdeExcel();
@@ -55,6 +78,11 @@ public class CargadorManzanas {
 		}
 	}
 
+	private Coordenada obtenerCoordeanda(String coordenada) {
+		String[] coordeandas = coordenada.split(", ");
+		return new Coordenada(Double.parseDouble(coordeandas[0]), Double.parseDouble(coordeandas[1]));
+	}
+	
 	private void cargarVecinosManzanasDesdeExcel() {
 		try {
 			Iterator<Row> itr = obtenerIteradorExcel();
@@ -83,29 +111,17 @@ public class CargadorManzanas {
 		}
 	}
 
-	private int cantManzanasExcel() {
-		int cantManzanas = 0;
-		try {
-			Iterator<Row> iterador = obtenerIteradorExcel();
+	private Iterator<Row> obtenerIteradorExcel() throws FileNotFoundException, IOException {
+		XSSFWorkbook workbook = obtenerWorkbookExcel();
+		XSSFSheet sheet = workbook.getSheetAt(0);
 
-			while (iterador.hasNext()) {
-				Row row = iterador.next();
+		Iterator<Row> itr = sheet.iterator();
+		itr.next();
+		workbook.close();
 
-				if (row.getCell(0).getCellTypeEnum() == CellType.NUMERIC) {
-					cantManzanas++;
-				} else {
-					break;
-				}
-
-			}
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		return cantManzanas;
+		return itr;
 	}
-
+	
 	private XSSFWorkbook obtenerWorkbookExcel() throws FileNotFoundException, IOException {
 		FileInputStream archivo;
 		try {
@@ -117,12 +133,7 @@ public class CargadorManzanas {
 		XSSFWorkbook workbook = new XSSFWorkbook(archivo);
 		return workbook;
 	}
-
-	private Coordenada obtenerCoordeanda(String coordenada) {
-		String[] coordeandas = coordenada.split(", ");
-		return new Coordenada(Double.parseDouble(coordeandas[0]), Double.parseDouble(coordeandas[1]));
-	}
-
+	
 	private ArrayList<Integer> obtenerVecinosManzana(String vecinos) {
 		String[] vecinosStringManzana = vecinos.split(",");
 		ArrayList<Integer> vecinosManzanas = new ArrayList<Integer>();
@@ -132,17 +143,6 @@ public class CargadorManzanas {
 		}
 
 		return vecinosManzanas;
-	}
-
-	private Iterator<Row> obtenerIteradorExcel() throws FileNotFoundException, IOException {
-		XSSFWorkbook workbook = obtenerWorkbookExcel();
-		XSSFSheet sheet = workbook.getSheetAt(0);
-
-		Iterator<Row> itr = sheet.iterator();
-		itr.next();
-		workbook.close();
-
-		return itr;
 	}
 
 	public RadioCensal getRadioCensal() {
