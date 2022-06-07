@@ -49,8 +49,9 @@ public class FuncionesAuxiliares {
 		StringBuffer ret = new StringBuffer();
 		ret.append("[ ");
 		for (Manzana manzana : manzanasAsignadas) {
-			ret.append(manzana.getNroManzana()).append(" ");
+			ret.append(manzana.getNroManzana()).append("  ");
 		}
+		
 		ret.append(" ]");
 
 		return ret.toString();

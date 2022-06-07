@@ -262,14 +262,13 @@ public class MainForm {
 			@SuppressWarnings("deprecation")
 			public void actionPerformed(ActionEvent e) {
 				limpiarCeldasManzanasAsignadas();
-				deshabilitarBtnsAsignarManzanas();
 				
 				ArrayList<Censista> instanciaCensistas = clonarCensistas(cargadorCensistas.getCensistasArray());
 				ArrayList<Censista> censistasAsignados = new ArrayList<Censista>();
 				progressBar.show(true);
 				progressBar.setBackground(Color.WHITE);
 				asignadorGolosoSW = new AsignadorGolosoSW(instanciaCensistas, censistasAsignados, radioCensal,
-						progressBar, modeloTablaCensistas, frmAsignadorDeCensistas);
+						progressBar, modeloTablaCensistas, frmAsignadorDeCensistas, btnAsignarManzanasAG, btnAsignarManzanasFB);
 				asignadorGolosoSW.execute();
 				btnCancelar.setEnabled(true);
 				asignadorGolosoSWon = true;
@@ -286,14 +285,13 @@ public class MainForm {
 			@SuppressWarnings("deprecation")
 			public void actionPerformed(ActionEvent e) {
 				limpiarCeldasManzanasAsignadas();
-				deshabilitarBtnsAsignarManzanas();
-				
+			
 				ArrayList<Censista> instanciaCensistas = clonarCensistas(cargadorCensistas.getCensistasArray());
 				ArrayList<Censista> censistasAsignados = new ArrayList<Censista>();
 				progressBar.show(true);
 				progressBar.setBackground(Color.WHITE);
 				asignadorFBSW = new AsignadorFBSW(instanciaCensistas, censistasAsignados, radioCensal, progressBar,
-						modeloTablaCensistas, frmAsignadorDeCensistas);
+						modeloTablaCensistas, frmAsignadorDeCensistas, btnAsignarManzanasAG, btnAsignarManzanasFB);
 				asignadorFBSW.execute();
 				btnCancelar.setEnabled(true);
 				asignadorFBSWon = true;
@@ -479,11 +477,6 @@ public class MainForm {
 			btnAsignarManzanasAG.setEnabled(true);
 			btnAsignarManzanasFB.setEnabled(true);
 		}
-	}
-	
-	private void deshabilitarBtnsAsignarManzanas() {
-		btnAsignarManzanasAG.setEnabled(false);
-		btnAsignarManzanasFB.setEnabled(false);
 	}
 
 	private Image setTamanoFotoCensista(Censista censista, int ancho, int alto) {
