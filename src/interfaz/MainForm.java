@@ -14,7 +14,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Vector;
 import java.awt.event.ActionEvent;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -263,6 +262,8 @@ public class MainForm {
 			@SuppressWarnings("deprecation")
 			public void actionPerformed(ActionEvent e) {
 				limpiarCeldasManzanasAsignadas();
+				deshabilitarBtnsAsignarManzanas();
+				
 				ArrayList<Censista> instanciaCensistas = clonarCensistas(cargadorCensistas.getCensistasArray());
 				ArrayList<Censista> censistasAsignados = new ArrayList<Censista>();
 				progressBar.show(true);
@@ -285,6 +286,8 @@ public class MainForm {
 			@SuppressWarnings("deprecation")
 			public void actionPerformed(ActionEvent e) {
 				limpiarCeldasManzanasAsignadas();
+				deshabilitarBtnsAsignarManzanas();
+				
 				ArrayList<Censista> instanciaCensistas = clonarCensistas(cargadorCensistas.getCensistasArray());
 				ArrayList<Censista> censistasAsignados = new ArrayList<Censista>();
 				progressBar.show(true);
@@ -476,6 +479,11 @@ public class MainForm {
 			btnAsignarManzanasAG.setEnabled(true);
 			btnAsignarManzanasFB.setEnabled(true);
 		}
+	}
+	
+	private void deshabilitarBtnsAsignarManzanas() {
+		btnAsignarManzanasAG.setEnabled(false);
+		btnAsignarManzanasFB.setEnabled(false);
 	}
 
 	private Image setTamanoFotoCensista(Censista censista, int ancho, int alto) {

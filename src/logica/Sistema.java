@@ -20,5 +20,4 @@ public class Sistema {
 	public ArrayList<Censista> obtenerCensistasAsignadosFB() {
 		return new AsignadorDeManzanasFB(censistas, radioCensal).getCensistas();
 	}
-
 }

@@ -168,7 +168,7 @@ public class AsignadorDeManzanasFB {
 		return false;
 
 	}
-
+	
 	private boolean esManzanaContigua(int i, int j) {
 		return radioCensal.sonVecinos(i, j);
 	}
@@ -185,4 +185,5 @@ public class AsignadorDeManzanasFB {
 	public ArrayList<ArrayList<Manzana>> getRecorridos() {
 		return recorridos;
 	}
+
 }

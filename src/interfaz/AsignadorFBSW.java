@@ -15,7 +15,6 @@ import logica.ThreadTime;
 
 public class AsignadorFBSW extends SwingWorker<ArrayList<Censista>, Object> {
 	private JProgressBar progressBar;
-	// private JTable tablaCensistas;
 	private DefaultTableModel modeloTablaCensistas;
 	private JFrame frmAsignadorDeCensistas;
 	private RadioCensal radioCensal;
@@ -28,12 +27,11 @@ public class AsignadorFBSW extends SwingWorker<ArrayList<Censista>, Object> {
 			JFrame frmAsignadorDeCensistas) {
 		this.instanciaCensistas = instanciaCensistas;
 		this.radioCensal = radioCensal;
-		// this.tablaCensistas = tablaCensistas;
 		this.modeloTablaCensistas = modeloTablaCensistas;
 		this.progressBar = progressBar;
 		this.frmAsignadorDeCensistas = frmAsignadorDeCensistas;
-		threadTiempo = new ThreadTime();
-		threadTiempo.start();
+		this.threadTiempo = new ThreadTime();
+		this.threadTiempo.start();
 	}
 
 	@Override
@@ -50,7 +48,7 @@ public class AsignadorFBSW extends SwingWorker<ArrayList<Censista>, Object> {
 
 	@Override
 	public void done() {
-		if (this.isCancelled() == false) {
+		if (!this.isCancelled()) {
 			progressBar.setIndeterminate(false);
 			FuncionesAuxiliares.mostrarCensistasEnTabla(modeloTablaCensistas, censistasAsignados);
 			progressBar.setBackground(new Color(204, 255, 51));
@@ -58,7 +56,6 @@ public class AsignadorFBSW extends SwingWorker<ArrayList<Censista>, Object> {
 			progressBar.setIndeterminate(false);
 			progressBar.setBackground(Color.RED);
 		}
-
 	}
 
 }
